@@ -2,7 +2,7 @@
   session_start();
   include("middleware.php");
   $date = date('Y-m-d'); 
-  $title = 'DASHBOARD | APPLICATION'.' ' . $date ;
+  $title = 'DASHBOARD | ' . $date ;
   $page = 'index';
   $computerName = php_uname('n');
   include("../includes/connection.php");
@@ -19,7 +19,7 @@
 <head>
 <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
     <title><?=$title?></title>
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">

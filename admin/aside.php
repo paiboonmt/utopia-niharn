@@ -25,8 +25,8 @@
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
     <a href="index.php" class="brand-link">
-        <img src="../dist/img/logo.jpg" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">RATTACHAI GYM</span>
+        <img src="../dist/img/logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">UTOPIA</span>
     </a>
     <div class="sidebar">
         <div class="user-panel py-2 d-flex">
@@ -60,14 +60,14 @@
                         $active = '';
                     }
                 ?>
-                <li class="nav-item">
-                    <a href="checkin.php" class="nav-link <?= $active ?>">
+                <!-- <li class="nav-item">
+                    <a href="checkin.php" class="nav-link < $active ?>">
                     <i class="nav-icon  fas fa-door-open"></i>
                         <p>
                             Check in
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 <?php
                     if ($page == 'cart') {

@@ -48,7 +48,6 @@
     unset($_SESSION['num_bill']);
     unset($_SESSION['detail']);
     unset($_SESSION['Last_order_details']);
-    
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,7 +55,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
     <title><?=$title?></title>
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">
@@ -213,7 +212,7 @@
                                         </tfoot>
                                     </table>
 
-                                    <input type="hidden" name="code" value="<?= $rows['code'] ?>">
+                                    <!-- <input type="hidden" name="code" value="<?= $rows['code'] ?>"> -->
 
                                     <!-- หมายเลขบิลก่อนหน้านี้ -->
                                     <div class="input-group mb-1">
@@ -273,29 +272,31 @@
                                             $sqlPayment->execute();
                                         ?> 
                                         <select class="custom-select" name="pay" id="paymentMethodSelect" required>
-                                            <option selected>... Choose ...</option>
+                                            <option value="" disabled selected>... Choose ...</option>
                                             <?php foreach ( $sqlPayment AS $rowPayment ) :?>
-                                                <option value="<?= $rowPayment['pay_name'] ?>"><?= $rowPayment['pay_name'] ?></option>
+                                                <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>">
+                                                <?= $rowPayment['pay_name'] ?>
+                                            </option>
                                             <?php endforeach; ?> 
                                         </select>
                                     </div>
 
                                     <!-- Vat 7% -->
-                                    <div class="input-group mb-1">
+                                    <!-- <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Vat 7%</span>
                                         </div>
                                         <input type="text" name="vat7" class="form-control" id="paymentDetails7" value="0" required>
-                                    </div>
+                                    </div> -->
 
                                     <!-- Charge Card 3% -->
-                                    <div class="input-group mb-1">
+                                    <!-- <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">Charge Card 3%</span>
                                         </div>
                                         <input type="text" name="vat3" class="form-control" id="paymentDetails3"
                                             value="0" required>
-                                    </div>
+                                    </div> -->
 
                                     <!-- เริ่ม / หมด -->
                                     <div class="row">

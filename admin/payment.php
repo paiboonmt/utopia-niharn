@@ -1,18 +1,17 @@
 <?php
-  session_start();
-  $title = 'PAYMENT | APPLICATION';
-  include 'middleware.php';
-  $page = 'payment'; 
+session_start();
+$title = 'PAYMENT | APPLICATION';
+include 'middleware.php';
+$page = 'payment';
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
-    <title><?=$title?></title>
+    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../dist/css/font.css">
@@ -24,7 +23,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <?php include './aside.php'?>
+        <?php include './aside.php' ?>
         <div class="content-wrapper">
             <div class="content">
                 <div class="container-fluid">
@@ -42,18 +41,18 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="./paymentSql.php" method="post">
+                                        <form action="./payment/sql.php" method="post">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">Payment Type</span>
                                                 </div>
-                                                <input type="text" class="form-control" name="pay_name" autofocus required>
+                                                <input type="text" class="form-control" name="pay_name" required value="Test">
                                             </div>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">Value</span>
                                                 </div>
-                                                <input type="number" class="form-control" name="value">
+                                                <input type="number" class="form-control" name="value" value="0" required>
                                             </div>
                                             <input type="submit" name="add" value="SAVE" class="form-control btn btn-success">
                                         </form>
@@ -64,15 +63,17 @@
 
                         <div class="col-lg-12">
                             <div class="card mt-2">
-                                <div class="card-header">
+                                <div class="card-header bg-dark">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                            <button style="width: 250px; text-transform: uppercase;" type="button" class="btn btn-info" data-toggle="modal"
                                                 data-target="#addItem">
-                                                Create data
+                                                <i class="fas fa-plus"></i> | Add Payment
                                             </button>
                                         </div>
-                                        <div class="col-sm-6"><span style="float: right;"><h3>Paymen method</h3></span></div>
+                                        <div class="col-sm-6"><span style="float: right; text-transform: uppercase;">
+                                                <h3>Payments</h3>
+                                            </span></div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -87,65 +88,65 @@
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $i=1;
-                                                $stmt = $conndb->query("SELECT * FROM `payment`");
-                                                $stmt->execute();
-                                                foreach ( $stmt AS $row ) : 
+                                            $i = 1;
+                                            $stmt = $conndb->query("SELECT * FROM `payment`");
+                                            $stmt->execute();
+                                            foreach ($stmt as $row) :
                                             ?>
-                                            <tr>
-                                                <td><?= $i++; ?></td>
-                                                <td><?= $row['pay_name'] ?></td>
-                                                <td><?= $row['value'] ?></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['pay_id'] ?>">
-                                                    <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <!-- <a href="productSql.php?id=<?= $row['pay_id'] ?>"class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a> -->
-                                                    <button class="btn btn-sm btn-danger trash" id="<?= $row['pay_id'] ?>"><i class="fas fa-trash-alt"></i></button>
-                                                </td>
+                                                <tr>
+                                                    <td><?= $i++; ?></td>
+                                                    <td><?= $row['pay_name'] ?></td>
+                                                    <td><?= $row['value'] ?></td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['pay_id'] ?>">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger trash" id="<?= $row['pay_id'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                                    </td>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="id<?= $row['pay_id'] ?>" tabindex="-1" role="dialog"
-                                                    aria-labelledby="addItemTitle" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">เพื่มสินค้าบริการ</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                
-                                                                <form action="./paymentSql.php" method="post">
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">Payment Type</span>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="id<?= $row['pay_id'] ?>" tabindex="-1" role="dialog"
+                                                        aria-labelledby="addItemTitle" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLongTitle">เพื่มสินค้าบริการ</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+
+                                                                    <form action="./payment/sql.php" method="post">
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">Payment Type</span>
+                                                                            </div>
+                                                                            <input type="text" class="form-control" name="pay_name" value="<?= $row['pay_name'] ?>">
                                                                         </div>
-                                                                        <input type="text" class="form-control" name="pay_name" value="<?= $row['pay_name'] ?>">
-                                                                    </div>
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">Value</span>
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">Value</span>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" name="value" value="<?= $row['value'] ?>">
                                                                         </div>
-                                                                        <input type="number" class="form-control" name="value" value="<?= $row['value'] ?>">
-                                                                    </div>
-                                                                    <input type="hidden" name="pay_id" value="<?= $row['pay_id'] ?>">
-                                                                    <input type="submit" name="update" value="UPDATE" class="form-control btn btn-success">
-                                                                </form>
-                                                                
+                                                                        <input type="hidden" name="pay_id" value="<?= $row['pay_id'] ?>">
+                                                                        <input type="submit" name="update" value="UPDATE" class="form-control btn btn-success">
+                                                                    </form>
+
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                            </tr>
+                                                </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -169,7 +170,44 @@
     <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
     <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
+    <?php if (isset($_SESSION['add'])) { ?>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                icon: 'success',
+                title: 'Add item successfully!'
+            });
+        </script>
+    <?php }
+    unset($_SESSION['add']); ?>
+
+    <?php if (isset($_SESSION['update'])) { ?>
+        <script>
+            Swal.fire({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 2000,
+                icon: 'success',
+                title: 'Update item successfully!'
+            });
+        </script>
+    <?php }
+    unset($_SESSION['update']); ?>
+
     <script>
+        $(function() {
+            $("#example1").DataTable({
+                "responsive": true,
+                "lengthChange": false,
+                "autoWidth": false,
+                "buttons": ["excel"],
+                "stateSave": true
+            });
+        });
         $(document).ready(function() {
             $(".trash").click(function() {
                 let trash_id = $(this).attr("id");
@@ -185,7 +223,8 @@
                 }).then((result) => {
                     if (result.isConfirmed) {
                         $.ajax({
-                            url: "./paymentSql.php",
+                            url: "./payment/sql.php",
+                            type: "POST",
                             method: 'POST',
                             data: {
                                 id: trash_id,
@@ -199,46 +238,9 @@
                 });
             });
         });
-
-        $(function() {
-            $("#example1").DataTable({
-                "responsive": true,
-                "lengthChange": false,
-                "autoWidth": false,
-                "buttons": ["excel"],
-                "stateSave": true
-            });
-        });
     </script>
 
-
-
-    <?php if (isset($_SESSION['add'])){ ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'Add item successfully!'
-            });
-        </script>
-    <?php } unset($_SESSION['add']);?>
-
-    <?php if (isset($_SESSION['update'])){ ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'Update item successfully!'
-            });
-        </script>
-    <?php } unset($_SESSION['update']);?>
-
 </body>
+
 </html>
 <?php $conndb = null; ?>

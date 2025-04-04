@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login | WEB APPLICATION</title>
-  <link rel="icon" type="image/x-icon" href="./dist/img/logo/logo.png">
+  <title>LOGIN | WEB APPLICATION</title>
+  <link rel="icon" type="image/x-icon" href="./dist/img/logo.png">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <link rel="stylesheet" href="plugins/fontawesome-free/css/all.min.css">
   <link rel="stylesheet" href="dist/css/adminlte.min.css">
@@ -32,7 +32,7 @@
 <div class="login-box">
   
   <div class="login-logo">
-  <img src="./dist/img/logo/logo.png" width="15%">
+  <img src="./dist/img/logo.png" width="15%">
     <a href="" style="color: white;"><b>UTOPIA | </b>SYSTEM</a>
   </div>
   <div class="card">

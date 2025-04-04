@@ -25,11 +25,31 @@
 
         $discount = $_POST['discount'];
 
-        $pay = $_POST['pay'];
+        // $pay = $_POST['pay'];
+        
+        $payment = $_POST['pay'];;
+        
+        $dataSet = explode(',',$payment);
 
-        $vat7 = $_POST['vat7'];
+        // echo "<pre>";
+        // print_r($dataSet);
+        // echo "</pre>";
 
-        $vat3 = $_POST['vat3'];
+        $vat = $dataSet[1];
+
+        if ( $vat == 3 ) {
+            $vat3 = $dataSet[1];
+        } elseif ( $vat == 7 ) {
+            $vat7 = $dataSet[1];
+        }
+
+        $pay = $dataSet[0];
+
+        // exit;
+
+        // $vat7 = $_POST['vat7'];
+
+        // $vat3 = $_POST['vat3'];
 
         $sta_date = $_POST['sta_date'];
 

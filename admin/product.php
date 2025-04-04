@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
     <title><?=$title?></title>
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">
@@ -41,28 +41,20 @@
                                         </button>
                                     </div>
                                     <div class="modal-body">
-                                        <form action="./productSql.php" method="post">
+                                        <form action="./product/sql.php" method="post">
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">ชื่อสินค้าบริการ</span>
                                                 </div>
-                                                <input type="text" class="form-control" name="product_name" autofocus required>
+                                                <input type="text" class="form-control" name="product_name" value="Product Test" required>
                                             </div>
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">ราคา</span>
                                                 </div>
-                                                <input type="number" class="form-control" name="price">
+                                                <input type="number" class="form-control" name="price" value="10" require>
                                             </div>
-                                            <div class="input-group mb-3">
-                                                <div class="input-group-prepend">
-                                                    <span class="input-group-text">โค๊คสินค้า</span>
-                                                </div>
-                                                <input type="number" name="code" class="form-control" value="0">
-                                            </div>
-                                            <div class="input-group mb-3">
-                                                <textarea class="form-control" name="detail" rows="5" placeholder="รายละเอียด"></textarea>
-                                            </div>
+                                            
                                             <input type="submit" name="saveProduct" value="บันทึก" class="form-control btn btn-success">
                                         </form>
                                     </div>
@@ -72,15 +64,14 @@
 
                         <div class="col-lg-12">
                             <div class="card mt-2">
-                                <div class="card-header">
+                                <div class="card-header bg-dark">
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <button type="button" class="btn btn-primary" data-toggle="modal"
-                                                data-target="#addItem">
-                                                เพื่มสินค้าบริการ
+                                            <button style="width: 250px; text-transform: uppercase;" type="button" class="btn btn-info" data-toggle="modal" data-target="#addItem">
+                                                 <i class="fas fa-plus"></i> | Add Product
                                             </button>
                                         </div>
-                                        <div class="col-sm-6"><span style="float: right;"><h3>รายการสินค้า</h3></span></div>
+                                        <div class="col-sm-6"><span style="float: right;"><h3>PRODUCTS</h3></span></div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -90,7 +81,6 @@
                                                 <th>#</th>
                                                 <th>Product name</th>
                                                 <th>Price</th>
-                                                <th>Details</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -106,13 +96,12 @@
                                                 <td><?= $i++; ?></td>
                                                 <td><?= $row['product_name']?></td>
                                                 <td><?= number_format($row['price'],2)?></td>
-                                                <td><?= substr($row['detail'],0,100).'.....' .'More'?></td>
                                                 <td class="text-center">
                                                     <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                     <i class="fas fa-edit"></i>
                                                     </button>
-                                                    <a href="productSql.php?id=<?= $row['id'] ?>"class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                                </td>
+                                                    <button class="btn btn-sm btn-danger trash" id="<?= $row['id'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                                    </td>
 
                                                 <!-- Modal -->
                                                 <div class="modal fade" id="id<?= $row['id'] ?>" tabindex="-1" role="dialog"
@@ -126,7 +115,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <form action="./productSql.php" method="post">
+                                                                <form action="./product/sql.php" method="post">
                                                                     <div class="input-group mb-3">
                                                                         <div class="input-group-prepend">
                                                                             <span class="input-group-text">ชื่อสินค้าบริการ</span>
@@ -139,9 +128,7 @@
                                                                         </div>
                                                                         <input type="number" class="form-control" name="price" value="<?= $row['price'] ?>">
                                                                     </div>
-                                                                    <div class="input-group mb-3">
-                                                                        <textarea class="form-control" name="detail" rows="5" placeholder="รายละเอียด"><?= $row['detail']?></textarea>
-                                                                    </div>
+                                                                   
                                                                     <input type="text" name="id" hidden value="<?= $row['id'] ?>">
                                                                     <input type="submit" name="updateProduct" value="อัปเดท" class="form-control btn btn-success">
                                                                 </form>
@@ -186,17 +173,37 @@
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["excel"],
+                // "buttons": ["excel"],
                 "stateSave": true
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
-            $('#example2').DataTable({
-                "paging": true,
-                "lengthChange": false,
-                "searching": false,
-                "ordering": true,
-                "info": true,
-                "autoWidth": false,
-                "responsive": true,
+        });
+        $(document).ready(function() {
+            $(".trash").click(function() {
+                let trash_id = $(this).attr("id");
+                console.log(trash_id);
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "Do you want to do ?",
+                    icon: 'info',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, I won to do !'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        $.ajax({
+                            url: "./product/sql.php",
+                            method: 'POST',
+                            data: {
+                                id: trash_id,
+                                action: 'delete'
+                            },
+                            success: function(response) {
+                                location.reload();
+                            }
+                        });
+                    }
+                });
             });
         });
     </script>
