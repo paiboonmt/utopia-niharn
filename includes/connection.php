@@ -1,9 +1,8 @@
 <?php
-
     $servername = "147.50.228.22";
-    $username = "tigersof_test";
-    $password = "admin!@#$9itonly";
-    $dbname = "tigersof_test";
+    $username = "tigersof_tiger_paiboon";
+    $password = "P@iBoon!@#$9itonly";
+    $dbname = "tigersof_niharn";
 
     date_default_timezone_set('Asia/Bangkok');
     try {

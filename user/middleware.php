@@ -1,5 +1,5 @@
 <?php
-    if ( $_SESSION['role'] != 'admin' && $_SESSION['id'] == '') {
+    if ( $_SESSION['role'] != 'user' && $_SESSION['id'] == '') {
         header('location:../');
     }
 ?> 
