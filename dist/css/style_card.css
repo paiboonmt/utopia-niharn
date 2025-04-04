@@ -1,0 +1,140 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat&family=Poppins:wght@400;800;900&display=swap');
+
+    #cardddd {
+        display: flex;
+        justify-content: center;
+    }
+    .card-header{
+        background: rgba(0, 0, 0, 0.712);
+        color: white;
+    }
+
+    .card_img {
+        position: relative;
+        background: linear-gradient(57deg,rgb(0, 0, 0) 50%,rgb(221, 77, 10) 50%);
+        overflow: hidden;
+        box-shadow: 0 0 15px rgb(221, 77, 10);
+        transition: transform 0.6s;
+    }
+    .card_img:hover{
+        transform: scale(1.1);
+    }
+    .card_img::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to left,rgba(255, 255, 255, 0.123),transparent);
+        transform: skewX(33deg) translateX(0);
+        transition: 0.5s;
+    }
+    .card_img:hover:before{
+        transform: skewX(33deg) translateX(200%);
+    }
+    .card_img .type_customer {
+        background: rgb(3, 194, 3);
+        height: 15px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+    .card_img span {
+        color: white;
+        font-size: 10px;
+        font-weight: bl;
+        padding: 0 5px;
+        font-family: 'Montserrat', sans-serif;
+        transition: .4s;
+        cursor: pointer;
+    }
+    .card_img span:hover {
+        color: #f9e800;
+    }
+
+    .card_img_fighter {
+        background: linear-gradient(58deg,rgb(0, 0, 0) 50%,rgb(17, 0, 255) 50%);
+        overflow: hidden;
+        box-shadow: 0 0 15px rgb(17, 0, 255);
+        transition: transform 0.6s;
+    }
+    .card_img_fighter:hover{
+        transform: scale(1.1);
+    }
+    .card_img_fighter::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to left,rgba(255, 255, 255, 0.123),transparent);
+        transform: skewX(33deg) translateX(0);
+        transition: 0.4s;
+    }
+    .card_img_fighter:hover:before{
+        transform: skewX(33deg) translateX(200%);
+    }
+    .card_img_fighter .type_fighter {
+        background: gold;
+        text-align: center;
+        color: rgb(0, 0, 0);
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+    .card_img_fighter span {
+        color: white;
+        font-size: 10px;
+        font-weight: bl;
+        padding: 0 5px;
+        font-family: 'Montserrat', sans-serif;
+        transition: .4s;
+        cursor: pointer;
+    }
+    .card_img_fighter span:hover {
+        color: #f9004d;
+    }
+
+    .card_img_ticket {
+        position: relative;
+        background: linear-gradient(57deg,rgb(0, 0, 0) 50%,rgb(221, 77, 10) 50%);
+        overflow: hidden;
+        box-shadow: 0 0 15px rgb(238, 131, 8);
+        transition: transform 0.6s;
+    }
+    .card_img_ticket:hover{
+        transform: scale(1.1);
+    }
+    .card_img_ticket::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(to left,rgba(255, 255, 255, 0.123),transparent);
+        transform: skewX(33deg) translateX(0);
+        transition: 0.5s;
+    }
+    .card_img_ticket:hover:before{
+        transform: skewX(33deg) translateX(200%);
+    }
+    .card_img_ticket .type_customer {
+        background: rgb(3, 194, 3);
+        height: 15px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+        letter-spacing: 2px;
+    }
+    .card_img_ticket span {
+        color: white;
+        font-size: 10px;
+        font-weight: bl;
+        padding: 0 5px;
+        font-family: 'Montserrat', sans-serif;
+        transition: .4s;
+        cursor: pointer;
+    }
+    .card_img_ticket span:hover {
+        color: #f9e800;
+    }

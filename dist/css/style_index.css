@@ -1,0 +1,31 @@
+
+.content-wrapper nav {
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+    
+}
+
+.content-wrapper nav ul {
+    display:flex;
+}
+.content-wrapper nav ul li{
+    list-style: none;
+    padding: 0 25px;
+    margin-bottom: 10px;
+    
+}
+.content-wrapper nav ul li a{
+    position: relative;
+    color: rgb(80, 7, 7);
+    text-decoration: none;
+    font-size: 16px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 400;
+    background: red;
+    padding: 3px 10px;
+    border-radius: 5px;
+}
+
+

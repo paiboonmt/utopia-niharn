@@ -1,0 +1,46 @@
+
+.content-wrapper {
+    background: linear-gradient(to left, #000000, #A43931);
+}
+.content-wrapper .content .container-fluid .row .col-4 .into {
+    font-weight: bold;
+    color: white;
+    text-align: center;
+}
+label{
+    position: relative;
+    text-transform: uppercase;
+    color: white;
+    font-size: 19px;
+    cursor: pointer;
+}
+label::after{
+    position: absolute;
+    content: '';
+    background: gold;
+    height: 2px;
+    width: 0;
+    left: 0;
+    bottom: -2px;
+    transition: .4s;
+}
+label:hover::after{
+    width: 100%;
+}
+.content-wrapper .img_aa{
+    display: block;
+    margin: auto;
+    border-radius: 25px;
+}
+.content-wrapper .top-menu {
+    display: flex;
+    justify-content: space-around;
+}
+.content-wrapper .top-menu ul li {
+    margin-left:10px;
+    text-transform: uppercase;
+    list-style: none;
+}
+.content-wrapper .top-menu ul li a {
+    color:#fff;
+}
