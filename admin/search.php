@@ -10,7 +10,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
+    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
     <title><?= $title ?></title>
     <link rel="stylesheet"href="../dist/css/font.css">
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">

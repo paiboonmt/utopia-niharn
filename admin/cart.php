@@ -265,7 +265,7 @@
                                     <!-- ประเภทการจ่าย -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">ประเภทการจ่าย</span>
+                                            <label class="input-group-text">ประเภทการจ่าย</label>
                                         </div>
                                         <?php 
                                             $sqlPayment = $conndb->query("SELECT * FROM `payment` ORDER BY `pay_id` ASC");
@@ -303,7 +303,7 @@
                                         <div class="col-sm-6">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text">เริ่ม</span>
+                                                    <label class="input-group-text">เริ่ม</label>
                                                 </div>
                                                 <input type="date" name="sta_date" class="form-control"
                                                     value="<?= date('Y-m-d') ?>">
@@ -313,7 +313,7 @@
                                         <div class="col-sm-6">
                                             <div class="input-group mb-1">
                                                 <div class="input-group-prepend">
-                                                    <span class="input-group-text">หมด</span>
+                                                    <label class="input-group-text">หมด</label>
                                                 </div>
                                                 <input type="date" name="exp_date" class="form-control"
                                                     value="<?= date('Y-m-d') ?>">
@@ -323,7 +323,7 @@
                                     <!-- Customer name -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
-                                            <span class="input-group-text">Customer name</span>
+                                            <label class="input-group-text">Customer name</label>
                                         </div>
                                         <input type="text" name="fname" class="form-control" value="Customer" required>
                                     </div>
@@ -427,7 +427,7 @@
     <script>
     $(function() {
         $("#table").DataTable({
-            "pageLength": 15,
+            "pageLength": 13,
             // "stateSave": true,
             // "dom": 'rtip',
             // "searching": true,

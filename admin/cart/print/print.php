@@ -33,76 +33,78 @@
 
         hr {
             border-top: 2px dashed #8c8b8b;
-            outline:2px dashed #8c8b8b;
+            outline: 2px dashed #8c8b8b;
         }
 
         span {
             font-size: 12px;
         }
 
-        #col{
-            margin-right: 20px;
+        #col {
+            margin-right: 10px;
             text-align: right;
         }
+
         h5 {
             font-size: 10px;
             text-align: center;
         }
-        .dt{
+
+        .dt {
             font-size: 9px;
         }
-        dd{
+
+        dd {
             font-size: 9px;
         }
     </style>
 </head>
-
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xl-12">
-                <?php 
-                    $productIds = [];
-                    $grantotal = 0;
-                    foreach(($_SESSION['cart'] ?? []) as $cartId => $cartQty){
-                        $productIds[] = $cartId; 
-                    }
+                <?php
+                $productIds = [];
+                $grantotal = 0;
+                foreach (($_SESSION['cart'] ?? []) as $cartId => $cartQty) {
+                    $productIds[] = $cartId;
+                }
 
-                    $Ids = 0;
+                $Ids = 0;
 
-                    if (count($productIds) > 0) {
-                        $Ids = implode(', ', $productIds);
-                    }
+                if (count($productIds) > 0) {
+                    $Ids = implode(', ', $productIds);
+                }
 
-                    $i=1;
+                $i = 1;
 
-                    require_once("../../../includes/connection.php");
+                require_once("../../../includes/connection.php");
 
-                    $lastId =  $_SESSION['order_id'];
+                $lastId =  $_SESSION['order_id'];
 
-                    $stmts = $conndb->query("SELECT p.product_name , o.quantity ,p.price , p.id
+                $stmts = $conndb->query("SELECT p.product_name , o.quantity ,p.price , p.id
                     FROM `products` AS p
                     LEFT JOIN order_details AS o ON  p.id = o.product_id 
                     WHERE id IN ($Ids)
                     AND order_id = $lastId
                     ");
-                    $stmts->execute();
+                $stmts->execute();
 
-                    include("printCustomer.php");
-                    include("printVendor.php");
+                include("printCustomer.php");
+                include("printVendor.php");
 
                 ?>
-        </div>    
-    </div>
+            </div>
+        </div>
     <script src="../../../dist/js/bootstrap.bundle.min.js"></script>
 </body>
-    <?php unset($_SESSION['cart']) ?>
-    <script>
-        window.print();
-        setTimeout(function() {
-            window.location.href = '../../cart.php';
-        }, 1000);
-    </script>
-</html>
 
- <?php $conndb = null; ?> 
+<?php unset($_SESSION['cart']) ?>
+<script>
+    window.print();
+    setTimeout(function() {
+        window.location.href = '../../cart.php';
+    }, 1000);
+</script>
+</html>
+<?php $conndb = null; ?>

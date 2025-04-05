@@ -10,7 +10,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="../dist/img/logo.jpg">
+  <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
   <title><?= $title ?></title>
   <link rel="stylesheet" href="../dist/css/font.css">
   <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
@@ -49,10 +49,16 @@
     <div class="content-wrapper">
       <section class="content">
         <div class="container-fluid">
-          <div class="row p-3">
-            <h2 class="h">all member</h2>
-            <div class="col-lg-12">
-              <div class="card p-2 mt-2">
+          <div class="row">
+           
+            <div class="col-12 mt-2">
+              <div class="card">
+                <div class="card-header">
+                  <div class="row">
+                    <div class="col">สมาชิกทั้งหมด</div>
+                  </div>
+                </div>
+                <div class="card-body">
                 <table id="example1" class="table table-sm table-hover">
                   <thead>
                     <tr>
@@ -108,6 +114,8 @@
                     <?php endforeach; ?>
                   </tbody>
                 </table>
+                </div>
+
               </div>
             </div>
           </div>

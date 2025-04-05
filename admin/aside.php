@@ -48,7 +48,7 @@
                     <a href="index.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            Dashboard
+                            หน้าแรก
                         </p>
                     </a>
                 </li>
@@ -80,7 +80,7 @@
                     <a href="cart.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
-                        Sale Ticket
+                            ขายสินค้า
                         </p>
                     </a>
                 </li>
@@ -97,7 +97,7 @@
                     <a href="product.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
-                            products
+                            สินค้า และ บริการ
                         </p>
                     </a>
                 </li>
@@ -114,7 +114,7 @@
                     <a href="payment.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fab fa-cc-amazon-pay"></i>
                         <p>
-                            Payment type
+                            ประวัติการชำระเงิน
                         </p>
                     </a>
                 </li>
@@ -131,7 +131,7 @@
                     <a href="recordticket.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
-                           Record Ticket
+                           ประวัติการขายตั๋ว
                            <?php if (countTicket($conndb) == 0 ) { ?>
                                 <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
                             <?php } else {?>
@@ -152,7 +152,7 @@
                     <a href="search.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-search"></i>
                         <p>
-                            search
+                            ค้นหาสมาชิก
                         </p>
                     </a>
                 </li>
@@ -164,14 +164,14 @@
                         $active = '';
                     }
                 ?>
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="newCheckin.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon far fa-clipboard"></i>
                         <p>
-                            Record Checkin
+                            ประวัติการเช็คอิน
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 <?php
                 if ($page == 'newmember') {
@@ -184,7 +184,7 @@
                     <a href="newmember.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-user-clock"></i>
                         <p>
-                            New Member
+                            สมาชิกใหม่
                             <?php if (countNew($conndb) == 0 ) { ?>
                                 <span class="right badge badge-info"><?= countNew($conndb); ?></span>
                             <?php } else {?>
@@ -206,7 +206,7 @@
                     <a href="allmember.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-user-check"></i>
                         <p>
-                            Customer Active
+                            รายชื่อสมาชิก
                         </p>
                     </a>
                 </li>
