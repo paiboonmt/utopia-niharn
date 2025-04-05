@@ -176,10 +176,12 @@ $page = 'nationality';
   unset($_SESSION['update']) ?>
 
   <script>
-    $(function() {
-      $("#example1").DataTable({});
-    });
-
+    $("#example1").DataTable({
+      "responsive": true,
+      "lengthChange": true,
+      "autoWidth": false,
+      // "buttons": ["excel"]
+    }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
     $(document).ready(function() {
       $(".trash").click(function() {
         let trash_id = $(this).attr("id");
