@@ -223,7 +223,7 @@
                     <a href="nationnality.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-language"></i>
                         <p>
-                            Nationality
+                            สัญชาติ
                         </p>
                     </a>
                 </li>

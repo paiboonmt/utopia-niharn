@@ -53,9 +53,9 @@
            
             <div class="col-12 mt-2">
               <div class="card">
-                <div class="card-header">
+                <div class="card-header bg-dark">
                   <div class="row">
-                    <div class="col">สมาชิกทั้งหมด</div>
+                    <div class="col"><h3>สมาชิกทั้งหมด</h3></div>
                   </div>
                 </div>
                 <div class="card-body">
