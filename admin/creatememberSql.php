@@ -2,29 +2,6 @@
   session_start();
   include './middleware.php';
 
-  // Array
-  // (
-  //     [group] => customer
-  //     [insert] => SAVE
-  //     [m_card] => 110
-  //     [invoice] => 100
-  //     [p_visa] => 110
-  //     [email] => dev@tiger.com
-  //     [phone] => 0952566992
-  //     [sex] => Male
-  //     [fname] => Admin
-  //     [nationalty] => Thai / Thailand
-  //     [birthday] => 1985-09-18
-  //     [package] => 1
-  //     [dropin] => 10
-  //     [payment] => 1
-  //     [emergency] => 1169
-  //     [accom] => Phuket \ Thailand
-  //     [comment] => Dev
-  //     [sta_date] => 2025-04-05
-  //     [exp_date] => 2025-06-05
-  // )
-
   if (isset($_POST['insert'])){
     view();
     $m_card = $_POST['m_card'];
@@ -45,7 +22,6 @@
     $sta_date = $_POST['sta_date'];
     $exp_date = $_POST['exp_date'];
     $AddBy = $_SESSION['username'];
-
     insertData($m_card,$invoice,$p_visa,$email,$phone,$sex,$fname,$nationalty,
     $birthday,$package,$dropin,$payment,$emergency,$accom,$comment,$sta_date,$exp_date,$AddBy);
   }

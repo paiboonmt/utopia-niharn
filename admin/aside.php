@@ -114,7 +114,7 @@
                     <a href="payment.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fab fa-cc-amazon-pay"></i>
                         <p>
-                            ประวัติการชำระเงิน
+                            การชำระเงิน
                         </p>
                     </a>
                 </li>
@@ -131,7 +131,7 @@
                     <a href="recordticket.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
-                           ประวัติการขายตั๋ว
+                           ประวัติการขาย
                            <?php if (countTicket($conndb) == 0 ) { ?>
                                 <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
                             <?php } else {?>

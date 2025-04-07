@@ -67,7 +67,7 @@
             <div class="content">
                 <div class="container-fluid">
                     <!-- form -->
-                    <form action="creatememberSql.php" method="post" enctype="multipart/form-data" class="needs-validation">
+                    <form action="./customer/sql.php" method="post" enctype="multipart/form-data" class="needs-validation">
                         <div class="row p-1">
                             <!-- ภาพ -->
                             <div class="col-4">
@@ -78,7 +78,6 @@
                                         </div>
                                     </div>
                                 <br>
-                                <input type="text" name="group" value="customer" hidden>
                                 <input type="submit" name="insert" value="SAVE" class="btn btn-success btn-block" id="btn_insert">
                             </div>
 
@@ -89,12 +88,11 @@
                                     <div class="row mb-1">
                                         <div class="form-group col-6">
                                             <label>NUMBER CARD <span id="massage" class="text-center"></span> </label>
-                                            <input type="text" name="m_card" id="m_card" class="form-control"  autofocus required>
+                                            <input type="text" name="m_card" id="m_card" class="form-control" value="110" autofocus required>
                                         </div>
                                         <div class="form-group col-6 ">
                                             <label>INVOCE NO.</label>
-                                            <input type="text" name="invoice" class="form-control"
-                                                placeholder="INVOICE">
+                                            <input type="text" name="invoice" class="form-control" value="110" required>
                                         </div>
                                     </div>
 
@@ -106,7 +104,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>PASSPORT NUMBER</label>
-                                            <input type="text" name="p_visa" class="form-control" placeholder="PASSPORT & VISA" required>
+                                            <input type="text" name="p_visa" class="form-control" value="11223344" required>
                                         </div>
                                     </div>
 
@@ -114,11 +112,11 @@
                                     <div class="form-row mb-1">
                                         <div class="form-group col-md-6">
                                             <label>EMAIL</label>
-                                            <input type="email" name="email" class="form-control" placeholder="EMAIL"  value="tiger@local.com">
+                                            <input type="email" name="email" class="form-control" value="dev@local.com">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>PHONE NUMBER</label>
-                                            <input type="number" name="phone" class="form-control" placeholder="PHONE NUMBER">
+                                            <input type="number" name="phone" class="form-control" value="12345678910" required>
                                         </div>
                                     </div>
 
@@ -126,14 +124,14 @@
                                     <div class="form-row mb-1">
                                         <div class="form-group col-md-3 ">
                                             <label>SEX</label>
-                                            <select name="sex" class="custom-select" id="floatingInput" required>
+                                            <select name="sex" class="custom-select" required>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-9">
                                             <label for="floatingFull Name">FULL NAME</label>
-                                            <input type="text" name="fname" class="form-control" placeholder="FUUL NAME" required>
+                                            <input type="text" name="fname" class="form-control" value="Dev Admin" required>
                                         </div>
                                     </div>
 
@@ -141,12 +139,12 @@
                                     <div class="form-row mb-1">
                                         <div class="form-group col-4">
                                             <?php
-                                                  $sql_nationality = $conndb->prepare('SELECT * FROM `tb_nationality` ORDER BY nationality_id');
+                                                  $sql_nationality = $conndb->prepare('SELECT * FROM `tb_nationality`');
                                                   $sql_nationality->execute();
                                               ?>
                                             <label>NATIONALITY</label>
-                                            <select name="nationalty" class="custom-select" required>
-                                                <option selected>-Cloose-</option>
+                                            <select name="nationality" class="custom-select" required>
+                                                <option value="" disabled selected>-Cloose-</option>
                                                 <?php foreach ($sql_nationality as $sql_nationality_row ) : ?>
                                                 <option value="<?= $sql_nationality_row['n_name']; ?>">
                                                     <?= $sql_nationality_row['n_name']; ?></option>
@@ -168,18 +166,10 @@
                                             ?>
                                             <label>PACKAGE</label>
                                             <select name="package" class="custom-select" required>
-                                                <option selected>-Cloose-</option>
+                                                <option value="" disabled selected>-Cloose-</option>
                                                     <?php foreach ($products as $product ) : ?>
                                                 <option value="<?= $product['id']?>"><?= $product['product_name'];?></option>
                                                     <?php endforeach; ?>
-                                            </select>
-                                        </div>
-
-                                        <!-- Drop in -->
-                                        <div class="form-group col-2" hidden>
-                                            <label for="drop in">Drop in</label>
-                                            <select name="dropin" class="custom-select">
-                                                <option value="10"> 10 Day </option>
                                             </select>
                                         </div>
                                     </div>
@@ -192,8 +182,8 @@
                                                 $payments->execute();
                                              ?> 
                                             <label>PAYMRNT</label>
-                                            <select name="payment" class="form-control">
-                                                <option selected="">-Cloose-</option>
+                                            <select name="payment" class="form-control" required>
+                                                <option value="" disabled selected="">-Cloose-</option>
                                                 <?php  foreach ($payments AS $payment) : ?> 
                                                     <option value="<?= $payment['pay_id'] ?>"><?= $payment['pay_name'] ?></option>
                                                 <?php endforeach; ?>

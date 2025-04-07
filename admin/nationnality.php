@@ -52,7 +52,7 @@ $page = 'nationality';
                             <div class="modal-body">
                               <form action="./nationality/nationalitySql.php" method="POST">
                                 <div class="form-group col">
-                                  <input type="text" name="nation" class="form-control" placeholder="NEW PACKAGE">
+                                  <input type="text" name="nation" class="form-control" required placeholder="ป้อนชื่อสัญชาติ">
                                 </div>
                                 <div class="form-group col">
                                   <input type="submit" name="insert" value="SAVE" class="btn btn-success" style="width: 100%;">
