@@ -19,29 +19,6 @@ $page = 'newmember';
   <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
   <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
-
-  <style>
-    img {
-      border-radius: 50px;
-      width: 50px;
-      height: 50px;
-    }
-
-    .h {
-      text-transform: uppercase;
-      font-weight: 900;
-      transition: 0.5s;
-    }
-
-    .h:hover {
-      color: orangered;
-      cursor: pointer;
-    }
-
-    .bb {
-      text-transform: uppercase;
-    }
-  </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -57,130 +34,65 @@ $page = 'newmember';
                 <div class="card-header bg-dark">
                   <div class="row">
                     <div class="col">
-                      <h3>สมาชิกใหม่</h3>
+                      <h3>สมาชิก</h3>
                     </div>
                     <div class="col text-right">
                       <a href="createmember.php">
-                        <button class="btn btn-primary ml-5 mb-2 bb" >สร้างสมาชิกใหม่</button>
+                        <button class="btn btn-primary ml-5 mb-2 bb">สร้างสมาชิกใหม่</button>
                       </a>
                     </div>
                   </div>
                 </div>
                 <div class="card-body">
                   <table id="example1" class="table table-sm table-hover">
-                    <thead class="thead-dark">
+                    <thead>
                       <tr>
                         <th>ลำดับ</th>
-                        <th>ภาพ</th>
-                        <th>รหัส</th>
-                        <th hidden>เพศ</th>
-                        <th>ชื่อ </th>
-                        <th hidden>วันเกิด</th>
-                        <th hidden>อายุ</th>
-                        <th>เลขใบเสร็จ</th>
+                        <th>ชื่อ-นามสกุล</th>
+                        <th>เลขที่สมาชิก</th>
+                        <th>ชื่อสินค้า</th>
+                        <th>การชำระ</th>
                         <th>สัญชาติ</th>
-                        <th>รายการ</th>
-                        <th hidden>ที่อยู่</th>
-                        <th>เริ่ม</th>
-                        <th>สิ้นสุด</th>
-                        <th>สร้างเมื่อ</th>
-                        <th hidden>อีเมล</th>
-                        <th hidden>เบอร์โทร</th>
-                        <th>ผู้สร้าง</th>
+                        <th>เบอร์โทร</th>
+                        <th>อีเมล</th>
+                        <th>ภาพ</th>
+                        <th>จัดการ</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody class="text-sm">
                       <?php
-                      require_once '../includes/connection.php';
-                      $sql = "SELECT m.image,m.m_card,m.sex,m.fname,m.birthday,m.age,
-                        m.invoice,m.nationalty,p.product_name,m.accom,m.sta_date,m.exp_date,
-                        m.date,m.email,m.phone,m.AddBy,m.id AS mid,m.package,p.id
-                        FROM `member` AS m
-                        LEFT JOIN `products` AS p ON p.id = m.package
-                        WHERE `status_code` = 4 AND date(date) = curdate() ";
-                      $stmt = $conndb->prepare($sql);
-                      $stmt->execute();
-                      $data = $stmt->fetchAll();
-                      $i = 1;
-                      foreach ($data as $row) : ?>
+                        $sql = "SELECT * FROM customer ORDER BY id DESC";
+                        $stmt = $conndb->prepare($sql);
+                        $stmt->execute();
+                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+                        $i = 1;
+                      foreach ($result as $row): ?>
                         <tr>
                           <td><?= $i++ ?></td>
-                          <td><a href="<?= '../manager/member_profile.php?id=' . $row['mid'] ?>" target="_bank">
-                              <img src="<?= '../memberimg/img/' . $row['image']; ?>" width="60" height="60"></a>
+                          <td><?= htmlspecialchars($row['fname']) ?></td>
+                          <td><?= htmlspecialchars($row['m_card']) ?></td>
+                          <td><?= htmlspecialchars($row['package']) ?></td>
+                          <td><?= htmlspecialchars($row['payment']) ?></td>
+                          <td><?= htmlspecialchars($row['nationality']) ?></td>
+                          <td><?= htmlspecialchars($row['phone']) ?></td>
+                          <td><?= htmlspecialchars($row['email']) ?></td>
+                          <td>
+                            <?php if (!empty($row['image'])): ?>
+                              <img src="../memberimg/img/<?= htmlspecialchars($row['image']) ?>" style="width: 50px; height: 50px; object-fit: cover;">
+                            <?php else: ?>
+                              <span>ไม่มีภาพ</span>
+                            <?php endif; ?>
                           </td>
-                          <td><?= $row['m_card'] ?> </td>
-                          <td hidden><?= $row['sex'] ?></td>
-                          <td><?= $row['fname'] ?> </td>
-                          <td hidden><?= date('d/m/y', strtotime($row['birthday'])) ?> </td>
-                          <td hidden><?= $row['age'] ?> </td>
-                          <td><?= $row['invoice'] ?> </td>
-                          <td><?= $row['nationalty'] ?> </td>
-                          <td><?= $row['product_name'] ?> </td>
-                          <td hidden><?= $row['accom'] ?> </td>
-                          <td><?= date('d/m/Y', strtotime($row['sta_date'])); ?></td>
-                          <td><?= date('d/m/Y', strtotime($row['exp_date'])); ?></td>
-                          <td><?= $row['date'] ?> </td>
-                          <td hidden><?= $row['email'] ?></td>
-                          <td hidden><?= $row['phone'] ?></td>
-                          <td><?= $row['AddBy'] ?></td>
-
-                          <!-- Modal -->
-                          <div class="modal fade" id="id<?= $row['id'] ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                            <div class="modal-dialog">
-                              <div class="modal-content">
-                                <div class="modal-header">
-                                  <h5 class="modal-title" id="exampleModalLabel"> Customer package day pass</h5>
-                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>
-                                <div class="modal-body">
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> Package </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['package'] ?>">
-                                  </div>
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> Customer name </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['fname'] ?>">
-                                  </div>
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> Card id </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['m_card'] ?>">
-                                  </div>
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> Start date </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['sta_date'] ?>">
-                                  </div>
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> End date </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['exp_date'] ?>">
-                                  </div>
-                                  <div class="input-group mb-1">
-                                    <div class="input-group-prepend">
-                                      <span class="input-group-text" id="basic-addon1"> Employee </span>
-                                    </div>
-                                    <input type="text" class="form-control" value="<?= $row['AddBy'] ?>">
-                                  </div>
-                                  <div class="form-group">
-                                    <textarea class="form-control" name="comment" rows="3" placeholder="Comment"><?= $row['comment'] ?></textarea>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
+                          <td>
+                            <a href="editmember.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                              <i class="fas fa-edit"></i>
+                            </a>
+                            <a href="./customer/sql.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?')">
+                              <i class="fas fa-trash"></i>
+                            </a>
+                          </td>
                         </tr>
-                      <?php endforeach; ?>
+                      <?php endforeach ?>
                     </tbody>
                   </table>
                 </div>

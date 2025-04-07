@@ -157,18 +157,15 @@
                                 <div class="row mb-1">
                                     <div class="form-group col-3">
                                         <label>NUMBER CARD</label> <!-- NUMBER CARD -->
-                                        <input type="text" name="m_card" class="form-control"
-                                            value="<?= $data[0]['m_card'] ?>">
+                                        <input type="text" name="m_card" class="form-control" value="<?= $data[0]['m_card'] ?>">
                                     </div>
                                     <div class="form-group col-3 ">
                                         <label>INVOCE NO.</label>
-                                        <input type="text" name="invoice" class="form-control"
-                                            value="<?= $data[0]['invoice'] ?>">
+                                        <input type="text" name="invoice" class="form-control" value="<?= $data[0]['invoice'] ?>">
                                     </div>
 
                                     <div class="form-group col mt-4">
-                                        <input type="submit" name="update" value=">>> UPDATE <<<"
-                                            class="btn btn-danger btn-block update" id="btn_insert">
+                                        <input type="submit" name="update" value=">>> UPDATE <<<" class="btn btn-danger btn-block update" id="btn_insert">
                                     </div>
                                 </div>
                                 <!-- MEMBER CARD / PASSPORT NUMBER -->
@@ -181,21 +178,18 @@
                                     </div>
                                     <div class="form-group col-6">
                                         <label>PASSPORT NUMBER</label>
-                                        <input type="text" name="p_visa" class="form-control"
-                                            value="<?= $data[0]['p_visa'] ?>">
+                                        <input type="text" name="p_visa" class="form-control" value="<?= $data[0]['p_visa'] ?>">
                                     </div>
                                 </div>
                                 <!-- EMAIL / PHONE NUMBER -->
                                 <div class="form-row mb-1">
                                     <div class="form-group col-6">
                                         <label>EMAIL</label>
-                                        <input type="email" name="email" class="form-control"
-                                            value="<?= $data[0]['email'] ?>">
+                                        <input type="email" name="email" class="form-control" value="<?= $data[0]['email'] ?>">
                                     </div>
                                     <div class="form-group col-6">
                                         <label>PHONE NUMBER</label>
-                                        <input type="number" name="phone" class="form-control"
-                                            value="<?= $data[0]['phone'] ?>">
+                                        <input type="number" name="phone" class="form-control" value="<?= $data[0]['phone'] ?>">
                                     </div>
                                 </div>
                                 <!-- SEX / FULL NAME -->

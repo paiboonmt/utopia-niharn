@@ -1,18 +1,16 @@
-<?php 
-  session_start();
-  include './middleware.php';
-  $title = 'NEW MEMBER | TIGER APPLICATION';
-  $page = 'newmember';
-//   $refresh_interval = 10; // วินาที
-?>
-<!-- <script>
-    setTimeout(function(){
-        location.reload();
-    }, < $refresh_interval * 1000; ?>);
-</script> -->
+<?php
+session_start();
+include './middleware.php';
+$title = 'NEW MEMBER | TIGER APPLICATION';
+$page = 'newmember';
+include('../includes/connection.php');
+include('./customer/edit.php');
+$data = getData($conndb, $_GET['id']);
 
+?>
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -24,44 +22,12 @@
     <!-- sweetalert2 -->
     <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
 
-    <style>
-        .content-wrapper .content .container-fluid .row .col-4 .into {
-            font-weight: bold;
-            color: #000;
-            text-align: center;
-            margin-top: 25px;
-        }
-
-        label {
-            position: relative;
-            color: #000;
-            font-size: 19px;
-            cursor: pointer;
-        }
-
-        label::after {
-            position: absolute;
-            content: '';
-            background: red;
-            height: 2px;
-            width: 0;
-            left: 0;
-            bottom: -2px;
-            transition: .4s;
-        }
-
-        label:hover::after {
-            width: 100%;
-        }
-
-    </style>
-
 </head>
 
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
 
-<?php include 'aside.php' ?>
+        <?php include 'aside.php' ?>
 
         <div class="content-wrapper">
             <div class="content">
@@ -71,12 +37,17 @@
                         <div class="row p-1">
                             <!-- ภาพ -->
                             <div class="col-4">
-                                <h1 class="into">PICTURES</h1>
-                                    <div class="form-row">
-                                        <div id="imgControl" class="d-none mx-auto">
-                                            <img id="imgUpload" class="img-fluid my-3" width="100%">
-                                        </div>
+                               
+                                <div class="form-row">
+                                    <div id="imgControl" class="d-none mx-auto">
+                                        <img id="imgUpload" class="img-fluid my-3" width="100%">
                                     </div>
+
+                                    <div class="form-group text-center">
+                                        <img src="<?= '../memberimg/img/' . $data['image'] ?> " width="80%">
+                                    </div>
+                                </div>
+
                                 <br>
                                 <input type="submit" name="insert" value="SAVE" class="btn btn-success btn-block" id="btn_insert">
                             </div>
@@ -88,11 +59,11 @@
                                     <div class="row mb-1">
                                         <div class="form-group col-6">
                                             <label>NUMBER CARD <span id="massage" class="text-center"></span> </label>
-                                            <input type="text" name="m_card" id="m_card" class="form-control" value="110" autofocus required>
+                                            <input type="text" name="m_card" id="m_card" class="form-control" value="<?= $data['m_card'] ?>" autofocus required>
                                         </div>
                                         <div class="form-group col-6 ">
                                             <label>INVOCE NO.</label>
-                                            <input type="text" name="invoice" class="form-control" value="110" required>
+                                            <input type="text" name="invoice" class="form-control" value="<?= $data['invoice'] ?>" required>
                                         </div>
                                     </div>
 
@@ -104,7 +75,7 @@
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>PASSPORT NUMBER</label>
-                                            <input type="text" name="p_visa" class="form-control" value="11223344" required>
+                                            <input type="text" name="p_visa" class="form-control" value="<?= $data['p_visa'] ?>" required>
                                         </div>
                                     </div>
 
@@ -112,11 +83,11 @@
                                     <div class="form-row mb-1">
                                         <div class="form-group col-md-6">
                                             <label>EMAIL</label>
-                                            <input type="email" name="email" class="form-control" value="dev@local.com">
+                                            <input type="email" name="email" class="form-control" value="<?= $data['email'] ?>">
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>PHONE NUMBER</label>
-                                            <input type="number" name="phone" class="form-control" value="12345678910" required>
+                                            <input type="number" name="phone" class="form-control" value="<?= $data['phone'] ?>" required>
                                         </div>
                                     </div>
 
@@ -125,13 +96,14 @@
                                         <div class="form-group col-md-3 ">
                                             <label>SEX</label>
                                             <select name="sex" class="custom-select" required>
+                                                <option value="<?= $data['sex'] ?>" selected><?= $data['sex'] ?></option>
                                                 <option value="Male">Male</option>
                                                 <option value="Female">Female</option>
                                             </select>
                                         </div>
                                         <div class="form-group col-md-9">
                                             <label for="floatingFull Name">FULL NAME</label>
-                                            <input type="text" name="fname" class="form-control" value="Dev Admin" required>
+                                            <input type="text" name="fname" class="form-control" value="<?= $data['fname'] ?>" required>
                                         </div>
                                     </div>
 
@@ -139,15 +111,13 @@
                                     <div class="form-row mb-1">
                                         <div class="form-group col-4">
                                             <?php
-                                                  $sql_nationality = $conndb->prepare('SELECT * FROM `tb_nationality`');
-                                                  $sql_nationality->execute();
-                                              ?>
+                                                $dataNationality = getNationality($conndb);
+                                            ?>
                                             <label>NATIONALITY</label>
                                             <select name="nationality" class="custom-select" required>
-                                                <option value="" disabled selected>-Cloose-</option>
-                                                <?php foreach ($sql_nationality as $sql_nationality_row ) : ?>
-                                                <option value="<?= $sql_nationality_row['n_name']; ?>">
-                                                    <?= $sql_nationality_row['n_name']; ?></option>
+                                                <option value="<?= $data['nationality'] ?>" selected><?= $data['nationality'] ?></option>
+                                                <?php foreach ($dataNationality as $ss) : ?>
+                                                    <option value="<?= $ss['n_name']; ?>"><?= $ss['n_name']; ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -155,21 +125,20 @@
                                         <!-- BIRTH DAY -->
                                         <div class="form-group col-2">
                                             <label>BIRTH DAY</label>
-                                            <input type="date" name="birthday" class="form-control" value="<?= date('Y-m-d') ?>">
+                                            <input type="date" name="birthday" class="form-control" value="<?= $data['birthday'] ?>">
                                         </div>
 
                                         <!-- products -->
                                         <div class="form-group col">
-                                            <?php 
-                                                $products = $conndb->prepare("SELECT * FROM `products` ORDER BY id");
-                                                $products->execute();
+                                            <?php
+                                                $products = getProduct($conndb)
                                             ?>
                                             <label>PACKAGE</label>
                                             <select name="package" class="custom-select" required>
-                                                <option value="" disabled selected>-Cloose-</option>
-                                                    <?php foreach ($products as $product ) : ?>
-                                                <option value="<?= $product['id']?>|<?= $product['product_name'];?>"><?= $product['product_name'];?></option>
-                                                    <?php endforeach; ?>
+                                                <option value="<?= $data['package'] ?>" selected><?= $data['package'] ?></option>
+                                                <?php foreach ($products as $product) : ?>
+                                                    <option value="<?= $product['product_name'] ?>"><?= $product['product_name']; ?></option>
+                                                <?php endforeach; ?>
                                             </select>
                                         </div>
                                     </div>
@@ -177,15 +146,15 @@
                                     <!-- payments -->
                                     <div class="form-row mb-1">
                                         <div class="form-group col-6">
-                                             <?php 
-                                                $payments = $conndb->query("SELECT * FROM payment ");
-                                                $payments->execute();
-                                             ?> 
+                                            <?php
+                                            $payments =getPayment($conndb)
+                                           
+                                            ?>
                                             <label>PAYMRNT</label>
                                             <select name="payment" class="form-control" required>
-                                                <option value="" disabled selected="">-Cloose-</option>
-                                                <?php  foreach ($payments AS $payment) : ?> 
-                                                    <option value="<?= $payment['pay_id'] ?>"><?= $payment['pay_name'] ?></option>
+                                                <option value="<?= $data['payment'] ?>" selected><?= $data['payment'] ?></option>
+                                                <?php foreach ($payments as $payment) : ?>
+                                                    <option value="<?= $payment['pay_name'] ?>"><?= $payment['pay_name'] ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
@@ -206,34 +175,39 @@
                                             <textarea class="form-control" name="comment">Dev Test System</textarea>
                                         </div>
                                     </div>
-                                   
+
                                     <!-- START TRAINING / EXPIR TRAINING-->
                                     <div class="form-row">
                                         <div class="form-group col-md-6 mb-1">
                                             <label>START TRAINING</label>
-                                            <input type="date" name="sta_date" class="form-control"  value="<?= date('Y-m-d') ?>">
+                                            <input type="date" name="sta_date" class="form-control" value="<?= date('Y-m-d') ?>">
                                         </div>
                                         <div class="form-group col-md-6 mb-1">
                                             <label>EXPIR TRAINING</label>
                                             <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d') ?>">
                                         </div>
                                     </div>
-                                    
+
                                 </div>
                             </div>
                         </div>
                     </form>
                     <!-- form -->
+                     <div class="row">
+                        <div class="card p-2">
+                        <?php print_r($data); ?>
+                        </div>
+                     </div>
                 </div>
             </div>
         </div>
 
     </div>
 
-<!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="../dist/js/adminlte.min.js"></script>
+    <!-- jQuery -->
+    <script src="../plugins/jquery/jquery.min.js"></script>
+    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../dist/js/adminlte.min.js"></script>
 
     <script>
         function readURL(input) {
@@ -287,42 +261,8 @@
         });
     </script>
 
-    <!-- error_card -->
-    <?php if (isset($_SESSION['error_card'])){?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'อุ๊ปส์...',
-                text: 'หมายเลขชุดนี้ ถูกใช้ไปงานแล้ว!',
-                footer: ' This number has already been used. '
-            })
-        </script>
-    <?php } unset($_SESSION['error_card']); ?>
-
-    <!-- valid -->
-    <?php if (isset($_SESSION['valid'])){?>
-        <script>
-            Swal.fire({
-                icon: 'error',
-                title: 'อุ๊ปส์...',
-                text: 'หมายเลขชุดนี้ ถูกใช้ไปงานแล้ว!',
-                footer: ' This number has already been used. '
-            })
-        </script>
-    <?php } unset($_SESSION['valid']); ?>
-
-    <!-- valid -->
-    <?php if (isset($_SESSION['invalid'])){?>
-        <script>
-            Swal.fire({
-                icon: 'success',
-                title: 'Good...',
-                text: 'หมายเลขนี้ สามารถใช้งานได้!',
-            })
-        </script>
-    <?php } unset($_SESSION['invalid']); ?>
-
     <?php $conndb = null; ?>
 
 </body>
+
 </html>

@@ -184,7 +184,7 @@
                     <a href="newmember.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-user-clock"></i>
                         <p>
-                            สมาชิกใหม่
+                            รายชื่อสมาชิก
                             <?php if (countNew($conndb) == 0 ) { ?>
                                 <span class="right badge badge-info"><?= countNew($conndb); ?></span>
                             <?php } else {?>
@@ -202,14 +202,14 @@
                     }
                 ?>
 
-                <li class="nav-item">
+                <!-- <li class="nav-item">
                     <a href="allmember.php" class="nav-link <?= $active ?>">
                     <i class="nav-icon fas fa-user-check"></i>
                         <p>
                             รายชื่อสมาชิก
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 <?php
                     if ($page == 'nationality') {
