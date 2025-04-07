@@ -37,7 +37,7 @@ $data = getData($conndb, $_GET['id']);
                         <div class="row p-1">
                             <!-- ภาพ -->
                             <div class="col-4">
-                               
+
                                 <div class="form-row">
                                     <div id="imgControl" class="d-none mx-auto">
                                         <img id="imgUpload" class="img-fluid my-3" width="100%">
@@ -111,7 +111,7 @@ $data = getData($conndb, $_GET['id']);
                                     <div class="form-row mb-1">
                                         <div class="form-group col-4">
                                             <?php
-                                                $dataNationality = getNationality($conndb);
+                                            $dataNationality = getNationality($conndb);
                                             ?>
                                             <label>NATIONALITY</label>
                                             <select name="nationality" class="custom-select" required>
@@ -131,7 +131,7 @@ $data = getData($conndb, $_GET['id']);
                                         <!-- products -->
                                         <div class="form-group col">
                                             <?php
-                                                $products = getProduct($conndb)
+                                            $products = getProduct($conndb)
                                             ?>
                                             <label>PACKAGE</label>
                                             <select name="package" class="custom-select" required>
@@ -147,8 +147,8 @@ $data = getData($conndb, $_GET['id']);
                                     <div class="form-row mb-1">
                                         <div class="form-group col-6">
                                             <?php
-                                            $payments =getPayment($conndb)
-                                           
+                                            $payments = getPayment($conndb)
+
                                             ?>
                                             <label>PAYMRNT</label>
                                             <select name="payment" class="form-control" required>
@@ -160,7 +160,7 @@ $data = getData($conndb, $_GET['id']);
                                         </div>
                                         <div class="form-group col-6">
                                             <label>EMERGENCY NUMBER</label>
-                                            <input type="text" class="form-control" name="emergency" value="1169">
+                                            <input type="text" class="form-control" name="emergency" value="<?= $data['emergency'] ?>">
                                         </div>
                                     </div>
 
@@ -168,11 +168,11 @@ $data = getData($conndb, $_GET['id']);
                                     <div class="form-row mb-1">
                                         <div class="form-group col-6">
                                             <label>ACCOMMODATION / ADDRESS </label>
-                                            <textarea class="form-control" name="accom">Phuket Thailand</textarea>
+                                            <textarea class="form-control" name="accom"><?= $data['accom'] ?></textarea>
                                         </div>
                                         <div class="form-group col-md-6">
                                             <label>COMMENTS</label>
-                                            <textarea class="form-control" name="comment">Dev Test System</textarea>
+                                            <textarea class="form-control" name="comment"><?= $data['comment'] ?></textarea>
                                         </div>
                                     </div>
 
@@ -180,11 +180,18 @@ $data = getData($conndb, $_GET['id']);
                                     <div class="form-row">
                                         <div class="form-group col-md-6 mb-1">
                                             <label>START TRAINING</label>
-                                            <input type="date" name="sta_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                                            <input type="date" name="sta_date" class="form-control" value="<?= $data['sta_date'] ?>">
                                         </div>
                                         <div class="form-group col-md-6 mb-1">
                                             <label>EXPIR TRAINING</label>
-                                            <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                                            <input type="date" name="exp_date" class="form-control" value="<?= $data['exp_date'] ?>">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-row">
+                                        <div class="form-group col-md-6 mb-1">
+                                            <label>Create by</label>
+                                            <input type="text" class="form-control" name="create_by" value="<?= $data['user'] ?>" readonly>
                                         </div>
                                     </div>
 
@@ -193,11 +200,7 @@ $data = getData($conndb, $_GET['id']);
                         </div>
                     </form>
                     <!-- form -->
-                     <div class="row">
-                        <div class="card p-2">
-                        <?php print_r($data); ?>
-                        </div>
-                     </div>
+                    
                 </div>
             </div>
         </div>
