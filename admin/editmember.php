@@ -107,7 +107,7 @@ $m_card = $data['m_card'];
 
                                         <div class="tab-pane" id="profile">
                                             <div class="form-row mb-1">
-                                                <div class="form-group col-md-12">
+                                                <div class="form-group">
                                                     <label>หมายเลข วีซ่า </label>
                                                     <input type="text" name="p_visa" class="form-control" value="<?= $data['p_visa'] ?>" required>
                                                 </div>
@@ -245,7 +245,7 @@ $m_card = $data['m_card'];
                                                 <p id="fileCount">No files selected</p>
                                                 <div class="preview" id="preview"></div>
                                                 <input type="text" name="uploadFiles" hidden>
-                                                <input type="text" name="m_card" value="<?= $m_card ?><" hidden>
+                                                <input type="text" name="m_card" value="<?= $m_card ?>" hidden>
                                                 <button type="submit" class="btn btn-success form-control">Upload</button>
                                             </form>
 

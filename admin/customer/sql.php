@@ -101,7 +101,6 @@ if (isset($_GET['id'])) {
 function deleteData($conndb, $id)
 {
 
-    // Retrieve the image name to delete the file from the server
     $sql = "SELECT image FROM customer WHERE id = :id";
     $stmt = $conndb->prepare($sql);
     $stmt->bindParam(':id', $id);
@@ -125,47 +124,37 @@ function deleteData($conndb, $id)
 
 // Funtion upload file
 if (isset($_POST['uploadFiles'])) {
+
     // echo '<pre>';
     // print_r($_POST);
     // echo '</pre>';
+    // echo '<pre>';
+    // print_r($_FILES);
+    // echo '</pre>';
+    // echo '<pre>';
     // print_r($_SESSION);
-    // exit;
-
-
-    $targetDir = "../../memberimg/file/";
-    $allowedTypes = ["jpg", "jpeg", "png", "gif"];
-    $fileCount = count($_FILES["documents"]["name"]);
-    $user = $_SESSION['username']; // กำหนด user จาก session หรือกำหนดตรงนี้ก็ได้
-    $m_card = $_POST['m_card']; // ใส่ค่าที่ต้องการ
-    $dateNow = date("Y-m-d H:i:s");
-
-    for ($i = 0; $i < $fileCount; $i++) {
-        $fileName = basename($_FILES["documents"]["name"][$i]);
-        $targetFile = $targetDir . $fileName;
-        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
-        $tmpName = $_FILES["documents"]["tmp_name"][$i];
-        $error = $_FILES["documents"]["error"][$i];
+    // echo '</pre>';
     
-        if ($error === UPLOAD_ERR_OK && in_array($fileType, $allowedTypes)) {
-            // บันทึกไฟล์ลงโฟลเดอร์
-            if (move_uploaded_file($tmpName, $targetFile)) {
-                // 🔹 3. บันทึกข้อมูลลงฐานข้อมูล
-                $stmt = $conndb->prepare("INSERT INTO tb_files (image_name, m_card, created_at, user) VALUES (?, ?, ?, ?)");
-                $stmt->bindParam("ssss", $fileName, $m_card, $dateNow, $user);
-    
-                if ($stmt->execute()) {
-                    echo "✅ อัปโหลดและบันทึกแล้ว: $fileName<br>";
-                } else {
-                    echo "❌ บันทึกลงฐานข้อมูลล้มเหลว: $fileName<br>";
-                }
 
-            } else {
-                echo "❌ ไม่สามารถอัปโหลดไฟล์: $fileName<br>";
-            }
+    $user = $_SESSION['username'];
+    $m_card = $_POST['m_card']; // รับค่าจากฟอร์ม
+
+    foreach ($_FILES['documents']['name'] as $key => $name) {
+        $tmp = explode('.', $_FILES['documents']['name'][$key]);   
+        $newName = round(microtime(true)) . '.' . end($tmp);
+        $partForder = '../../memberimg/file/';
+
+        if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $partForder . $newName)) {
+                $sql = "INSERT INTO `tb_files`(`image_name`, `m_card`, `created_at`, `user`) 
+                VALUES (:image_name , :m_card , NOW() ,:user)";
+                $stmt = $conndb->prepare($sql);
+                $stmt->bindParam(':image_name', $newName );
+                $stmt->bindParam(':m_card', $m_card );
+                $stmt->bindParam(':user', $user );
+                header("Location: ../editmember.php");
         } else {
-            echo "⚠️ ไฟล์ไม่อนุญาตหรือเกิดข้อผิดพลาด: $fileName<br>";
+            $_SESSION['status'] = "Insert Failed: Image upload error";
         }
     }
-    $conndb = null;
-    header("Location: ../newmember.php?m_card=$m_card");
+
 }
