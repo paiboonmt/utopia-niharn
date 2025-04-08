@@ -6,8 +6,6 @@ $page = 'newmember';
 include('../includes/connection.php');
 include('./customer/edit.php');
 $data = getData($conndb, $_GET['id']);
-$m_card = $data['m_card'];
-
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -92,15 +90,14 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการเข้าใช้บริการ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">Document</a></li>
+                                        <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Timeline</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#settings" data-toggle="tab">Settings</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="tab-content">
-
-                                        <div class="active tab-pane" id="profile">
+                                        <div class="active tab-pane" id="activity">
                                             <div class="form-row mb-1">
                                                 <div class="form-group col-md-12">
                                                     <label>หมายเลข วีซ่า </label>
@@ -126,6 +123,8 @@ $m_card = $data['m_card'];
                                                     <label>เพศ</label>
                                                     <select name="sex" class="custom-select" required>
                                                         <option value="<?= $data['sex'] ?>" selected><?= $data['sex'] ?></option>
+                                                        <!-- <option value="Male">ชาย</option>
+                                                        <option value="Female">หญิง</option> -->
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-md-9">
@@ -141,6 +140,9 @@ $m_card = $data['m_card'];
                                                     <label>สัญชาติ</label>
                                                     <select name="nationality" class="custom-select" required>
                                                         <option value="<?= $data['nationality'] ?>" selected><?= $data['nationality'] ?></option>
+                                                        <?php foreach ($dataNationality as $ss) : ?>
+                                                            <option value="<?= $ss['n_name']; ?>"><?= $ss['n_name']; ?></option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
 
@@ -156,6 +158,9 @@ $m_card = $data['m_card'];
                                                     <label>สินค้า</label>
                                                     <select name="package" class="custom-select" required>
                                                         <option value="<?= $data['package'] ?>" selected><?= $data['package'] ?></option>
+                                                        <?php foreach ($products as $product) : ?>
+                                                            <option value="<?= $product['product_name'] ?>"><?= $product['product_name']; ?></option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -167,6 +172,9 @@ $m_card = $data['m_card'];
                                                     <label>วิธีการชำระ</label>
                                                     <select name="payment" class="form-control" required>
                                                         <option value="<?= $data['payment'] ?>" selected><?= $data['payment'] ?></option>
+                                                        <?php foreach ($payments as $payment) : ?>
+                                                            <option value="<?= $payment['pay_name'] ?>"><?= $payment['pay_name'] ?></option>
+                                                        <?php endforeach; ?>
                                                     </select>
                                                 </div>
                                                 <div class="form-group col-6">
@@ -204,35 +212,108 @@ $m_card = $data['m_card'];
                                                     <input type="text" class="form-control" name="create_by" value="<?= $data['user'] ?>" readonly>
                                                 </div>
                                             </div>
+
+
+
+
                                         </div>
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="timeline">
-                                            <table class="table table-bordered table-striped">
-                                                <thead>
-                                                    <tr>
-                                                        <th>วันที่</th>
-                                                        <th>สินค้า</th>
-                                                        <th>วันที่เริ่ม</th>
-                                                        <th>วันที่หมดอายุ</th>
-                                                        <th>ผู้ทำรายการ</th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php $history = getHistory($conndb, $m_card) ?>
-                                                    <?php foreach ($history as $row) : ?>
-                                                        <tr>
-                                                            <td><?= $row['timestamp'] ?></td>
-                                                            <td><?= $row['product_name'] ?></td>
-                                                            <td><?= $row['sta_date'] ?></td>
-                                                            <td><?= $row['exp_date'] ?></td>
-                                                            <td><?= $row['user'] ?></td>
-                                                        </tr>
-                                                    <?php endforeach; ?>
-                                                </tbody>
-                                            </table>
+                                            <!-- The timeline -->
+                                            <div class="timeline timeline-inverse">
+                                                <!-- timeline time label -->
+                                                <div class="time-label">
+                                                    <span class="bg-danger">
+                                                        10 Feb. 2014
+                                                    </span>
+                                                </div>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-envelope bg-primary"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="far fa-clock"></i> 12:05</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Support Team</a> sent you an email</h3>
+
+                                                        <div class="timeline-body">
+                                                            Etsy doostang zoodles disqus groupon greplin oooj voxy zoodles,
+                                                            weebly ning heekya handango imeem plugg dopplr jibjab, movity
+                                                            jajah plickers sifteo edmodo ifttt zimbra. Babblely odeo kaboodle
+                                                            quora plaxo ideeli hulu weebly balihoo...
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-primary btn-sm">Read more</a>
+                                                            <a href="#" class="btn btn-danger btn-sm">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-user bg-info"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="far fa-clock"></i> 5 mins ago</span>
+
+                                                        <h3 class="timeline-header border-0"><a href="#">Sarah Young</a> accepted your friend request
+                                                        </h3>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-comments bg-warning"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="far fa-clock"></i> 27 mins ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Jay White</a> commented on your post</h3>
+
+                                                        <div class="timeline-body">
+                                                            Take me to your leader!
+                                                            Switzerland is small and neutral!
+                                                            We are more like Germany, ambitious and misunderstood!
+                                                        </div>
+                                                        <div class="timeline-footer">
+                                                            <a href="#" class="btn btn-warning btn-flat btn-sm">View comment</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <!-- timeline time label -->
+                                                <div class="time-label">
+                                                    <span class="bg-success">
+                                                        3 Jan. 2014
+                                                    </span>
+                                                </div>
+                                                <!-- /.timeline-label -->
+                                                <!-- timeline item -->
+                                                <div>
+                                                    <i class="fas fa-camera bg-purple"></i>
+
+                                                    <div class="timeline-item">
+                                                        <span class="time"><i class="far fa-clock"></i> 2 days ago</span>
+
+                                                        <h3 class="timeline-header"><a href="#">Mina Lee</a> uploaded new photos</h3>
+
+                                                        <div class="timeline-body">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                            <img src="https://placehold.it/150x100" alt="...">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!-- END timeline item -->
+                                                <div>
+                                                    <i class="far fa-clock bg-gray"></i>
+                                                </div>
+                                            </div>
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="document">
+                                        <div class="tab-pane" id="settings">
                                             <form class="form-horizontal">
                                                 <div class="form-group row">
                                                     <label for="inputName" class="col-sm-2 col-form-label">Name</label>

@@ -25,3 +25,10 @@
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    function getHistory($conndb, $id){
+        $stmt = $conndb->prepare("SELECT * FROM `product_history` WHERE m_card = :m_card ORDER BY id DESC");
+        $stmt->bindParam(':m_card', $id);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }

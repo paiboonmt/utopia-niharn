@@ -4,7 +4,6 @@ include('../middleware.php');
 include('../../includes/connection.php');
 
 if (isset($_POST['insert'])) {
-
     $m_card = $_POST['m_card'];
     $invoice = $_POST['invoice'];
     $p_visa = $_POST['p_visa'];
@@ -21,22 +20,15 @@ if (isset($_POST['insert'])) {
     $packageName = $dataPackage[1];
 
     $payment = $_POST['payment'];
+
+
+    
     $emergency = $_POST['emergency'];
     $accom = $_POST['accom'];
     $comment = $_POST['comment'];
     $sta_date = $_POST['sta_date'];
     $exp_date = $_POST['exp_date'];
     $AddBy = $_SESSION['username'];
-
-
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
-    // echo '<pre>';
-    // print_r($_FILES);
-    // echo '</pre>';
-
-    // exit;
 
     // ตั้งชื่อไฟล์รูปภาพ
     $tmp = explode('.', $_FILES['image']['name']);
@@ -47,6 +39,7 @@ if (isset($_POST['insert'])) {
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName)){
         insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $payment, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $newName);
+        insertProductHistory($conndb, $m_card, $packageName, $sta_date, $exp_date, $AddBy);
         $conndb = null;
         header("Location: ../newmember.php");
     } else {
@@ -84,6 +77,21 @@ function insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $
     $conndb = null;
 }
 
+// insert data to product_history
+function insertProductHistory( $conndb, $m_card, $product_name, $sta_date, $exp_date, $AddBy)
+{   
+    // `m_card`, `product_name`, `sta_date`, `exp_date`, `user`, `timestamp`
+    $sql = "INSERT INTO `product_history`(`m_card`, `product_name`, `sta_date`, `exp_date`, `user`, `timestamp`) 
+        VALUES (:m_card, :product_name, :sta_date, :exp_date, :user , CURRENT_TIMESTAMP)";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':m_card', $m_card);
+    $stmt->bindParam(':product_name', $product_name);
+    $stmt->bindParam(':sta_date', $sta_date);
+    $stmt->bindParam(':exp_date', $exp_date);
+    $stmt->bindParam(':user', $AddBy);
+    $stmt->execute();
+    $conndb = null;
+}
 
 if (isset($_GET['id'])) {
     $id = $_GET['id'];
@@ -114,6 +122,13 @@ function deleteData($conndb, $id)
     $stmt->bindParam(':id', $id);
     $stmt->execute();
     $conndb = null;
+}
+
+if (isset($_POST['update'])){
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+    exit;
 }
 
 
