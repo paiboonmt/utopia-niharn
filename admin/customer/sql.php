@@ -91,7 +91,8 @@ function insertProductHistory($conndb, $m_card, $product_name, $sta_date, $exp_d
     $conndb = null;
 }
 
-if (isset($_GET['id'])) {
+if (isset($_GET['id'])) 
+{
     $id = $_GET['id'];
     deleteData($conndb, $id);
     header("Location: ../newmember.php");
@@ -121,21 +122,9 @@ function deleteData($conndb, $id)
     $conndb = null;
 }
 
-
 // Funtion upload file
 if (isset($_POST['uploadFiles'])) {
-
-    // echo '<pre>';
-    // print_r($_POST);
-    // echo '</pre>';
-    // echo '<pre>';
-    // print_r($_FILES);
-    // echo '</pre>';
-    // echo '<pre>';
-    // print_r($_SESSION);
-    // echo '</pre>';
-    
-
+    $id = $_POST['id'];
     $user = $_SESSION['username'];
     $m_card = $_POST['m_card']; // รับค่าจากฟอร์ม
 
@@ -145,16 +134,27 @@ if (isset($_POST['uploadFiles'])) {
         $partForder = '../../memberimg/file/';
 
         if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $partForder . $newName)) {
-                $sql = "INSERT INTO `tb_files`(`image_name`, `m_card`, `created_at`, `user`) 
-                VALUES (:image_name , :m_card , NOW() ,:user)";
-                $stmt = $conndb->prepare($sql);
-                $stmt->bindParam(':image_name', $newName );
-                $stmt->bindParam(':m_card', $m_card );
-                $stmt->bindParam(':user', $user );
-                header("Location: ../editmember.php");
+            // Insert file data into the database
+                insertDataFiles($conndb, $m_card, $newName, $user);
+                header("Location: ../editmember.php?id=$id");
+                $conndb = null;
         } else {
             $_SESSION['status'] = "Insert Failed: Image upload error";
         }
     }
-
+    
 }
+
+function insertDataFiles($conndb, $m_card, $newName, $user)
+{
+    $sql = "INSERT INTO `tb_files`(`image_name`, `m_card`, `created_at`, `user`) 
+        VALUES (:image_name , :m_card , NOW() ,:user)";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':image_name', $newName);
+    $stmt->bindParam(':m_card', $m_card);
+    $stmt->bindParam(':user', $user);
+    $stmt->execute();
+    return true;
+}
+
+$conndb = null;

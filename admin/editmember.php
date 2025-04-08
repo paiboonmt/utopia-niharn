@@ -97,29 +97,25 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link " href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link active " href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link active" href="#document" data-toggle="tab">เอกสาร</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
-                                <div class="card-body">
+                                <div class="card-body bg-info">
                                     <div class="tab-content">
 
-                                        <div class="tab-pane" id="profile">
+                                        <div class="active tab-pane" id="profile">
                                             <div class="form-row mb-1">
-                                                <div class="form-group">
+                                                <div class="form-group col-4">
                                                     <label>หมายเลข วีซ่า </label>
                                                     <input type="text" name="p_visa" class="form-control" value="<?= $data['p_visa'] ?>" required>
                                                 </div>
-                                            </div>
-
-                                            <!-- EMAIL / PHONE NUMBER -->
-                                            <div class="form-row mb-1">
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col-4">
                                                     <label>อีเมล</label>
                                                     <input type="email" name="email" class="form-control" value="<?= $data['email'] ?>">
                                                 </div>
-                                                <div class="form-group col-md-6">
+                                                <div class="form-group col">
                                                     <label>หมายเลขโทรศัพท์</label>
                                                     <input type="number" name="phone" class="form-control" value="<?= $data['phone'] ?>" required>
                                                 </div>
@@ -127,20 +123,16 @@ $m_card = $data['m_card'];
 
                                             <!-- SEX / FULL NAME -->
                                             <div class="form-row mb-1">
-                                                <div class="form-group col-md-3 ">
+                                                <div class="form-group col-2">
                                                     <label>เพศ</label>
                                                     <select name="sex" class="custom-select" required>
                                                         <option value="<?= $data['sex'] ?>" selected><?= $data['sex'] ?></option>
                                                     </select>
                                                 </div>
-                                                <div class="form-group col-md-9">
+                                                <div class="form-group col-2">
                                                     <label for="floatingFull Name">FULL NAME</label>
                                                     <input type="text" name="fname" class="form-control" value="<?= $data['fname'] ?>" required>
                                                 </div>
-                                            </div>
-
-                                            <!-- สัญชาติ  -->
-                                            <div class="form-row mb-1">
                                                 <div class="form-group col-4">
                                                     <?php $dataNationality = getNationality($conndb) ?>
                                                     <label>สัญชาติ</label>
@@ -148,14 +140,21 @@ $m_card = $data['m_card'];
                                                         <option value="<?= $data['nationality'] ?>" selected><?= $data['nationality'] ?></option>
                                                     </select>
                                                 </div>
-
-                                                <!-- วันเกิด -->
-                                                <div class="form-group col-2">
+                                                <div class="form-group col-4">
                                                     <label>วันเกิด</label>
                                                     <input type="date" name="birthday" class="form-control" value="<?= $data['birthday'] ?>">
                                                 </div>
+                                            </div>
 
-                                                <!-- สินค้า -->
+                                            <!-- สัญชาติ  -->
+                                            <div class="form-row mb-1">
+                                                <div class="form-group col-4">
+                                                    <?php $payments = getPayment($conndb) ?>
+                                                    <label>วิธีการชำระ</label>
+                                                    <select name="payment" class="form-control" required>
+                                                        <option value="<?= $data['payment'] ?>" selected><?= $data['payment'] ?></option>
+                                                    </select>
+                                                </div>
                                                 <div class="form-group col">
                                                     <?php $products = getProduct($conndb) ?>
                                                     <label>สินค้า</label>
@@ -167,13 +166,7 @@ $m_card = $data['m_card'];
 
                                             <!-- วิธีการชำระ , หมายเลขฉุกเฉิน -->
                                             <div class="form-row mb-1">
-                                                <div class="form-group col-6">
-                                                    <?php $payments = getPayment($conndb) ?>
-                                                    <label>วิธีการชำระ</label>
-                                                    <select name="payment" class="form-control" required>
-                                                        <option value="<?= $data['payment'] ?>" selected><?= $data['payment'] ?></option>
-                                                    </select>
-                                                </div>
+
                                                 <div class="form-group col-6">
                                                     <label>หมายเลขฉุกเฉิน</label>
                                                     <input type="text" class="form-control" name="emergency" value="<?= $data['emergency'] ?>">
@@ -237,18 +230,43 @@ $m_card = $data['m_card'];
                                             </table>
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="active tab-pane" id="document">
+                                        <div class="tab-pane" id="document">
                                             <h2>Upload a Document</h2>
 
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
-                                                <input type="file" class="form-control" name="documents[]" id="documents" multiple required accept="image/*" >
+                                                <input type="file" class="form-control" name="documents[]" id="documents" multiple required accept="image/*">
                                                 <p id="fileCount">No files selected</p>
                                                 <div class="preview" id="preview"></div>
                                                 <input type="text" name="uploadFiles" hidden>
+                                                <input type="text" name="id" value="<?= $data['id'] ?>" hidden>
                                                 <input type="text" name="m_card" value="<?= $m_card ?>" hidden>
                                                 <button type="submit" class="btn btn-success form-control">Upload</button>
                                             </form>
+                                            <hr>
+                                            <table class="table table-sm table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>วันที่</th>
+                                                        <th>ชื่อไฟล์</th>
+                                                        <th>ผู้ทำรายการ</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $documents = $conndb->query("SELECT * FROM `tb_files` WHERE `m_card` LIKE '$m_card'")->fetchAll(PDO::FETCH_ASSOC);
+                                                    foreach ($documents as $row) : ?>
+                                                        <tr>
+                                                            <td><?= $row['created_at'] ?></td>
+                                                            <td>
+                                                                <img src="<?= '../memberimg/file/' . $row['image_name'] ?>" style="width: 50px; height: 50px;">
+                                                            </td>
+                                                            <td><?= $row['user'] ?></td>
+                                                        </tr>
+                                                    <?php endforeach; ?>
+                                                <tbody></tbody>
 
+
+                                            </table>
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>
