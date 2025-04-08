@@ -22,7 +22,7 @@ if (isset($_POST['insert'])) {
     $payment = $_POST['payment'];
 
 
-    
+
     $emergency = $_POST['emergency'];
     $accom = $_POST['accom'];
     $comment = $_POST['comment'];
@@ -37,16 +37,14 @@ if (isset($_POST['insert'])) {
 
     // move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName);
 
-    if (move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName)){
+    if (move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName)) {
         insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $payment, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $newName);
         insertProductHistory($conndb, $m_card, $packageName, $sta_date, $exp_date, $AddBy);
         $conndb = null;
         header("Location: ../newmember.php");
     } else {
-        $_SESSION['status'] = "Insert Failed: Image upload error"; 
+        $_SESSION['status'] = "Insert Failed: Image upload error";
     }
-  
-   
 }
 
 // Function to insert data into the database
@@ -78,8 +76,8 @@ function insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $
 }
 
 // insert data to product_history
-function insertProductHistory( $conndb, $m_card, $product_name, $sta_date, $exp_date, $AddBy)
-{   
+function insertProductHistory($conndb, $m_card, $product_name, $sta_date, $exp_date, $AddBy)
+{
     // `m_card`, `product_name`, `sta_date`, `exp_date`, `user`, `timestamp`
     $sql = "INSERT INTO `product_history`(`m_card`, `product_name`, `sta_date`, `exp_date`, `user`, `timestamp`) 
         VALUES (:m_card, :product_name, :sta_date, :exp_date, :user , CURRENT_TIMESTAMP)";
@@ -124,11 +122,50 @@ function deleteData($conndb, $id)
     $conndb = null;
 }
 
-if (isset($_POST['update'])){
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-    exit;
+
+// Funtion upload file
+if (isset($_POST['uploadFiles'])) {
+    // echo '<pre>';
+    // print_r($_POST);
+    // echo '</pre>';
+    // print_r($_SESSION);
+    // exit;
+
+
+    $targetDir = "../../memberimg/file/";
+    $allowedTypes = ["jpg", "jpeg", "png", "gif"];
+    $fileCount = count($_FILES["documents"]["name"]);
+    $user = $_SESSION['username']; // กำหนด user จาก session หรือกำหนดตรงนี้ก็ได้
+    $m_card = $_POST['m_card']; // ใส่ค่าที่ต้องการ
+    $dateNow = date("Y-m-d H:i:s");
+
+    for ($i = 0; $i < $fileCount; $i++) {
+        $fileName = basename($_FILES["documents"]["name"][$i]);
+        $targetFile = $targetDir . $fileName;
+        $fileType = strtolower(pathinfo($targetFile, PATHINFO_EXTENSION));
+        $tmpName = $_FILES["documents"]["tmp_name"][$i];
+        $error = $_FILES["documents"]["error"][$i];
+    
+        if ($error === UPLOAD_ERR_OK && in_array($fileType, $allowedTypes)) {
+            // บันทึกไฟล์ลงโฟลเดอร์
+            if (move_uploaded_file($tmpName, $targetFile)) {
+                // 🔹 3. บันทึกข้อมูลลงฐานข้อมูล
+                $stmt = $conndb->prepare("INSERT INTO tb_files (image_name, m_card, created_at, user) VALUES (?, ?, ?, ?)");
+                $stmt->bindParam("ssss", $fileName, $m_card, $dateNow, $user);
+    
+                if ($stmt->execute()) {
+                    echo "✅ อัปโหลดและบันทึกแล้ว: $fileName<br>";
+                } else {
+                    echo "❌ บันทึกลงฐานข้อมูลล้มเหลว: $fileName<br>";
+                }
+
+            } else {
+                echo "❌ ไม่สามารถอัปโหลดไฟล์: $fileName<br>";
+            }
+        } else {
+            echo "⚠️ ไฟล์ไม่อนุญาตหรือเกิดข้อผิดพลาด: $fileName<br>";
+        }
+    }
+    $conndb = null;
+    header("Location: ../newmember.php?m_card=$m_card");
 }
-
-

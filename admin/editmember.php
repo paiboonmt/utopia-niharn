@@ -21,7 +21,12 @@ $m_card = $data['m_card'];
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../dist/css/font.css">
     <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
-
+    <style>
+        .preview img {
+            max-width: 150px;
+            margin: 10px;
+        }
+    </style>
 </head>
 
 <body class="hold-transition sidebar-mini">
@@ -92,15 +97,15 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการเข้าใช้บริการ</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">Document</a></li>
+                                        <li class="nav-item"><a class="nav-link " href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link active" href="#document" data-toggle="tab">เอกสาร</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="tab-content">
 
-                                        <div class="active tab-pane" id="profile">
+                                        <div class="tab-pane" id="profile">
                                             <div class="form-row mb-1">
                                                 <div class="form-group col-md-12">
                                                     <label>หมายเลข วีซ่า </label>
@@ -232,53 +237,18 @@ $m_card = $data['m_card'];
                                             </table>
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="document">
-                                            <form class="form-horizontal">
-                                                <div class="form-group row">
-                                                    <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="email" class="form-control" id="inputName" placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="email" class="form-control" id="inputEmail" placeholder="Email">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputName2" class="col-sm-2 col-form-label">Name</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="inputName2" placeholder="Name">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputExperience" class="col-sm-2 col-form-label">Experience</label>
-                                                    <div class="col-sm-10">
-                                                        <textarea class="form-control" id="inputExperience" placeholder="Experience"></textarea>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label for="inputSkills" class="col-sm-2 col-form-label">Skills</label>
-                                                    <div class="col-sm-10">
-                                                        <input type="text" class="form-control" id="inputSkills" placeholder="Skills">
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="offset-sm-2 col-sm-10">
-                                                        <div class="checkbox">
-                                                            <label>
-                                                                <input type="checkbox"> I agree to the <a href="#">terms and conditions</a>
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row">
-                                                    <div class="offset-sm-2 col-sm-10">
-                                                        <button type="submit" class="btn btn-danger">Submit</button>
-                                                    </div>
-                                                </div>
+                                        <div class="active tab-pane" id="document">
+                                            <h2>Upload a Document</h2>
+
+                                            <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
+                                                <input type="file" class="form-control" name="documents[]" id="documents" multiple required accept="image/*" >
+                                                <p id="fileCount">No files selected</p>
+                                                <div class="preview" id="preview"></div>
+                                                <input type="text" name="uploadFiles" hidden>
+                                                <input type="text" name="m_card" value="<?= $m_card ?><" hidden>
+                                                <button type="submit" class="btn btn-success form-control">Upload</button>
                                             </form>
+
                                         </div>
                                         <!-- /.tab-pane -->
                                     </div>
@@ -301,3 +271,31 @@ $m_card = $data['m_card'];
 
 </html>
 <?php $conndb = null; ?>
+
+<script>
+    const input = document.getElementById('documents');
+    const preview = document.getElementById('preview');
+    const fileCount = document.getElementById('fileCount');
+
+    input.addEventListener('change', function() {
+        preview.innerHTML = ''; // clear preview
+        const files = input.files;
+
+        fileCount.textContent = `${files.length} file(s) selected`;
+
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+
+            // show only image preview
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    preview.appendChild(img);
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    });
+</script>
