@@ -185,7 +185,7 @@
                                             <select name="payment" class="form-control" required>
                                                 <option value="" disabled selected="">-Cloose-</option>
                                                 <?php  foreach ($payments AS $payment) : ?> 
-                                                    <option value="<?= $payment['pay_id'] ?>"><?= $payment['pay_name'] ?></option>
+                                                    <option value="<?= $payment['pay_id'] ?>|<?= $payment['pay_name'] ?>"><?= $payment['pay_name'] ?></option>
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
