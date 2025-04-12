@@ -13,20 +13,20 @@ if (isset($_POST['insert'])) {
     $fname = $_POST['fname'];
     $nationality = $_POST['nationality'];
     $birthday = $_POST['birthday'];
-    $package = $_POST['package'];
 
-    $dataPackage = explode("|", $package);
+    
+    $package = $_POST['package'];
+    $dataPackage = explode("|", $package); // package|package_name
     $package = $dataPackage[0];
     $packageName = $dataPackage[1];
 
-    $payment = $_POST['payment'];
-
-    $dataPayment = explode("|", $payment);
+    $payment = $_POST['payment']; 
+    $dataPayment = explode("|", $payment); // payment|payment_name
     $payment = $dataPayment[0];
     $paymentName = $dataPayment[1];
 
 
-    $emergency = $_POST['emergency'];
+    $emergency = $_POST['emergency']; 
     $accom = $_POST['accom'];
     $comment = $_POST['comment'];
     $sta_date = $_POST['sta_date'];
@@ -34,11 +34,10 @@ if (isset($_POST['insert'])) {
     $AddBy = $_SESSION['username'];
 
     // ตั้งชื่อไฟล์รูปภาพ
-    $tmp = explode('.', $_FILES['image']['name']);
-    $newName = round(microtime(true)) . '.' . end($tmp);
-    $partForder = '../../memberimg/img/';
-
-    // move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName);
+    $tmp = explode('.', $_FILES['image']['name']); // แยกนามสกุลไฟล์
+    $newName = round(microtime(true)) . '.' . end($tmp); // สร้างชื่อใหม่โดยใช้เวลาในรูปแบบ UNIX timestamp
+    $newName = str_replace(" ", "_", $newName); // แทนที่ช่องว่างด้วย _
+    $partForder = '../../memberimg/img/'; // โฟลเดอร์ที่เก็บไฟล์
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName)) {
         insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $paymentName, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $newName);
@@ -202,19 +201,6 @@ if ( isset($_GET['id']) && $_GET['action'] == 'delete') {
 }
 
 if (isset($_POST['updateProfile'])){
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-
-    echo "<pre>";
-    print_r($_FILES);
-    echo "</pre>";
-
-    echo "<pre>";
-    print_r($_SESSION);
-    echo "</pre>";
-    // exit;
-
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];
     $invoice = null;
@@ -240,6 +226,7 @@ if (isset($_POST['updateProfile'])){
     updateCustomer($conndb, $id, $m_card, $invoice, $p_visa, $email, $phone, 
     $sex, $fname, $nationality, $birthday, $package, $payment, $emergency, 
     $accom, $comment, $sta_date, $exp_date, $AddBy,$image);
+    insertProductHistory($conndb, $m_card, $package, $sta_date, $exp_date, $AddBy);
     $conndb = null;
     header("Location: ../editmember.php?id=$id");
     exit;
