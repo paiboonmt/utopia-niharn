@@ -214,7 +214,7 @@ $m_card = $data['m_card'];
 
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="timeline">
+                                        <div class=" active tab-pane" id="timeline">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
@@ -223,6 +223,7 @@ $m_card = $data['m_card'];
                                                         <th>วันที่เริ่ม</th>
                                                         <th>วันที่หมดอายุ</th>
                                                         <th>ผู้ทำรายการ</th>
+                                                        <th>จัดการ</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -234,6 +235,12 @@ $m_card = $data['m_card'];
                                                             <td><?= $row['sta_date'] ?></td>
                                                             <td><?= $row['exp_date'] ?></td>
                                                             <td><?= $row['user'] ?></td>
+                                                            <td>
+                                                                <a href="./customer/sql.php?id=<?= $row['id'] ?>&&action=deleteProduct&&member_id=<?= $data['id'] ?>"
+                                                                    class="btn btn-danger"
+                                                                    onclick="return confirm('แน่ใจแล้วหรือที่จะลบ');">
+                                                                    <i class="fas fa-trash"></i>
+                                                                </a>
                                                         </tr>
                                                     <?php endforeach; ?>
                                                 </tbody>
@@ -290,7 +297,7 @@ $m_card = $data['m_card'];
                                             </table>
                                         </div>
 
-                                        <div class="active tab-pane" id="edit">
+                                        <div class="tab-pane" id="edit">
 
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
 
@@ -336,15 +343,12 @@ $m_card = $data['m_card'];
                                                             <option value="<?= $data['sex'] ?>" selected><?= $data['sex'] ?></option>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group col">
+                                                    <div class="form-group col-3">
                                                         <label for="floatingFull Name">ชื่อ นามสกุล</label>
                                                         <input type="text" name="fname" class="form-control" value="<?= $data['fname'] ?>" required>
                                                     </div>
-                                                </div>
 
-                                                <!-- สัญชาติ -->
-                                                <div class="form-row mb-1">
-                                                    <div class="form-group col-4">
+                                                    <div class="form-group col-3">
                                                         <?php $dataNationality = getNationality($conndb) ?>
                                                         <label>สัญชาติ</label>
                                                         <select name="nationality" class="custom-select" required>
@@ -354,14 +358,24 @@ $m_card = $data['m_card'];
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
-                                                    <div class="form-group col-4">
+
+                                                    <div class="form-group col-2">
                                                         <label>วันเกิด</label>
                                                         <input type="date" name="birthday" class="form-control" value="<?= $data['birthday'] ?>">
                                                     </div>
-                                                    <div class="form-group col-4">
+
+                                                    <div class="form-group col">
                                                         <label>อายุ</label>
                                                         <input type="number" name="age" class="form-control" value="<?= birthDay($data['birthday']) ?>">
                                                     </div>
+
+                                                </div>
+
+                                                <!-- สัญชาติ -->
+                                                <div class="form-row mb-1">
+                                                    
+                                                    
+                                                    
                                                 </div>
 
                                                 <!-- วิธีการชำระ , สินค้า  -->

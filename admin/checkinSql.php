@@ -11,9 +11,17 @@
         exit;
     }
 
+    if ( isset($_POST['ref_m_card']) ) {   
+        $m_card = $_POST['ref_m_card'];
+
+        view();
+        
+        checkInMember($conndb , $m_card);
+    }
+
     // ฟังชั่นตรวจสอบหมายเลขบัตร และแยกประเภทของบัตร
     function checkNumber( $conndb , $card) {
-        global $conndb;
+        // global $conndb;
         $sql = "SELECT `m_card` FROM `member` WHERE `m_card` = '$card' ";
         $stmt = $conndb->prepare($sql);
         $stmt->execute();
@@ -27,7 +35,7 @@
 
     // Fighter
     function checkNumberFighter($conndb , $card) {
-        global $conndb;
+        // global $conndb;
         $sql = "SELECT `m_card` FROM `fighter` WHERE `m_card` = '$card'";
         $stmt= $conndb->prepare($sql);
         $stmt->execute();
@@ -39,11 +47,6 @@
             exit();
         }
         $conndb = null;
-    }
-
-    if ( isset($_POST['ref_m_card']) ) {   
-        $m_card = $_POST['ref_m_card'];
-        checkInMember($conndb , $m_card);
     }
 
     // ! Member 
