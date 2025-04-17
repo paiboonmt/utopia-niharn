@@ -1,8 +1,8 @@
 <?php
-  session_start();
-  $title = 'PRODUCT | APPLICATION';
-  include 'middleware.php';
-  $page = 'product'; 
+session_start();
+$title = 'PRODUCT | APPLICATION';
+include 'middleware.php';
+$page = 'product';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +11,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
-    <title><?=$title?></title>
+    <title><?= $title ?></title>
     <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../dist/css/adminlte.min.css">
     <link rel="stylesheet" href="../dist/css/font.css">
@@ -23,7 +23,7 @@
 
 <body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
-        <?php include './aside.php'?>
+        <?php include './aside.php' ?>
         <div class="content-wrapper">
             <div class="content">
                 <div class="container-fluid">
@@ -54,7 +54,13 @@
                                                 </div>
                                                 <input type="number" class="form-control" name="price" value="10" require>
                                             </div>
-                                            
+                                            <div class="input-group mb-3">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">จำนวนครั้ง</span>
+                                                </div>
+                                                <input type="number" class="form-control" name="value" value="1" require>
+                                            </div>
+
                                             <input type="submit" name="saveProduct" value="บันทึก" class="form-control btn btn-success">
                                         </form>
                                     </div>
@@ -68,10 +74,12 @@
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <button style="width: 250px; text-transform: uppercase;" type="button" class="btn btn-info" data-toggle="modal" data-target="#addItem">
-                                                 <i class="fas fa-plus"></i> | Add Product
+                                                <i class="fas fa-plus"></i> | Add Product
                                             </button>
                                         </div>
-                                        <div class="col-sm-6"><span style="float: right;"><h3>PRODUCTS</h3></span></div>
+                                        <div class="col-sm-6"><span style="float: right;">
+                                                <h3>PRODUCTS</h3>
+                                            </span></div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -79,71 +87,80 @@
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Product name</th>
-                                                <th>Price</th>
+                                                <th>ชื่อสินค้า</th>
+                                                <th>ราคา</th>
+                                                <th>จำนวนครั้ง</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
-                                                $i=1;
-                                                require_once("../includes/connection.php");
-                                                $stmt = $conndb->query("SELECT * FROM `products` ORDER BY  `id` DESC");
-                                                $stmt->execute();
-                                                foreach ( $stmt AS $row ) : 
+                                            $i = 1;
+                                            require_once("../includes/connection.php");
+                                            $stmt = $conndb->query("SELECT * FROM `products` ORDER BY  `id` DESC");
+                                            $stmt->execute();
+                                            foreach ($stmt as $row) :
                                             ?>
-                                            <tr>
-                                                <td><?= $i++; ?></td>
-                                                <td><?= $row['product_name']?></td>
-                                                <td><?= number_format($row['price'],2)?></td>
-                                                <td class="text-center">
-                                                    <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
-                                                    <i class="fas fa-edit"></i>
-                                                    </button>
-                                                    <button class="btn btn-sm btn-danger trash" id="<?= $row['id'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                                <tr>
+                                                    <td><?= $i++; ?></td>
+                                                    <td><?= $row['product_name'] ?></td>
+                                                    <td><?= number_format($row['price'], 2) ?></td>
+                                                    <td><?= $row['value'] ?></td>
+                                                    <td class="text-center">
+                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
+                                                            <i class="fas fa-edit"></i>
+                                                        </button>
+                                                        <button class="btn btn-sm btn-danger trash" id="<?= $row['id'] ?>"><i class="fas fa-trash-alt"></i></button>
                                                     </td>
 
-                                                <!-- Modal -->
-                                                <div class="modal fade" id="id<?= $row['id'] ?>" tabindex="-1" role="dialog"
-                                                    aria-labelledby="addItemTitle" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h5 class="modal-title" id="exampleModalLongTitle">เพื่มสินค้าบริการ</h5>
-                                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <form action="./product/sql.php" method="post">
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">ชื่อสินค้าบริการ</span>
+                                                    <!-- Modal -->
+                                                    <div class="modal fade" id="id<?= $row['id'] ?>" tabindex="-1" role="dialog"
+                                                        aria-labelledby="addItemTitle" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h5 class="modal-title" id="exampleModalLongTitle">เพื่มสินค้าบริการ</h5>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                                        <span aria-hidden="true">&times;</span>
+                                                                    </button>
+                                                                </div>
+                                                                <div class="modal-body">
+                                                                    <form action="./product/sql.php" method="post">
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">ชื่อสินค้าบริการ</span>
+                                                                            </div>
+                                                                            <input type="text" class="form-control" name="product_name" value="<?= $row['product_name'] ?>">
                                                                         </div>
-                                                                        <input type="text" class="form-control" name="product_name" value="<?= $row['product_name'] ?>">
-                                                                    </div>
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">ราคา</span>
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">ราคา</span>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" name="price" value="<?= $row['price'] ?>">
                                                                         </div>
-                                                                        <input type="number" class="form-control" name="price" value="<?= $row['price'] ?>">
-                                                                    </div>
-                                                                   
-                                                                    <input type="text" name="id" hidden value="<?= $row['id'] ?>">
-                                                                    <input type="submit" name="updateProduct" value="อัปเดท" class="form-control btn btn-success">
-                                                                </form>
+                                                                        <div class="input-group mb-3">
+                                                                            <div class="input-group-prepend">
+                                                                                <span class="input-group-text">จำนวนครั้ง</span>
+                                                                            </div>
+                                                                            <input type="number" class="form-control" name="value" value="<?= $row['value'] ?>" require>
+                                                                        </div>
+
+                                                                        <input type="text" name="id" hidden value="<?= $row['id'] ?>">
+                                                                        <input type="submit" name="updateProduct" value="อัปเดท" class="form-control btn btn-success">
+                                                                    </form>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
-                                            </tr>
+                                                </tr>
                                             <?php endforeach; ?>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
@@ -208,7 +225,7 @@
         });
     </script>
 
-    <?php if (isset($_SESSION['remove'])){ ?>
+    <?php if (isset($_SESSION['remove'])) { ?>
         <script>
             Swal.fire({
                 toast: true,
@@ -219,9 +236,10 @@
                 title: 'remove successfully!'
             });
         </script>
-    <?php } unset($_SESSION['remove']);?>
+    <?php }
+    unset($_SESSION['remove']); ?>
 
-    <?php if (isset($_SESSION['add'])){ ?>
+    <?php if (isset($_SESSION['add'])) { ?>
         <script>
             Swal.fire({
                 toast: true,
@@ -232,9 +250,10 @@
                 title: 'Add item successfully!'
             });
         </script>
-    <?php } unset($_SESSION['add']);?>
+    <?php }
+    unset($_SESSION['add']); ?>
 
-    <?php if (isset($_SESSION['update'])){ ?>
+    <?php if (isset($_SESSION['update'])) { ?>
         <script>
             Swal.fire({
                 toast: true,
@@ -245,8 +264,10 @@
                 title: 'Update item successfully!'
             });
         </script>
-    <?php } unset($_SESSION['update']);?>
+    <?php }
+    unset($_SESSION['update']); ?>
 
 </body>
+
 </html>
 <?php $conndb = null; ?>

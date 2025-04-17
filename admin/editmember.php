@@ -99,16 +99,16 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link " href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
-                                        <li class="nav-item"><a class="nav-link active" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="tab-content">
 
-                                        <div class=" tab-pane" id="profile">
+                                        <div class=" active tab-pane" id="profile">
                                             <div class="form-row mb-1">
                                                 <div class="form-group col-4">
                                                     <label>หมายเลข วีซ่า </label>
@@ -214,7 +214,7 @@ $m_card = $data['m_card'];
 
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class=" active tab-pane" id="timeline">
+                                        <div class="tab-pane" id="timeline">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>

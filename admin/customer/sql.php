@@ -303,5 +303,4 @@ $accom, $comment, $sta_date, $exp_date, $AddBy,$image)
 }
 
 
-
 $conndb = null;
