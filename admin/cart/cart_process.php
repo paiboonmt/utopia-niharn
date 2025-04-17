@@ -6,7 +6,6 @@
 
     require_once("../../includes/connection.php");
   
-   
     if (isset($_POST['saveOrder'])) {
 
         $detail = $_POST['detail'];
@@ -108,8 +107,10 @@
 
         $package = $order_id;
         $sumPrice = $_POST['grandTotal'];
-        insertData( $package , $m_card , $sta_date , $exp_date , $sumPrice , $discount , $pay , $fname , $comment , 
+        insertData($conndb, $package , $m_card , $sta_date , $exp_date , $sumPrice , $discount , $pay , $fname , $comment , 
         $AddBy , $code , $vat7 , $vat3 , $total , $grandTotal ,$num_bill , $detail);
+        insertGroup_type($conndb,$m_card);
+        $conndb = null;
 
     }
 
@@ -120,7 +121,7 @@
         $stmt->execute();
     }
 
-    function insertData( $package , $m_card , $sta_date , $exp_date ,  $sumPrice , $discount , $pay,  
+    function insertData($conndb, $package , $m_card , $sta_date , $exp_date ,  $sumPrice , $discount , $pay,  
         $fname , $comment , $AddBy ,$code ,$vat7 , $vat3 , $total ,$grandTotal , $num_bill , $detail ) {
         $detail = $detail;
         $num_bill = $num_bill;
@@ -207,7 +208,6 @@
         
         // เพื่มการ์ด day pass
         try {
-            global $conndb;
             $sql = "INSERT INTO `member`(`group`, `m_card`, `p_visa`, `email`, `phone`, `sex`, `fname`, 
             `price`, `pay`, `fightname`, `nationalty`, `birthday`, `age`, `discount`, `vat7`, `vat3`, `total`, 
             `package`, `dropin`, `new_package`, `height`, `weigh`, `accom`, `payment`, `invoice`, `vaccine`, `comment`, 
@@ -295,8 +295,7 @@
         exit;
     }
 
-    function checkBill (int $num_bill) {
-        global $conndb;
+    function checkBill ($conndb,int $num_bill) {
         $sql = "SELECT * FROM `orders`WHERE `num_bill` = '{$num_bill}'";
         $stmt = $conndb->query($sql);
 
@@ -317,6 +316,15 @@
             }
         } 
 
+    }
+
+    function insertGroup_type( $conndb ,$number) {
+        $sql = "INSERT INTO `group_type`(`number`,`type`, `value`) VALUES (:number,'pos','2')";
+        $stmt = $conndb->prepare($sql);
+        $stmt->bindParam(':number', $number);
+        $stmt->execute();
+        $conndb = null;
+        return true;
     }
 
     $conndb = null;

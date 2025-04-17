@@ -212,7 +212,7 @@
                                         </tfoot>
                                     </table>
 
-                                    <!-- <input type="hidden" name="code" value="<?= $rows['code'] ?>"> -->
+                                    <input type="hidden" name="code" value="<?= $code ?>">
 
                                     <!-- หมายเลขบิลก่อนหน้านี้ -->
                                     <div class="input-group mb-1">
@@ -334,7 +334,7 @@
                                     </div>
                                     <!-- Detail -->
                                     <div class="form-group">
-                                    <textarea class="form-control" hidden name="detail" rows="3"><?= $rows['detail'] ?></textarea>
+                                    <textarea class="form-control" hidden name="detail" rows="3"></textarea>
                                     </div>
 
                                     <input type="text" hidden name="hostname" value="<?= $hostname ?>">

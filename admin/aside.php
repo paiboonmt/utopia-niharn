@@ -64,7 +64,7 @@
                     <a href="checkin.php" class="nav-link < $active ?>">
                     <i class="nav-icon  fas fa-door-open"></i>
                         <p>
-                            Check in
+                            เช็คอิน
                         </p>
                     </a>
                 </li>

@@ -4,6 +4,37 @@
     date_default_timezone_set('Asia/Bangkok');
     require_once("../includes/connection.php");
 
+    if ( isset($_POST['ref_m_card']) ) {   
+        $m_card = $_POST['ref_m_card'];
+
+        // view();
+
+        checkNumber( $conndb , $m_card);
+        
+    }
+
+    function checkNumber( $conndb , $m_card) {
+        if ( isset($_POST['ref_m_card']) ) {
+            $m_card = $_POST['ref_m_card'];
+            $sql = "SELECT * FROM `group_type` WHERE `number` = ? ";
+            $stmt = $conndb->prepare($sql);
+            $stmt->bindParam(1,$m_card);
+            $stmt->execute();
+            $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            
+            if ($result[0]['value'] == 1 ) {
+               echo $result[0]['value'];
+               echo '<br>';
+               echo 'Customer';
+            } else {
+                echo $result[0]['value'];
+                echo '<br>';
+                echo 'Post';
+            }
+
+        }
+    }
+
     function view() {
         echo '<pre>';
         print_r($_POST);
@@ -11,42 +42,32 @@
         exit;
     }
 
-    if ( isset($_POST['ref_m_card']) ) {   
-        $m_card = $_POST['ref_m_card'];
-
-        view();
-        
-        checkInMember($conndb , $m_card);
-    }
-
     // ฟังชั่นตรวจสอบหมายเลขบัตร และแยกประเภทของบัตร
-    function checkNumber( $conndb , $card) {
-        // global $conndb;
-        $sql = "SELECT `m_card` FROM `member` WHERE `m_card` = '$card' ";
+    // function checkNumber( $conndb , $card) {
+    //     // global $conndb;
+    //     $sql = "SELECT `m_card` FROM `member` WHERE `m_card` = '$card' ";
+    //     $stmt = $conndb->prepare($sql);
+    //     $stmt->execute();
+    //     if ( $stmt->rowCount() == 1) {
+    //         checkInMember( $conndb , $card);
+    //     } else {
+    //         checkNumberFighter($conndb,$card);
+    //     }
+    //     $conndb = null;
+    // }
+
+    // Fighter
+    function checkNumberFighter($conndb,$card) {
+        $sql = "SELECT `m_card` FROM `fighter` WHERE `m_card` = '$card' ";
         $stmt = $conndb->prepare($sql);
         $stmt->execute();
         if ( $stmt->rowCount() == 1) {
-            checkInMember( $conndb , $card);
-        } else {
-            checkNumberFighter($conndb,$card);
-        }
-        $conndb = null;
-    }
-
-    // Fighter
-    function checkNumberFighter($conndb , $card) {
-        // global $conndb;
-        $sql = "SELECT `m_card` FROM `fighter` WHERE `m_card` = '$card'";
-        $stmt= $conndb->prepare($sql);
-        $stmt->execute();
-        if ( $stmt->rowCount() == 1) {
-            checkInFighter($card);
+            checkInFighter( $conndb , $card);
         } else {
             $_SESSION['not'] = true;
-            header("location:checkin.php");
-            exit();
+            header('location:checkin.php');
+            exit;
         }
-        $conndb = null;
     }
 
     // ! Member 
@@ -202,7 +223,7 @@
 
     // ! Fighter
     function checkInFighter($conndb,$card) {
-        global $conndb;
+
         $sql = "SELECT * FROM `fighter` WHERE `m_card` = $card";
         $stmt= $conndb->prepare($sql);
         $stmt->execute();

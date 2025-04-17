@@ -99,80 +99,87 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link active" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
+                                        <li class="nav-item"><a class="active nav-link" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#product_history" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการเช็คอิน</a></li>
                                     </ul>
                                 </div><!-- /.card-header -->
                                 <div class="card-body">
                                     <div class="tab-content">
 
-                                        <div class=" active tab-pane" id="profile">
+                                        <div class="active tab-pane" id="profile">
+                                            <!-- หมายเลขบัตรสมาชิก , หมายเลข วีซ่า  -->
                                             <div class="form-row mb-1">
-                                                <div class="form-group col-4">
-                                                    <label>หมายเลข วีซ่า </label>
-                                                    <input type="text" name="p_visa" class="form-control" value="<?= $data['p_visa'] ?>" required>
+                                                <div class="form-group col">
+                                                    <label>หมายเลขบัตรสมาชิก</label>
+                                                    <input type="text" class="form-control" value="<?= $data['m_card'] ?>" readonly>
                                                 </div>
-                                                <div class="form-group col-4">
+                                                <div class="form-group col">
+                                                    <label>หมายเลข วีซ่า </label>
+                                                    <input type="text" class="form-control" value="<?= $data['p_visa'] ?>" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- อีเมล , หมายเลขโทรศัพท์ -->
+                                            <div class="form-row mb-1">
+                                                <div class="form-group col">
                                                     <label>อีเมล</label>
-                                                    <input type="email" name="email" class="form-control" value="<?= $data['email'] ?>">
+                                                    <input type="email" class="form-control" value="<?= $data['email'] ?>" readonly>
                                                 </div>
                                                 <div class="form-group col">
                                                     <label>หมายเลขโทรศัพท์</label>
-                                                    <input type="number" name="phone" class="form-control" value="<?= $data['phone'] ?>" required>
+                                                    <input type="number" class="form-control" value="<?= $data['phone'] ?>" readonly>
                                                 </div>
                                             </div>
-
-                                            <!-- SEX / FULL NAME -->
+                                            <!-- เพศ , ชื่อ นามสกุล ,  -->
                                             <div class="form-row mb-1">
-                                                <div class="form-group col-2">
+                                                <div class="form-group">
                                                     <label>เพศ</label>
-                                                    <select name="sex" class="custom-select" required>
-                                                        <option value="<?= $data['sex'] ?>" selected><?= $data['sex'] ?></option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-2">
-                                                    <label for="floatingFull Name">FULL NAME</label>
-                                                    <input type="text" name="fname" class="form-control" value="<?= $data['fname'] ?>" required>
-                                                </div>
-                                                <div class="form-group col-4">
-                                                    <?php $dataNationality = getNationality($conndb) ?>
-                                                    <label>สัญชาติ</label>
-                                                    <select name="nationality" class="custom-select" required>
-                                                        <option value="<?= $data['nationality'] ?>" selected><?= $data['nationality'] ?></option>
-                                                    </select>
-                                                </div>
-                                                <div class="form-group col-4">
-                                                    <label>วันเกิด</label>
-                                                    <input type="date" name="birthday" class="form-control" value="<?= $data['birthday'] ?>">
-                                                </div>
-                                            </div>
-
-                                            <!-- สัญชาติ  -->
-                                            <div class="form-row mb-1">
-                                                <div class="form-group col-4">
-                                                    <?php $payments = getPayment($conndb) ?>
-                                                    <label>วิธีการชำระ</label>
-                                                    <select name="payment" class="form-control" required>
-                                                        <option value="<?= $data['payment'] ?>" selected><?= $data['payment'] ?></option>
-                                                    </select>
+                                                    <input type="text" class="form-control" value="<?= $data['sex'] ?>" readonly>
                                                 </div>
                                                 <div class="form-group col">
-                                                    <?php $products = getProduct($conndb) ?>
+                                                    <label for="floatingFull Name">ชื่อ นามสกุล</label>
+                                                    <input type="text" class="form-control" value="<?= $data['fname'] ?>" readonly>
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label>สัญชาติ</label>
+                                                    <input type="text" class="form-control" value="<?= $data['nationality'] ?>" readonly>
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label>วันเกิด</label>
+                                                    <input type="date" class="form-control" value="<?= $data['birthday'] ?>" readonly>
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label>อายุ</label>
+                                                    <input type="number" class="form-control" value="<?= birthDay($data['birthday']) ?>" readonly>
+                                                </div>
+                                            </div>
+                                            <!-- วิธีการชำระ , สินค้า  -->
+                                            <div class="form-row mb-1">
+                                                <div class="form-group col-4">
+                                                    <label>วิธีการชำระ</label>
+                                                    <input type="text" class="form-control" value="<?= $data['payment'] ?>" readonly>
+                                                </div>
+                                                <div class="form-group col">
                                                     <label>สินค้า</label>
-                                                    <select name="package" class="custom-select" required>
-                                                        <option value="<?= $data['package'] ?>" selected><?= $data['package'] ?></option>
-                                                    </select>
+                                                    <input type="text" class="form-control" value="<?= $data['package'] ?>" readonly>
+                                                </div>
+                                                <div class="col">
+                                                    <label>จำวนวนครั้ง</label>
+                                                    <input type="text" class="form-control" value="<?= $data['package_value'] ?>" readonly>
                                                 </div>
                                             </div>
 
                                             <!-- วิธีการชำระ , หมายเลขฉุกเฉิน -->
                                             <div class="form-row mb-1">
-
-                                                <div class="form-group col-6">
+                                                <div class="form-group col">
                                                     <label>หมายเลขฉุกเฉิน</label>
-                                                    <input type="text" class="form-control" name="emergency" value="<?= $data['emergency'] ?>">
+                                                    <input type="text" class="form-control" value="<?= $data['emergency'] ?>" readonly>
+                                                </div>
+                                                <div class="form-group col">
+                                                    <label>ผู้ทำรายการ</label>
+                                                    <input type="text" class="form-control" value="<?= $data['user'] ?>" readonly>
                                                 </div>
                                             </div>
 
@@ -180,11 +187,11 @@ $m_card = $data['m_card'];
                                             <div class="form-row mb-1">
                                                 <div class="form-group col-6">
                                                     <label>สถานที่พัก ที่อยู่</label>
-                                                    <textarea class="form-control" name="accom"><?= $data['accom'] ?></textarea>
+                                                    <textarea class="form-control" readonly><?= $data['accom'] ?></textarea>
                                                 </div>
                                                 <div class="form-group col-md-6">
                                                     <label>หมายเหตุ</label>
-                                                    <textarea class="form-control" name="comment"><?= $data['comment'] ?></textarea>
+                                                    <textarea class="form-control" readonly><?= $data['comment'] ?></textarea>
                                                 </div>
                                             </div>
 
@@ -192,29 +199,21 @@ $m_card = $data['m_card'];
                                             <div class="form-row">
                                                 <div class="form-group col-4 mb-2">
                                                     <label>วันที่เริ่ม เทรน</label>
-                                                    <input type="date" name="sta_date" class="form-control" value="<?= $data['sta_date'] ?>">
+                                                    <input type="date" class="form-control" value="<?= $data['sta_date'] ?>" readonly>
                                                 </div>
                                                 <div class="form-group col-4 mb-2">
                                                     <label>วันที่หมดอายุ</label>
-                                                    <input type="date" name="exp_date" class="form-control" value="<?= $data['exp_date'] ?>">
+                                                    <input type="date" class="form-control" value="<?= $data['exp_date'] ?>" readonly>
                                                 </div>
                                                 <div class="form-group col-4 mb-2">
                                                     <label>จำนวนวัน</label>
-                                                    <input type="text" class="form-control" value="<?= datediff($data['sta_date'], $data['exp_date']) ?>">
-                                                </div>
-                                            </div>
-
-                                            <!-- ผู้ทำรายการ -->
-                                            <div class="form-row">
-                                                <div class="form-group col-md-6 mb-2">
-                                                    <label>ผู้ทำรายการ</label>
-                                                    <input type="text" class="form-control" name="create_by" value="<?= $data['user'] ?>" readonly>
+                                                    <input type="text" class="form-control" value="<?= datediff($data['sta_date'], $data['exp_date']) ?>" readonly>
                                                 </div>
                                             </div>
 
                                         </div>
                                         <!-- /.tab-pane -->
-                                        <div class="tab-pane" id="timeline">
+                                        <div class="tab-pane" id="product_history">
                                             <table class="table table-bordered table-striped">
                                                 <thead>
                                                     <tr>
@@ -296,14 +295,14 @@ $m_card = $data['m_card'];
                                                 </tbody>
                                             </table>
                                         </div>
-
+                                        
                                         <div class="tab-pane" id="edit">
 
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
 
                                                 <input type="text" name="updateProfile" hidden>
                                                 <input type="text" name="id" value="<?= $data['id'] ?>" hidden>
-                                                <input type="text" name="image" value="<?=$data['image']?>" hidden>
+                                                <input type="text" name="image" value="<?= $data['image'] ?>" hidden>
 
                                                 <!-- หมายเลขบัตรสมาชิก , หมายเลข วีซ่า  -->
                                                 <div class="form-row mb-1">
@@ -371,13 +370,6 @@ $m_card = $data['m_card'];
 
                                                 </div>
 
-                                                <!-- สัญชาติ -->
-                                                <div class="form-row mb-1">
-                                                    
-                                                    
-                                                    
-                                                </div>
-
                                                 <!-- วิธีการชำระ , สินค้า  -->
                                                 <div class="form-row mb-1">
                                                     <div class="form-group col-4">
@@ -396,7 +388,7 @@ $m_card = $data['m_card'];
                                                         <select name="package" class="custom-select" required>
                                                             <option value="<?= $data['package'] ?>" selected><?= $data['package'] ?></option>
                                                             <?php foreach ($products as $product) : ?>
-                                                                <option value="<?= $product['id'] ?>|<?= $product['product_name'] ?>"><?= $product['product_name'] ?></option>
+                                                                <option value="<?= $product['value'] ?>|<?= $product['product_name'] ?>"><?= $product['product_name'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>
@@ -409,12 +401,12 @@ $m_card = $data['m_card'];
                                                         <label>หมายเลขฉุกเฉิน</label>
                                                         <input type="text" class="form-control" name="emergency" value="<?= $data['emergency'] ?>">
                                                     </div>
-                                                   
+
                                                     <div class="form-group col-6">
                                                         <label>ผู้ทำรายการ</label>
                                                         <input type="text" class="form-control" name="create_by" value="<?= $data['user'] ?>" readonly>
                                                     </div>
-                                                    
+
                                                 </div>
 
                                                 <!-- สถานที่พัก ที่อยู่ , หมายเหตุ -->
@@ -446,6 +438,10 @@ $m_card = $data['m_card'];
                                                 </div>
 
                                             </form>
+                                        </div>
+
+                                        <div class="tab-pane" id="timeline">
+
                                         </div>
 
                                     </div>

@@ -168,7 +168,7 @@
                                             <select name="package" class="custom-select" required>
                                                 <option value="" disabled selected>-Cloose-</option>
                                                     <?php foreach ($products as $product ) : ?>
-                                                <option value="<?= $product['id']?>|<?= $product['product_name'];?>"><?= $product['product_name'];?></option>
+                                                <option value="<?= $product['value']?>|<?= $product['product_name'];?>"><?= $product['product_name'];?></option>
                                                     <?php endforeach; ?>
                                             </select>
                                         </div>

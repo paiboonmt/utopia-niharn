@@ -4,6 +4,8 @@ include('../middleware.php');
 include('../../includes/connection.php');
 
 if (isset($_POST['insert'])) {
+
+
     $m_card = $_POST['m_card'];
     $invoice = $_POST['invoice'];
     $p_visa = $_POST['p_visa'];
@@ -13,20 +15,27 @@ if (isset($_POST['insert'])) {
     $fname = $_POST['fname'];
     $nationality = $_POST['nationality'];
     $birthday = $_POST['birthday'];
+    $type = 'customer';
+    $value = '1';
 
-    
+
     $package = $_POST['package'];
     $dataPackage = explode("|", $package); // package|package_name
-    $package = $dataPackage[0];
+    $package_value = $dataPackage[0];
     $packageName = $dataPackage[1];
 
-    $payment = $_POST['payment']; 
+    // echo "<pre>";
+    // print_r($package_value);
+    // echo "</pre>";
+    // exit;
+
+    $payment = $_POST['payment'];
     $dataPayment = explode("|", $payment); // payment|payment_name
     $payment = $dataPayment[0];
     $paymentName = $dataPayment[1];
 
 
-    $emergency = $_POST['emergency']; 
+    $emergency = $_POST['emergency'];
     $accom = $_POST['accom'];
     $comment = $_POST['comment'];
     $sta_date = $_POST['sta_date'];
@@ -40,8 +49,9 @@ if (isset($_POST['insert'])) {
     $partForder = '../../memberimg/img/'; // โฟลเดอร์ที่เก็บไฟล์
 
     if (move_uploaded_file($_FILES['image']['tmp_name'], $partForder . $newName)) {
-        insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $paymentName, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $newName);
+        insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $package_value, $paymentName, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $newName);
         insertProductHistory($conndb, $m_card, $packageName, $sta_date, $exp_date, $AddBy);
+        insertGroupType($conndb, $m_card , $type, $value);
         $conndb = null;
         header("Location: ../newmember.php");
     } else {
@@ -49,12 +59,65 @@ if (isset($_POST['insert'])) {
     }
 }
 
+//ลบข้อมูลสมาชิก
+if (isset($_GET['id']) && $_GET['action'] == 'deleteMember') {
+
+    $id = $_GET['id']; // ID ของสมาชิกที่ต้องการลบ
+    $sql = "SELECT * FROM customer WHERE id = :id"; // ค้นหาข้อมูลสมาชิก
+    $stmt = $conndb->prepare($sql); // เตรียมคำสั่ง SQL
+    $stmt->bindParam(':id', $id); // ผูกค่ากับพารามิเตอร์
+    $stmt->execute(); // รันคำสั่ง SQL
+    $customer = $stmt->fetch(PDO::FETCH_ASSOC); // ดึงข้อมูลสมาชิก
+    $imagePath = '../../memberimg/img/' . $customer['image']; // เส้นทางของไฟล์ภาพ
+    if ($customer['image']) {
+        if (file_exists($imagePath)) {
+            unlink($imagePath); // ลบไฟล์ภาพ
+        }
+    }
+    // if (file_exists($imagePath)) {
+    //     unlink($imagePath); // Delete the image file
+    // }
+
+    $sql = "SELECT * FROM tb_files WHERE m_card = :m_card";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':m_card', $customer['m_card']);
+    $stmt->execute();
+    $files = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($files as $file) {
+        $filePath = '../../memberimg/file/' . $file['image_name'];
+        if (file_exists($filePath)) {
+            unlink($filePath); // Delete the file
+        }
+    }
+    $sql = "DELETE FROM tb_files WHERE m_card = :m_card";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':m_card', $customer['m_card']);
+    $stmt->execute();
+
+
+    $sql = "DELETE FROM customer WHERE id = :id";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+
+    $sql = "DELETE FROM product_history WHERE m_card = :m_card";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':m_card', $customer['m_card']);
+    $stmt->execute();
+
+
+    $conndb = null;
+    $_SESSION['status_delete'] = "Member deleted successfully";
+    header("Location: ../newmember.php");
+    exit;
+}
+
 // ลบไฟล์
-if ( isset($_GET['id']) && $_GET['action'] == 'delete') {
+if (isset($_GET['id']) && $_GET['action'] == 'delete') {
 
 
     print_r($_GET);
-    
+
     $member_id = $_GET['member_id'];
     // exit;
 
@@ -80,7 +143,7 @@ if ( isset($_GET['id']) && $_GET['action'] == 'delete') {
 
 
 
-    
+
 
     // $file_id = $_GET['id'];
     // $sql = "SELECT * FROM tb_files WHERE id = :file_id";
@@ -97,7 +160,7 @@ if ( isset($_GET['id']) && $_GET['action'] == 'delete') {
     // header("Location: ../editmember.php?id=$id");
 }
 
-if (isset($_POST['updateProfile'])){
+if (isset($_POST['updateProfile'])) {
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];
     $invoice = null;
@@ -119,15 +182,53 @@ if (isset($_POST['updateProfile'])){
     $AddBy = $_SESSION['username'];
     $image = $_POST['image'];
 
+    // Check if the package is different from the current one
+    $sql = "SELECT package FROM customer WHERE id = :id";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    $stmt->execute();
+    $currentPackage = $stmt->fetchColumn(); // Get the current package
+    $dataPackage = explode("|", $package); // package|package_name
+    $package_value = $dataPackage[0];
+    $packageName = $dataPackage[1];
 
-    updateCustomer($conndb, $id, $m_card, $invoice, $p_visa, $email, $phone, 
-    $sex, $fname, $nationality, $birthday, $package, $payment, $emergency, 
-    $accom, $comment, $sta_date, $exp_date, $AddBy,$image);
-    insertProductHistory($conndb, $m_card, $package, $sta_date, $exp_date, $AddBy);
+
+    updateCustomer(
+        $conndb,
+        $id,
+        $m_card,
+        $invoice,
+        $p_visa,
+        $email,
+        $phone,
+        $sex,
+        $fname,
+        $nationality,
+        $birthday,
+        $packageName,
+        $package_value,
+        $payment,
+        $emergency,
+        $accom,
+        $comment,
+        $sta_date,
+        $exp_date,
+        $AddBy,
+        $image
+    );
+    if ($currentPackage === $packageName) {
+        // Package is the same, no need to insert into product_history
+        // echo "Package is the same, no need to insert into product_history";
+    } else {
+        // Package is different, insert into product_history
+        insertProductHistory($conndb, $m_card, $packageName, $sta_date, $exp_date, $AddBy);
+    } 
+    // Check if a new image is uploaded
+
     $conndb = null;
     header("Location: ../editmember.php?id=$id");
     exit;
-} 
+}
 
 // Funtion upload file
 if (isset($_POST['uploadFiles'])) {
@@ -136,20 +237,19 @@ if (isset($_POST['uploadFiles'])) {
     $m_card = $_POST['m_card']; // รับค่าจากฟอร์ม
 
     foreach ($_FILES['documents']['name'] as $key => $name) {
-        $tmp = explode('.', $_FILES['documents']['name'][$key]);   
+        $tmp = explode('.', $_FILES['documents']['name'][$key]);
         $newName = round(microtime(true)) . '.' . end($tmp);
         $partForder = '../../memberimg/file/';
 
         if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $partForder . $newName)) {
             // Insert file data into the database
-                insertDataFiles($conndb, $m_card, $newName, $user);
-                header("Location: ../editmember.php?id=$id");
-                $conndb = null;
+            insertDataFiles($conndb, $m_card, $newName, $user);
+            header("Location: ../editmember.php?id=$id");
+            $conndb = null;
         } else {
             $_SESSION['status'] = "Insert Failed: Image upload error";
         }
     }
-    
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'deleteProduct') {
@@ -172,10 +272,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'deleteProduct') {
 }
 
 // Function to insert data into the database
-function insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $payment, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $img_name)
+function insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $fname, $nationality, $birthday, $packageName, $package_value, $payment, $emergency, $accom, $comment, $sta_date, $exp_date, $AddBy, $img_name)
 {
-    $sql = "INSERT INTO `customer`(`m_card`, `invoice`, `p_visa`, `email`, `phone`, `sex`, `fname`, `nationality`, `birthday`, `package`, `payment`, `emergency`, `accom`, `comment`, `sta_date`, `exp_date`, `user`, `image`, `timestamp`) 
-        VALUES (:m_card, :invoice, :p_visa, :email, :phone, :sex, :fname, :nationality, :birthday, :package, :payment, :emergency, :accom, :comment, :sta_date, :exp_date, :user, :img , CURRENT_TIMESTAMP)";
+    $sql = "INSERT INTO `customer`(`m_card`, `invoice`, `p_visa`, `email`, `phone`, `sex`, `fname`, `nationality`, `birthday`, `package`,`package_value`, `payment`, `emergency`, `accom`, `comment`, `sta_date`, `exp_date`, `user`, `image`, `timestamp`) 
+        VALUES (:m_card, :invoice, :p_visa, :email, :phone, :sex, :fname, :nationality, :birthday, :package, :package_value ,:payment, :emergency, :accom, :comment, :sta_date, :exp_date, :user, :img , CURRENT_TIMESTAMP)";
     $stmt = $conndb->prepare($sql);
     $stmt->bindParam(':m_card', $m_card);
     $stmt->bindParam(':invoice', $invoice);
@@ -187,6 +287,7 @@ function insertData($conndb, $m_card, $invoice, $p_visa, $email, $phone, $sex, $
     $stmt->bindParam(':nationality', $nationality);
     $stmt->bindParam(':birthday', $birthday);
     $stmt->bindParam(':package', $packageName);
+    $stmt->bindParam(':package_value', $package_value);
     $stmt->bindParam(':payment', $payment);
     $stmt->bindParam(':emergency', $emergency);
     $stmt->bindParam(':accom', $accom);
@@ -251,10 +352,29 @@ function insertDataFiles($conndb, $m_card, $newName, $user)
     return true;
 }
 
-function updateCustomer($conndb, $id, $m_card, $invoice, $p_visa, $email, $phone, 
-$sex, $fname, $nationality, $birthday, $package, $payment, $emergency, 
-$accom, $comment, $sta_date, $exp_date, $AddBy,$image)
-{
+function updateCustomer(
+    $conndb,
+    $id,
+    $m_card,
+    $invoice,
+    $p_visa,
+    $email,
+    $phone,
+    $sex,
+    $fname,
+    $nationality,
+    $birthday,
+    $package,
+    $package_value,
+    $payment,
+    $emergency,
+    $accom,
+    $comment,
+    $sta_date,
+    $exp_date,
+    $AddBy,
+    $image
+) {
     $sql = "UPDATE `customer` 
             SET `m_card` = :m_card, 
                 `invoice` = :invoice, 
@@ -266,6 +386,7 @@ $accom, $comment, $sta_date, $exp_date, $AddBy,$image)
                 `nationality` = :nationality, 
                 `birthday` = :birthday, 
                 `package` = :package, 
+                `package_value` = :package_value, 
                 `payment` = :payment, 
                 `emergency` = :emergency, 
                 `accom` = :accom, 
@@ -288,6 +409,7 @@ $accom, $comment, $sta_date, $exp_date, $AddBy,$image)
     $stmt->bindParam(':nationality', $nationality);
     $stmt->bindParam(':birthday', $birthday);
     $stmt->bindParam(':package', $package);
+    $stmt->bindParam(':package_value', $package_value);
     $stmt->bindParam(':payment', $payment);
     $stmt->bindParam(':emergency', $emergency);
     $stmt->bindParam(':accom', $accom);
@@ -302,5 +424,17 @@ $accom, $comment, $sta_date, $exp_date, $AddBy,$image)
     $conndb = null;
 }
 
+// inser group_type database
+function insertGroupType($conndb, $m_card , $type , $value)
+{
+    $sql = "INSERT INTO `group_type`(`number`,`type`, `value`) VALUES ( :m_card , :type , :value)";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':m_card', $m_card);
+    $stmt->bindParam(':type', $type);
+    $stmt->bindParam(':value', $value);
+    $stmt->execute();
+    return true;
+    $conndb = null;
+}
 
 $conndb = null;

@@ -87,7 +87,7 @@ $page = 'newmember';
                             <a href="editmember.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
                               <i class="fas fa-edit"></i>
                             </a>
-                            <a href="./customer/sql.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?')">
+                            <a href="./customer/sql.php?id=<?= $row['id'] ?>&action=deleteMember" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?')">
                               <i class="fas fa-trash"></i>
                             </a>
                           </td>
@@ -134,6 +134,19 @@ $page = 'newmember';
     </script>
   <?php endif;
   unset($_SESSION['success']) ?>
+
+  <?php if (isset($_SESSION['status_delete'])) : ?>
+    <script>
+      Swal.fire({
+        icon: 'success',
+        title: 'Good job!',
+        text: ' Your delete member successfully!',
+        showConfirmButton: true,
+        timer: 1000
+      })
+    </script>
+  <?php endif;
+  unset($_SESSION['status_delete']) ?>
 
   <script>
     $(function() {
