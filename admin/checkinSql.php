@@ -6,8 +6,28 @@
 
     if ( isset($_POST['ref_m_card']) ) {   
         $m_card = $_POST['ref_m_card'];
+
         if (checkNumber( $conndb , $m_card) == 1 ) {
-            echo exp_date( $conndb , $m_card );
+            if ( exp_date( $conndb , $m_card) >= 0 ) {
+                echo checkProduct($conndb , $m_card);
+            } else {
+                $_SESSION['expiry'] = true;
+                header('location:checkin.php');
+                $conndb = null; // สำหรับหมดอายุ
+            }
+
+        } else if ( checkNumber( $conndb , $m_card) == 2 ) {
+            if ( exp_date( $conndb , $m_card) >= 0 ) {
+                echo checkProduct($conndb , $m_card);
+            } else {
+                $_SESSION['expiry'] = true;
+                header('location:checkin.php');
+                $conndb = null; // สำหรับหมดอายุ
+            }
+        } else {
+            $_SESSION['not'] = true;
+            header('location:checkin.php');
+            $conndb = null; // สำหรับไม่เจอหมายเลขบัตร
         }
            
     }
@@ -34,7 +54,7 @@
         }
         
     }
-
+    // เช็ควันหมดอายุ
     function exp_date( $conndb , $m_card) {
         $sql = "SELECT `exp_date` FROM `customer` WHERE `m_card` = :m_card";
         $stmt = $conndb->prepare($sql);
@@ -51,6 +71,20 @@
             return -1; // Card not found
         }
         
+    }
+    // เช็คสินค้า
+    function checkProduct( $conndb , $m_card) {
+        $sql = "SELECT `package` FROM `customer` WHERE `m_card` = :m_card";
+        $stmt = $conndb->prepare($sql);
+        $stmt->bindParam(':m_card', $m_card);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($result) {
+            return $result['package']; // Return the package name
+        } else {
+            return $result['package']; // Card not found
+        }
     }
 
 

@@ -160,6 +160,7 @@ if (isset($_GET['id']) && $_GET['action'] == 'delete') {
     // header("Location: ../editmember.php?id=$id");
 }
 
+// อัพเดทข้อมูลสมาชิก
 if (isset($_POST['updateProfile'])) {
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];
@@ -253,13 +254,7 @@ if (isset($_POST['uploadFiles'])) {
 }
 
 if (isset($_GET['action']) && $_GET['action'] == 'deleteProduct') {
-    // echo "<pre>";
-    // print_r($_GET);
-    // echo "</pre>";
-    // exit;
-    // [id] => 8
-    // [action] => deleteProduct
-    // [member_id] => 9
+
     $id = $_GET['id'];
     $member_id = $_GET['member_id'];
     $sql = "DELETE FROM product_history WHERE id = :id";
@@ -319,7 +314,6 @@ function insertProductHistory($conndb, $m_card, $product_name, $sta_date, $exp_d
 // Function to delete data from the database
 function deleteData($conndb, $id)
 {
-
     $sql = "SELECT image FROM customer WHERE id = :id";
     $stmt = $conndb->prepare($sql);
     $stmt->bindParam(':id', $id);
@@ -420,12 +414,11 @@ function updateCustomer(
     $stmt->bindParam(':image', $image);
     $stmt->execute();
     return true;
-
     $conndb = null;
 }
 
 // inser group_type database
-function insertGroupType($conndb, $m_card , $type , $value)
+function insertGroupType($conndb, $m_card , $type , $value) 
 {
     $sql = "INSERT INTO `group_type`(`number`,`type`, `value`) VALUES ( :m_card , :type , :value)";
     $stmt = $conndb->prepare($sql);
