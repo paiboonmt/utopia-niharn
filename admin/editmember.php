@@ -99,8 +99,8 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="active nav-link" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
-                                        <li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="active nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#product_history" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการเช็คอิน</a></li>
@@ -109,7 +109,7 @@ $m_card = $data['m_card'];
                                 <div class="card-body">
                                     <div class="tab-content">
 
-                                        <div class="active tab-pane" id="profile">
+                                        <div class="tab-pane" id="profile">
                                             <!-- หมายเลขบัตรสมาชิก , หมายเลข วีซ่า  -->
                                             <div class="form-row mb-1">
                                                 <div class="form-group col">
@@ -163,11 +163,11 @@ $m_card = $data['m_card'];
                                                 </div>
                                                 <div class="form-group col">
                                                     <label>สินค้า</label>
-                                                    <input type="text" class="form-control" value="<?= $data['package'] ?>" readonly>
+                                                    <input type="text" class="form-control" value="<?= $data['product_name'] ?>" readonly>
                                                 </div>
                                                 <div class="col">
                                                     <label>จำวนวนครั้ง</label>
-                                                    <input type="text" class="form-control" value="<?= $data['package_value'] ?>" readonly>
+                                                    <input type="text" class="form-control" value="<?= $data['product_value'] ?>" readonly>
                                                 </div>
                                             </div>
 
@@ -296,7 +296,7 @@ $m_card = $data['m_card'];
                                             </table>
                                         </div>
                                         
-                                        <div class="tab-pane" id="edit">
+                                        <div class="tab-pane active" id="edit">
 
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
 
@@ -386,9 +386,9 @@ $m_card = $data['m_card'];
                                                         <?php $products = getProduct($conndb) ?>
                                                         <label>สินค้า</label>
                                                         <select name="package" class="custom-select" required>
-                                                            <option value="<?= $data['package'] ?>" selected><?= $data['package'] ?></option>
+                                                                <option value="<?= $data['product_name'] ?>" selected><?= $data['product_name'] ?></option>
                                                             <?php foreach ($products as $product) : ?>
-                                                                <option value="<?= $product['value'] ?>|<?= $product['product_name'] ?>"><?= $product['product_name'] ?></option>
+                                                                <option value="<?= $product['value'] ?>|<?= $product['product_name'] ?>|<?= $product['product_type'] ?>"><?= $product['product_name'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
                                                     </div>

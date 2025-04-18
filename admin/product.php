@@ -30,8 +30,7 @@ $page = 'product';
                     <div class="row">
 
                         <!-- Modal -->
-                        <div class="modal fade" id="addItem" tabindex="-1" role="dialog"
-                            aria-labelledby="addItemTitle" aria-hidden="true">
+                        <div class="modal fade" id="addItem" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog" aria-labelledby="addItemTitle" aria-hidden="true">
                             <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                     <div class="modal-header">
@@ -42,6 +41,19 @@ $page = 'product';
                                     </div>
                                     <div class="modal-body">
                                         <form action="./product/sql.php" method="post">
+
+                                            <div class="input-group mb-2">
+                                                <div class="input-group-prepend">
+                                                    <span class="input-group-text">ประเภทกลุ่มสินค้า</span>
+                                                </div>
+                                                <select name="product_type" class="form-control" required>
+                                                    <option value="" disabled selected>-- กรุณาเลือก --</option>
+                                                    <option value="1">ประเภท ไม่นับจำนวนครั้ง</option>
+                                                    <option value="2">ประเภท นับจำนวนครั้ง</option>
+                                                    <option value="3">ประเภท นับจำนวนครั้งและมีวันหมดอายุ</option>
+                                                </select>
+                                            </div>
+
                                             <div class="input-group mb-3">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">ชื่อสินค้าบริการ</span>
@@ -90,6 +102,7 @@ $page = 'product';
                                                 <th>ชื่อสินค้า</th>
                                                 <th>ราคา</th>
                                                 <th>จำนวนครั้ง</th>
+                                                <th class="text-center">ประเภท</th>
                                                 <th class="text-center">Action</th>
                                             </tr>
                                         </thead>
@@ -106,6 +119,14 @@ $page = 'product';
                                                     <td><?= $row['product_name'] ?></td>
                                                     <td><?= number_format($row['price'], 2) ?></td>
                                                     <td><?= $row['value'] ?></td>
+                                                    <td class="text-center">
+                                                        <?php if ($row['product_type'] == 1) : ?>
+                                                            <span class="badge badge-success">ประเภท ไม่นับจำนวนครั้ง</span>
+                                                        <?php elseif ($row['product_type'] == 2) : ?>
+                                                            <span class="badge badge-warning">ประเภท นับจำนวนครั้ง</span>
+                                                        <?php else : ?>
+                                                            <span class="badge badge-danger">ประเภท นับจำนวนครั้งและมีวันหมดอายุ</span>
+                                                        <?php endif; ?>
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                             <i class="fas fa-edit"></i>
