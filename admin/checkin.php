@@ -119,8 +119,8 @@ $page = 'checkin';
       <div class="content">
         <div class="container-fluid">
           <div class="row">
-            <div class="col-8">
-              <h2> check in </h2>
+            <div class="col-8 mt-3">
+              <!-- <h2> check in </h2> -->
               <div class="card">
 
                 <form action="./checkin/checkinSql.php" method="post">
@@ -196,6 +196,19 @@ $page = 'checkin';
     }
     showTime();
   </script>
+
+  <!-- sweet -->
+  <?php if (isset($_SESSION['number_error'])) { ?>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: 'อุ๊ปส์...',
+        text: 'ไม่มีหมายเลขนี้ในระบบ!',
+        footer: 'This card number has expired.!'
+      })
+    </script>
+  <?php }
+  unset($_SESSION['number_error']); ?>
 
   <!-- sweet -->
   <?php if (isset($_SESSION['expiry'])) { ?>
