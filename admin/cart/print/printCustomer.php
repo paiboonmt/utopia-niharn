@@ -1,9 +1,11 @@
 <hr>
 <div class="row">
-    <h5>RATTACHAI MUAYTHAI GYM</h5>
-    <h5 class="text-center">สำนักงานใหญ่ เลขที่ 22/4 หมู่ที่ 3 ตำบลฉลอง
-        อำเภอเมืองภูเก็ต จังหวัดภูเก็ต 83000
-        ทะเบียนนิติบุคคลเลขที่ 0835561018895</h5>
+    <h5>TIGER MUAYTHAI GYM</h5>
+    <h5 class="text-center">
+    บริษัท ไทเกอร์ มวยไทย(ไทยแลนด์) จำกัด 
+    7/35 ม.5 ซ.ตำเอียด ต.ฉลอง อ.เมือง จ.ภูเก็ต 83130
+    เลขประจำตัวผู้เสียภำษี : 0835554004680
+    </h5>
 </div>
 <hr>
 
@@ -144,10 +146,10 @@ include '../../../public/phpqrcode/qrlib.php';
 $text = $_SESSION['m_card'];
 
 // ชื่อไฟล์ที่ต้องการบันทึก
-// $file = 'qrcode.png';
+$file = 'qrcode.png';
 
 // สร้าง QR Code และบันทึกเป็นไฟล์ภาพ
-// QRcode::png($text, $file);
+QRcode::png($text, $file);
 
 // แสดง QR Code บนหน้าเว็บ
 // echo '<img src="'.$file.'" />';
@@ -155,7 +157,7 @@ $text = $_SESSION['m_card'];
 <hr>
 <!-- qrcode -->
 <div class="text-center mt-1 mb-2">
-    <!-- <img src="< $file ?>" class="imgqrcode"> -->
+    <img src="<?= $file ?>" class="imgqrcode">
     <p style="font-size: 12px;">Thank you very much for choosing our service. <br> We hope you enjoy our classes.</p>
 </div>
 

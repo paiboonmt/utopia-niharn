@@ -99,8 +99,8 @@ $m_card = $data['m_card'];
                             <div class="card">
                                 <div class="card-header p-2">
                                     <ul class="nav nav-pills">
-                                        <li class="nav-item"><a class="nav-link" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
-                                        <li class="nav-item"><a class="active nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
+                                        <li class="nav-item"><a class="active nav-link" href="#profile" data-toggle="tab">ประวัติลูกค้า</a></li>
+                                        <li class="nav-item"><a class="nav-link" href="#edit" data-toggle="tab">แก้ไขประวัติ</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#document" data-toggle="tab">เอกสาร</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#product_history" data-toggle="tab">ประวัติการซื้อสินค้า</a></li>
                                         <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">ประวัติการเช็คอิน</a></li>
@@ -109,7 +109,7 @@ $m_card = $data['m_card'];
                                 <div class="card-body">
                                     <div class="tab-content">
 
-                                        <div class="tab-pane" id="profile">
+                                        <div class="active tab-pane" id="profile">
                                             <!-- หมายเลขบัตรสมาชิก , หมายเลข วีซ่า  -->
                                             <div class="form-row mb-1">
                                                 <div class="form-group col">
@@ -207,8 +207,14 @@ $m_card = $data['m_card'];
                                                 </div>
                                                 <div class="form-group col-4 mb-2">
                                                     <label>จำนวนวัน</label>
-                                                    <input type="text" class="form-control" value="<?= datediff($data['sta_date'], $data['exp_date']) ?>" readonly>
+                                                    <?php
+                                                    if (datediff($data['sta_date'], $data['exp_date']) < 3) { ?>
+                                                        <input type="text" class="form-control bg-danger" value="<?= datediff($data['sta_date'], $data['exp_date']) ?>" readonly>
+                                                    <?php } else { ?>
+                                                        <input type="text" class="form-control bg-success" value="<?= datediff($data['sta_date'], $data['exp_date']) ?>" readonly>
+                                                    <?php } ?>
                                                 </div>
+
                                             </div>
 
                                         </div>
@@ -295,8 +301,8 @@ $m_card = $data['m_card'];
                                                 </tbody>
                                             </table>
                                         </div>
-                                        
-                                        <div class="tab-pane active" id="edit">
+
+                                        <div class="tab-pane" id="edit">
 
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
 
@@ -386,11 +392,17 @@ $m_card = $data['m_card'];
                                                         <?php $products = getProduct($conndb) ?>
                                                         <label>สินค้า</label>
                                                         <select name="package" class="custom-select" required>
-                                                                <option value="<?= $data['product_name'] ?>" selected><?= $data['product_name'] ?></option>
+                                                            <option value="<?= $data['product_name'] ?>" selected><?= $data['product_name'] ?></option>
                                                             <?php foreach ($products as $product) : ?>
                                                                 <option value="<?= $product['value'] ?>|<?= $product['product_name'] ?>|<?= $product['product_type'] ?>"><?= $product['product_name'] ?></option>
                                                             <?php endforeach; ?>
                                                         </select>
+                                                    </div>
+                                                    <div class="form-group col">
+                                                    <div class="col">
+                                                    <label>จำวนวนครั้ง</label>
+                                                    <input type="text" name="product_value" class="form-control" value="<?= $data['product_value'] ?>">
+                                                </div>
                                                     </div>
                                                 </div>
 

@@ -88,7 +88,7 @@ $page = 'newmember';
                                     <div class="row mb-1">
                                         <div class="form-group col-6">
                                             <label>หมายเลขสมาชิก<span id="massage" class="text-center"></span> </label>
-                                            <input type="text" name="m_card" id="m_card" class="form-control" autofocus required>
+                                            <input type="number" name="m_card" id="m_card" class="form-control" autofocus required>
                                             <div class="valid-feedback">
                                                 Member card number is valid!
                                             </div>
@@ -245,7 +245,7 @@ $page = 'newmember';
                                         </div>
                                         <div class="form-group col-md-6 mb-1">
                                             <label>หมดอายุการใช้งาน</label>
-                                            <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d') ?>">
+                                            <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d', strtotime('+10 days')) ?>">
                                         </div>
                                     </div>
 

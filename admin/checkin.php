@@ -144,7 +144,22 @@ $page = 'checkin';
               </div>
             </div>
             <div class="col-4">
-                <?php include './checkin/profile.php' ?>
+
+                <?php 
+                  $sql = "SELECT id FROM `totel` WHERE date(date) = CURDATE()";
+                  $sql_total = $conndb->query($sql);
+                  $sql_total->execute();
+                  $count = $sql_total->rowCount();
+                  
+                  if ( $count >= 1) {
+                    include './checkin/profile.php';
+                  } else {
+                    echo '<div class="card mt-3">';
+                    echo '<img src="../dist/img/logo.png" width="70%" class="mt-3 img ">';
+                    echo '<div class="input-group py-2 mx-auto col-12">';
+                  }
+                
+                ?>
             </div>
           </div>
         </div>
@@ -194,6 +209,38 @@ $page = 'checkin';
     </script>
   <?php }
   unset($_SESSION['expiry']); ?>
+
+  <!-- sweet -->
+  <?php if (isset($_SESSION['date_expiry'])) { ?>
+    <script>
+      Swal.fire({
+        icon: 'error',
+        title: 'อุ๊ปส์...',
+        text: 'บัตรหมดอายุการใช้งานแล้ว! ',
+        footer: 'This card number has expired.!',
+        timer: 10000,
+        timerProgressBar: true,
+        color: 'red',
+      })
+    </script>
+  <?php }
+  unset($_SESSION['date_expiry']); ?>
+
+  <!-- sweet -->
+  <?php if (isset($_SESSION['product_expired'])) { ?>
+    <script>
+      Swal.fire({
+        icon: 'warning',
+        title: 'อุ๊ปส์...',
+        text: 'จำนวนครั้งในการใช้งาน หมดแล้ว !',
+        footer: 'This Product expired has expired.!',
+        timer: 10000,
+        timerProgressBar: true,
+        color: 'red',
+      })
+    </script>
+  <?php }
+  unset($_SESSION['product_expired']); ?>
 
   <?php if (isset($_SESSION['not'])) { ?>
     <script>

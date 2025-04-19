@@ -1,6 +1,6 @@
 <?php
 $sql_data = $conndb->query(" SELECT m.id , m.m_card , m.fname , m.product_name , t.date ,m.image , 
-    t.time , m.sta_date , m.exp_date , m.comment , t.time_id , g.value 
+    t.time , m.sta_date , m.exp_date , m.comment , t.time_id , g.value ,m.product_value
     FROM tb_time AS t
     LEFT JOIN customer AS m ON t.ref_m_card = m.m_card
     LEFT JOIN group_type AS g ON m.m_card = g.number
@@ -37,6 +37,7 @@ $df = datediff($today, $exp_date);
             </div>
             <input type="text" class="form-control" value="<?= $result[0]['fname'] ?>">
         </div>
+
         <div class="input-group mx-auto col-12">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">ชื่อสินค้า</span>
@@ -46,19 +47,30 @@ $df = datediff($today, $exp_date);
 
         <div class="input-group py-2 mx-auto col-12">
             <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">จำนวนครั้ง</span>
+            </div>
+            <?php if ($result[0]['product_value'] > 0) { ?>
+                <input type="text" class="form-control bg-success" value="<?= $result[0]['product_value'] ?>">
+            <?php } else { ?>
+                <input type="text" class="form-control bg-danger" value="0">
+            <?php } ?>
+        </div>
+
+        <div class="input-group mx-auto col-12">
+            <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">วันเริ่มใช้งาน</span>
             </div>
             <input type="text" class="form-control" value="<?= date('d/m/y', strtotime($result[0]['sta_date'])) ?>">
         </div>
 
-        <div class="input-group mx-auto col-12">
+        <div class="input-group py-2 mx-auto col-12">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">วันหมดอายุการใช้งาน</span>
             </div>
             <input type="text" class="form-control" value="<?= date('d/m/y', strtotime($result[0]['exp_date'])) ?>">
         </div>
 
-        <div class="input-group py-2 mx-auto col-12">
+        <div class="input-group mx-auto col-12">
             <div class="input-group-prepend">
                 <span class="input-group-text" id="basic-addon1">จำนวนวันใช้งาน</span>
             </div>

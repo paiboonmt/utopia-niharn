@@ -131,12 +131,6 @@ if (isset($_GET['id']) && $_GET['action'] == 'delete') {
 // อัพเดทข้อมูลสมาชิก
 if (isset($_POST['updateProfile'])) {
 
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    // exit;
-
-
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];
     $invoice = null;
@@ -174,6 +168,11 @@ if (isset($_POST['updateProfile'])) {
     // package|package_name|package_type
 
     echo "<pre>";
+    echo "New package : " . $package . "<br>";
+    echo "</pre";
+    echo "<br>";
+
+    echo "<pre>";
     echo "current_product_name : " . $current_product_name . "<br>";
     echo "current_product_value : " . $current_product_value . "<br>";
     echo "current_product_type : " . $current_product_type . "<br>";
@@ -182,7 +181,7 @@ if (isset($_POST['updateProfile'])) {
 
     if ($current_product_name === $package) {
         // แพ็คเกจเหมือนเดิม ไม่จำเป็นต้องเพิ่มใน product_history
-        echo "Package is the same, no need to insert into product_history<br>";
+        // echo "Package is the same, no need to insert into product_history<br>";
         // Update customer data
         updateCustomer(
             $conndb,
@@ -211,17 +210,41 @@ if (isset($_POST['updateProfile'])) {
 
     } else {
         // แพ็คเกจแตกต่างกัน เพิ่มข้อมูลใน product_history
-        echo "Package is different, inserting into product_history<br>";   
+        // echo "Package is different, inserting into product_history<br>";   
 
         $dataPackage = explode("|", $package);  // package|package_name|package_type
         $product_value = $dataPackage[0];       // package_value
         $product_name = $dataPackage[1];        // package_name
         $product_type = $dataPackage[2];
 
-        exit;
+        // exit;
+
+        updateCustomer(
+            $conndb,
+            $id,
+            $m_card,
+            $invoice,
+            $p_visa,
+            $email,
+            $phone,
+            $sex,
+            $fname,
+            $nationality,
+            $birthday,
+            $product_name,
+            $product_value,
+            $product_type,
+            $payment,
+            $emergency,
+            $accom,
+            $comment,
+            $sta_date,
+            $exp_date,
+            $AddBy,
+            $image
+        );
+        insertProductHistory($conndb, $m_card, $product_name, $sta_date, $exp_date, $AddBy);
     }
-
-
 
     $conndb = null;
     header("Location: ../editmember.php?id=$id");

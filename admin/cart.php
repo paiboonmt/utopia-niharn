@@ -315,8 +315,7 @@
                                                 <div class="input-group-prepend">
                                                     <label class="input-group-text">หมด</label>
                                                 </div>
-                                                <input type="date" name="exp_date" class="form-control"
-                                                    value="<?= date('Y-m-d') ?>">
+                                                <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d', strtotime('+1 days')) ?>">
                                             </div>
                                         </div>
                                     </div>
