@@ -1,5 +1,5 @@
 <?php
-$sql_data = $conndb->query(" SELECT * FROM checkin
+$sql_data = $conndb->query("SELECT * FROM checkin
     WHERE DATE(checkin_date) = CURDATE()
     ORDER BY checkin_time DESC 
     LIMIT 1");
@@ -34,11 +34,11 @@ $result = $sql_data->fetchAll(PDO::FETCH_ASSOC);
         <?php
         if ($result[0]['checkin_expriy'] < date('Y-m-d')) {
         ?>
-            <input type="text" class="form-control" value="<?= date('d/m/y', strtotime($result[0]['checkin_expriy'])) ?>">
+            <input type="text" class="form-control bg-danger" value="<?= date('d/m/y', strtotime($result[0]['checkin_expriy'])) ?>">
         <?php
         } else {
         ?>
-            <input type="text" class="form-control" value="<?= date('d/m/y', strtotime($result[0]['checkin_expriy'])) ?>">
+            <input type="text" class="form-control bg-success" value="<?= date('d/m/y', strtotime($result[0]['checkin_expriy'])) ?>">
         <?php
         }
         ?>

@@ -12,9 +12,10 @@ if (isset($_POST['ref_m_card'])) {
 
     // 3489944354
 
-    if (checkNumberCard($conndb, $m_card) == 0) {
-        $_SESSION['number_error'] = true; // ไม่มีหมายเลขนี้ในระบบ
-        back_to_checkin();
+    if (checkNumberCard($conndb, $m_card) == 0) {   // เช็คหมายเลขบัตร
+        $_SESSION['number_error'] = true;           // ไม่มีหมายเลขนี้ในระบบ
+        back_to_checkin();                          // ย้อนกลับไปที่หน้าเช็คอิน
+        exit;
     }
 
     echo 'หมายเลขบัตร => : ' . $m_card; // แสดงหมายเลขบัตรที่กรอก
@@ -33,16 +34,32 @@ if (isset($_POST['ref_m_card'])) {
 
     if (checkType($conndb, $m_card) == 1) { // เช็คประเภทบัตร
         if (exp_date($conndb, $m_card) >= 0) { // เช็ควันหมดอายุ
-            echo 'บัตรยังไม่หมดอายุ';
+
+            $group_type = 1; // ประเภทบัตร
+            $customer_name = getDataCustomer($conndb, $m_card)['fname']; // ดึงข้อมูลจากฐานข้อมูลCustomer
+            $product = getDataCustomer($conndb, $m_card)['product_name']; // ดึงข้อมูลจากฐานข้อมูลCustomer
+            $exp_date = getDataCustomer($conndb, $m_card)['exp_date']; // ดึงข้อมูลจากฐานข้อมูลCustomer
+
+            if ( checkProductValue($conndb, $m_card) <= 0) { // เช็คจำนวนครั้ง
+                $_SESSION['product_expired'] = true; // หมดอายุ
+                insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date); // บันทึกเวลา checkin
+                back_to_checkin(); // ปิดการเชื่อมต่อฐานข้อมูล
+            } else {
+                $new_value = checkProductValue($conndb, $m_card) - 1; // ลดจำนวนครั้ง
+                updateProductValue($conndb, $m_card, $new_value); // อัปเดทจำนวนครั้ง
+                insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date); // บันทึกเวลา checkin
+                back_to_checkin(); // ปิดการเชื่อมต่อฐานข้อมูล
+            }
+            
         } else {
             $_SESSION['date_expiry'] = true; // หมดอายุ
             echo 'บัตรหมดอายุ';
             back_to_checkin();
         }
     } else {
-        $result = getDataOrder($conndb, $m_card); // ดึงข้อมูลจากฐานข้อมูลCustomer
-        if (datediff($result['sta_date'], $result['exp_date']) <= 0) { // เช็คจำนวนวันคงเหลือ
-            $_SESSION['date_expiry'] = true; // หมดอายุ
+        $result = getDataOrder($conndb, $m_card);                           // ดึงข้อมูลจากฐานข้อมูลOrder
+        if (datediff($result['sta_date'], $result['exp_date']) <= 0) {      // เช็คจำนวนวันคงเหลือ
+            $_SESSION['date_expiry'] = true;                                // หมดอายุ
             $group_type = 2;
             $customer_name = $result['fname'];
             $product = getDataOrderDetail($conndb, $m_card)['product_name']; // ดึงข้อมูลจากฐานข้อมูลOrder
@@ -71,7 +88,7 @@ if (isset($_POST['ref_m_card'])) {
         }
         echo '<hr>';
     }
-    echo '<br>';
+    // echo '<br>';
 
 
     // if (checkNumberCard( $conndb, $m_card) == 0) { 

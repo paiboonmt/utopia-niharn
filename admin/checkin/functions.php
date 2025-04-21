@@ -67,7 +67,7 @@
         $stmt->bindParam(':m_card', $m_card);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $result[0]['exp_date'];
+        return $result['exp_date'];
         $conndb = null;
     }
 
