@@ -14,16 +14,9 @@
     <tbody>
         <?php
         require_once '../includes/connection.php';
-        $sql_data = $conndb->query("SELECT m.id as mid , m.m_card , m.fname , m.image , m.product_name,
-            t.time , t.time_id , m.exp_date , m.image , o.id as orderid , od.product_name as odproduct_name, g.value ,
-            o.ref_order_id
-            FROM tb_time AS t   
-            INNER JOIN customer AS m ON t.ref_m_card = m.m_card
-            LEFT JOIN group_type AS g ON m.m_card = g.number
-            LEFT JOIN orders AS o ON m.m_card = o.ref_order_id
-            LEFT JOIN order_details AS od ON o.id = od.order_id  
-            WHERE date(t.time) = CURDATE() 
-            ORDER BY t.time DESC LIMIT 15");
+        $sql_data = $conndb->query("SELECT `checkin_id`, `checkin_card_number`, `checkin_group_type`, `checkin_customer_name`, `checkin_product`, `checkin_time`, `checkin_expriy` FROM `checkin`
+            WHERE DATE(`checkin_time`) = CURDATE()
+            ORDER BY checkin_time DESC LIMIT 15");
         $sql_data->execute();
         $result = $sql_data->fetchAll(PDO::FETCH_ASSOC);
         $count = 1;
@@ -31,21 +24,25 @@
 
             <tr>    
             <td><?= $count++; ?></td>
-            <td><?= htmlspecialchars($row['m_card']); ?> </td>
-            <td><?= htmlspecialchars($row['fname']); ?> </td>
+            <td><?= htmlspecialchars($row['checkin_card_number']); ?> </td>
+            <td><?= htmlspecialchars($row['checkin_customer_name']); ?> </td>
 
             <!-- ชื่อสินค้า -->
             <td style="color: green; font-weight: 600;">
-                <?= htmlspecialchars($row['product_name']); ?>
+                <?= htmlspecialchars($row['checkin_product']); ?>
             </td>
 
-            <td><?= date('H:i:s', strtotime($row['time'])); ?> </td>
+            <td><?= date('H:i:s', strtotime($row['checkin_time'])); ?> </td>
 
             <td>
-                <?php if ($row['value'] == 1) { ?>
-                <a href="editmember.php?id=<?= $row['mid'] ?>" target="_blank" class="btn btn-sm" id="customer"><i class="fas fa-street-view"></i></a>
-                <?php } elseif ($row['value'] == 2) { ?>
-                <a href="showBill.php?id=<?= $row['orderid'] ?>" target="_blank" class="btn btn-sm" id="daypass"><i class="fas fa-street-view"></i></a>
+                <?php if ($row['checkin_group_type'] == 1) { ?>
+
+                <a href="editmember.php?id=<?= $row['checkin_card_number'] ?>" target="_blank" class="btn btn-sm" id="customer"><i class="fas fa-street-view"></i></a>
+
+                <?php } elseif ($row['checkin_group_type'] == 2) { ?>
+
+                <a href="showBill.php?ref_order_id=<?= $row['checkin_card_number'] ?>" target="_blank" class="btn btn-sm" id="daypass"><i class="fas fa-street-view"></i></a>
+
                 <?php } ?>
             </td>
 
@@ -53,28 +50,26 @@
             <td class="text-center">
                 <?php
                 $today = date('Y-m-d');
-                if ($row['exp_date'] > $today) { ?>
-                <button class="btn btn-success btn-sm" id="exp"><?= date('d/m/Y', strtotime($row['exp_date'])); ?></button>
-                <?php } elseif ($row['exp_date'] == $today) { ?>
-                <button class="btn btn-warning btn-sm" id="exp" onclick="exp1()"><?= date('d/m/Y', strtotime($row['exp_date'])); ?></button>
+                if ($row['checkin_expriy'] > $today) { ?>
+                <button class="btn btn-success btn-sm" id="exp"><?= date('d/m/Y', strtotime($row['checkin_expriy'])); ?></button>
+                <?php } elseif ($row['checkin_expriy'] == $today) { ?>
+                <button class="btn btn-warning btn-sm" id="exp" onclick="exp1()"><?= date('d/m/Y', strtotime($row['checkin_expriy'])); ?></button>
                 <?php } else { ?>
                 <button class="btn btn-danger btn-sm" id="exp" onclick="exp2()">Expired <i class="fab fa-expeditedssl"></i></button>
                 <?php } ?>
             </td>
 
             <td class="text-center">
-                <button class="btn btn-danger btn-sm delete_btn" id="<?= $row['time_id']; ?>"><i class="fas fa-trash-alt"></i></button>
+                <button class="btn btn-danger btn-sm delete_btn" id="<?= $row['checkin_id']; ?>"><i class="fas fa-trash-alt"></i></button>
             </td>
 
-            </tr>
-
         <?php } ?>
-
-        
+        </tr>
+        <?php if (empty($result)) { ?>
+            <tr>
+                <td colspan="8" class="text-center">No data available</td>
+            </tr>
+        <?php } ?>
+        </tr>
     </tbody>
 </table>
-
-<?php
-    // echo '<pre>';
-    // print_r($result);
-    // echo '</pre>';

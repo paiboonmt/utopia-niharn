@@ -45,6 +45,20 @@
         $conndb = null;
     }
 
+    // JOINR TABLE ORDERS AND ORDER_DETAIL
+    function getDataOrderDetail($conndb, $m_card)
+    {
+        $sql ="SELECT order_details.product_name
+        FROM `orders` 
+        INNER JOIN `order_details` ON `orders`.`id` = `order_details`.`order_id` 
+        WHERE `orders`.`ref_order_id` = :m_card";
+        $stmt = $conndb->prepare($sql);
+        $stmt->bindParam(':m_card', $m_card);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+        $conndb = null;
+    }
+
     // เช็ควันหมดอายุ
     function exp_date($conndb, $m_card)
     {
@@ -103,11 +117,10 @@
     }
 
     // นับจำนวนเช็คอินในวันนี้
-    function checkInToday($conndb, $m_card)
+    function checkInToday($conndb)
     {
-        $sql = "SELECT * FROM `tb_time` WHERE `ref_m_card` = :m_card AND date(date) = CURDATE()";
+        $sql = "SELECT * FROM `checkin` WHERE DATE(checkin_date) = CURDATE() GROUP BY checkin_card_number";
         $stmt = $conndb->prepare($sql);
-        $stmt->bindParam(':m_card', $m_card);
         $stmt->execute();
         return $stmt->rowCount();
         $conndb = null;
@@ -116,8 +129,8 @@
     // บันทึกเวลา
     function insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date)
     {
-        $sql = "INSERT INTO `checkin`(`checkin_card_number`, `checkin_group_type`, `checkin_customer_name`, `checkin_product`, `checkin_time`, `checkin_expriy`) 
-        VALUES (:m_card, :group_type, :customer_name, :product, current_timestamp(), :exp_date)";
+        $sql = "INSERT INTO `checkin`(`checkin_card_number`, `checkin_group_type`, `checkin_customer_name`, `checkin_product`, `checkin_date`, `checkin_time`,  `checkin_expriy`) 
+        VALUES (:m_card, :group_type, :customer_name, :product, current_timestamp(), current_timestamp(), :exp_date)";
         $stmt = $conndb->prepare($sql);
         $stmt->bindParam(':m_card', $m_card);
         $stmt->bindParam(':group_type', $group_type);

@@ -13,7 +13,7 @@ if (isset($_POST['ref_m_card'])) {
     // 3489944354
 
     if (checkNumberCard($conndb, $m_card) == 0) {
-        $_SESSION['number_error'] = true;
+        $_SESSION['number_error'] = true; // ไม่มีหมายเลขนี้ในระบบ
         back_to_checkin();
     }
 
@@ -23,66 +23,50 @@ if (isset($_POST['ref_m_card'])) {
     echo '<br>';
     echo 'ประเภทบัตร 1 คือ customer เลข 2 คือ pos => : ' . checkType($conndb, $m_card); // เช็คประเภทบัตร
     echo '<br>';
-    // echo 'วันหมดอายุ => : '. exp_date($conndb, $m_card); // เช็ควันหมดอายุ
-    // echo '<br>';
-    // echo 'ประเภทไม่นับจำนวนครั้ง => : '. checkProductType($conndb, $m_card); // เช็คประเภทไม่นับจำนวนครั้ง
-    // echo '<br>';
-    // echo 'จำนวนครั้ง => : '. checkProductValue($conndb, $m_card); // เช็คจำนวนครั้ง
-    // echo '<hr>';
+    echo 'วันหมดอายุ => : ' . exp_date($conndb, $m_card); // เช็ควันหมดอายุ
+    echo '<br>';
+    echo 'ประเภทไม่นับจำนวนครั้ง => : ' . checkProductType($conndb, $m_card); // เช็คประเภทไม่นับจำนวนครั้ง
+    echo '<br>';
+    echo 'จำนวนครั้ง => : ' . checkProductValue($conndb, $m_card); // เช็คจำนวนครั้ง
+    echo '<hr>';
 
 
     if (checkType($conndb, $m_card) == 1) { // เช็คประเภทบัตร
-
         if (exp_date($conndb, $m_card) >= 0) { // เช็ควันหมดอายุ
             echo 'บัตรยังไม่หมดอายุ';
         } else {
+            $_SESSION['date_expiry'] = true; // หมดอายุ
             echo 'บัตรหมดอายุ';
+            back_to_checkin();
         }
     } else {
-
-        echo 'ไม่ใช่ประเภทบัตรลูกค้า';
-        echo '<hr>';
         $result = getDataOrder($conndb, $m_card); // ดึงข้อมูลจากฐานข้อมูลCustomer
-        echo 'หมายเลขบัตร => : ' . $result['ref_order_id']; // แสดงหมายเลขบัตรที่กรอก
-        echo '<br>';
-        echo 'วันเริ่มต้น => : ' . $result['sta_date']; // แสดงชื่อ
-        echo '<br>';
-        echo 'วันสิ้นสุด => : ' . $result['exp_date']; // แสดงชื่อ
-        echo '<br>';
-        echo datediff($result['sta_date'], $result['exp_date']); // เช็คจำนวนวันคงเหลือ
-        echo '<br>';
-
         if (datediff($result['sta_date'], $result['exp_date']) <= 0) { // เช็คจำนวนวันคงเหลือ
-
+            $_SESSION['date_expiry'] = true; // หมดอายุ
+            $group_type = 2;
+            $customer_name = $result['fname'];
+            $product = getDataOrderDetail($conndb, $m_card)['product_name']; // ดึงข้อมูลจากฐานข้อมูลOrder
+            $exp_date = $result['exp_date'];
+            insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date); // บันทึกเวลา checkin
             echo 'บัตรหมดอายุ';
+            back_to_checkin(); // ปิดการเชื่อมต่อฐานข้อมูล
         } else {
-
-            echo 'บัตรยังไม่หมดอายุ';
-            echo '<hr>';
-            echo '' . checkTotel($conndb);
-            echo '<br>';
-
-
-            if (checkTotel($conndb) == 0) {
-                echo 'ยังไม่มีการบันทึกข้อมูลการใช้บริการ';
-                echo '<br>';
-                echo checkInToday($conndb, $m_card); // เช็คการเข้าใช้บริการวันนี้
-                echo '<br>';
-
-                $group_type = $result['group_type'];
-                $customer_name = $result['customer_name'];
-                $product = $result['product'];
+            if (checkInToday($conndb) == 0) {
+                $group_type = 2;
+                $customer_name = $result['fname'];
+                $product = getDataOrderDetail($conndb, $m_card)['product_name']; // ดึงข้อมูลจากฐานข้อมูลOrder
                 $exp_date = $result['exp_date'];
-
-
                 insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date); // บันทึกเวลา checkin
-                echo '<br>';
-                echo 'บันทึกเวลา checkin เรียบร้อยแล้ว';
-                echo '<br>';
-                echo 'บันทึกข้อมูลการใช้บริการเรียบร้อยแล้ว';
-                echo '<br>';
+                back_to_checkin();
+                exit;
             } else {
-                echo 'บัตรหมดอายุ';
+                $group_type = 2;
+                $customer_name = $result['fname'];
+                $product = getDataOrderDetail($conndb, $m_card)['product_name']; // ดึงข้อมูลจากฐานข้อมูลOrder
+                $exp_date = $result['exp_date'];
+                insertTime($conndb, $m_card, $group_type, $customer_name, $product, $exp_date); // บันทึกเวลา checkin
+                back_to_checkin();
+                exit;
             }
         }
         echo '<hr>';

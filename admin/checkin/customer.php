@@ -29,6 +29,7 @@ $df = datediff($today, $exp_date);
 <?php if ($result[0]['value'] == 1) { ?>
 
     <div class="card mt-3">
+        
         <img src="<?= '../memberimg/img/' . $result[0]['image'] ?>" width="70%" class="mt-3 img ">
 
         <div class="input-group py-2 mx-auto col-12">
