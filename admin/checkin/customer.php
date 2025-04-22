@@ -64,15 +64,33 @@ $df = datediff($today, $exp_date);
         ?>
     </div>
 
+    <!-- จำนวนครั้ง -->
+    <div class="input-group mx-auto col-12">
+
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="basic-addon1">จำนวนครั้ง</span>
+        </div>
+
+        <?php
+        if ( $result[0]['product_value'] <= 0 ) {
+        ?>
+            <input type="text" class="form-control bg-danger" value="<?= $result[0]['product_value'] ?>">
+        <?php
+        } else {
+        ?>
+            <input type="text" class="form-control bg-success" value="<?= $result[0]['product_value'] ?>">
+        <?php
+        }
+        ?>
+    </div>
+
     <!-- comment -->
-    <div class="input-group col-12 mx-auto">
+    <div class="input-group py-2  col-12 mx-auto">
         <textarea class="form-control" rows="3" ><?= $result[0]['comment'] ?></textarea>
     </div>
     
-
-    
     <!-- Will Expire -->
-    <div class="input-group py-2 col-12 mx-auto">
+    <div class="input-group col-12 mx-auto">
     <div class="input-group-prepend">
             <span class="input-group-text" id="basic-addon1">จำนวนครั้ง</span>
         </div>

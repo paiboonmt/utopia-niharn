@@ -1,10 +1,10 @@
 <?php
 
 // view data
-function getData($conndb, $id)
+function getData($conndb, $m_card)
 {
-    $stmt = $conndb->prepare("SELECT * FROM customer WHERE id = :id");
-    $stmt->bindParam(':id', $id);
+    $stmt = $conndb->prepare("SELECT * FROM customer WHERE m_card = :m_card");
+    $stmt->bindParam(':m_card', $m_card);
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
