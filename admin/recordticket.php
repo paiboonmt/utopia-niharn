@@ -34,27 +34,27 @@ unset($_SESSION['total']);
                         <div class="col-md-12 p-1">
                             <div class="card p-1">
                                 <div class="card-header bg-info">
-                                <span style="float: left;"><h3>PRODUCTS</h3></span>
+                                <span style="float: left;"><h3>ประวัติการขายสินค้า</h3></span>
                                 </div>
                                 <div class="card-body">
                                     <table class="table table-sm" id="example1">
                                         <thead>
                                             <tr>
-                                                <th>No.</th>
-                                                <th>Card id</th>
-                                                <th>Text id</th>
-                                                <th hidden>name</th>
-                                                <th>Type of Pay</th>
-                                                <th>Discount</th>
-                                                <th>Vat7%</th>
-                                                <th>Vat3%</th>
-                                                <th>Total Price</th>
-                                                <th>Time</th>
-                                                <th>Sale by</th>
+                                                <th>ลำดับ.</th>
+                                                <th>หมายเลขบัตร</th>
+                                                <th>หมายเลขบิล</th>
+                                                <th hidden>ชื่อลูกค้า</th>
+                                                <th>ประเภทการจ่าย</th>
+                                                <th>ส่วนลด</th>
+                                                <th>ภาษี 7%</th>
+                                                <th>ภาษี 3%</th>
+                                                <th>ยอดรวม</th>
+                                                <th>เวลา</th>
+                                                <th>ผู้ขาย</th>
                                                 <!-- <th class="text-center">Void</th>
                                                 <th class="text-center">Edit</th>
                                                 <th class="text-center">Print</th> -->
-                                                <th class="text-center">Action</th>
+                                                <th class="text-center">จัดการ</th>
                                             </tr>
                                         </thead>
                                         <tbody>

@@ -50,7 +50,6 @@ $page = 'product';
                                                     <option value="" disabled selected>-- กรุณาเลือก --</option>
                                                     <option value="1">ประเภท ไม่นับจำนวนครั้ง</option>
                                                     <option value="2">ประเภท นับจำนวนครั้ง</option>
-                                                    <option value="3">ประเภท นับจำนวนครั้งและมีวันหมดอายุ</option>
                                                 </select>
                                             </div>
 
@@ -86,12 +85,14 @@ $page = 'product';
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <button style="width: 250px; text-transform: uppercase;" type="button" class="btn btn-info" data-toggle="modal" data-target="#addItem">
-                                                <i class="fas fa-plus"></i> | Add Product
+                                                <i class="fas fa-plus"></i> | เพื่มสินค้าบริการ
                                             </button>
                                         </div>
-                                        <div class="col-sm-6"><span style="float: right;">
-                                                <h3>PRODUCTS</h3>
-                                            </span></div>
+                                        <div class="col-sm-6">
+                                            <span style="float: right;">
+                                                <h3>สินค้าและบริการ</h3>
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="card-body">
@@ -124,9 +125,8 @@ $page = 'product';
                                                             <span class="badge badge-success">ประเภท ไม่นับจำนวนครั้ง</span>
                                                         <?php elseif ($row['product_type'] == 2) : ?>
                                                             <span class="badge badge-warning">ประเภท นับจำนวนครั้ง</span>
-                                                        <?php else : ?>
-                                                            <span class="badge badge-danger">ประเภท นับจำนวนครั้งและมีวันหมดอายุ</span>
-                                                        <?php endif; ?>
+                                                        <?php endif ?>
+                                                          
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                             <i class="fas fa-edit"></i>

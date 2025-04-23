@@ -10,7 +10,7 @@ $result = $sql_data->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <div class="card mt-3">
 
-    <img src="../../dist/img/logo.png" width="70%" class="mt-3 img ">
+    <img src="../dist/img/logo.png" width="70%" class="mt-3 img ">
 
     <div class="input-group py-2 mx-auto col-12">
         <div class="input-group-prepend">
