@@ -1,9 +1,7 @@
 <?php
     session_start();
-    
     if (isset($_POST['username']) && $_POST['password']) {
-
-        $user = $_POST['username'];
+        $user = $_POST['username'];     
         $password = $_POST['password'];
         $passwordmd5 = md5($password);
 
@@ -12,10 +10,7 @@
             $stmt->bindParam(1 , $user , PDO::PARAM_STR);
             $stmt->bindParam(2 , $passwordmd5 , PDO::PARAM_STR);
             $stmt->execute();
-
-            // echo $stmt->rowCount();
-            // exit;
-
+            $stmt->setFetchMode(PDO::FETCH_ASSOC);
             if ($stmt->rowCount() == 1 ) {
                 foreach ($stmt AS $row) {
                     $_SESSION['UserID'] = $row['id'];
@@ -32,7 +27,7 @@
                 
 
             } else {
-                header('location:../');
+                header('location:./');
                 unset($_SESSION);
                 exit();
             }

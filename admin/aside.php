@@ -26,12 +26,12 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
     <a href="index.php" class="brand-link">
         <img src="../dist/img/logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">UTOPIA</span>
+        <span class="brand-text font-weight-light">TIGER APPLICATION</span>
     </a>
     <div class="sidebar">
         <div class="user-panel py-2 d-flex">
             <div class="info">
-                <a href="user.php" class="d-block" style="text-transform: uppercase;"><?= $rows[0]['username'] ?></a>
+                <a href="user.php" class="d-block" style="text-transform: uppercase;">ผู้ใช้งาน : <?= $rows[0]['username'] ?></a>
             </div>
         </div>
         <nav class="mt-2">
@@ -231,14 +231,16 @@
                 <li class="nav-item">
                     <a href="./report/reportTicket.php" class="nav-link">
                     <i class="nav-icon fas fa-print"></i>
-                        <p>report</p>
+                        <p>รายงาน</p>
                     </a>
                 </li>
 
                 <li class="nav-item">
                     <a href="#" onclick="logout()" class="nav-link">
                     <i class="nav-icon fas fa-sign-out-alt"></i>
-                        <p>Logout</p>
+                        <p>
+                            ออกจากระบบ
+                        </p>
                     </a>
                 </li>
 
