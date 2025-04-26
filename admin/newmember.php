@@ -84,7 +84,7 @@ $page = 'newmember';
                             <?php endif; ?>
                           </td>
                           <td>
-                            <a href="editmember.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">
+                            <a href="editmember.php?id=<?= $row['m_card'] ?>" class="btn btn-sm btn-warning">
                               <i class="fas fa-edit"></i>
                             </a>
                             <a href="./customer/sql.php?id=<?= $row['id'] ?>&action=deleteMember" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?')">

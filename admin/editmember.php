@@ -1,13 +1,12 @@
 <?php
-session_start();
-include './middleware.php';
-$title = 'NEW MEMBER | TIGER APPLICATION';
-$page = 'newmember';
-include('../includes/connection.php');
-include('./customer/edit.php');
-$data = getData($conndb, $_GET['id']);
-$m_card = $data['m_card'];
-
+    session_start();
+    include './middleware.php';
+    $title = 'NEW MEMBER | TIGER APPLICATION';
+    $page = 'newmember';
+    include('../includes/connection.php');
+    include('./customer/edit.php');
+    $data = getData($conndb, $_GET['id']);
+    $m_card = $data['m_card'];
 ?>
 <!DOCTYPE html>
 <html lang="en">

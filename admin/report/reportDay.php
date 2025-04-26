@@ -24,7 +24,7 @@
                                     <div class="col-5">
                                         <div class="input-group mb-3">
                                             <div class="input-group-prepend">
-                                                <span class="input-group-text">Choose</span>
+                                                <span class="input-group-text">เลือก</span>
                                             </div>
                                             <input type="date" name="date" class="form-control" value="<?= $date ?>">
                                         </div>

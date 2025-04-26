@@ -4,7 +4,7 @@
 function getData($conndb, $m_card)
 {
     $stmt = $conndb->prepare("SELECT * FROM customer WHERE m_card = :m_card");
-    $stmt->bindParam(':m_card', $m_card);
+    $stmt->bindParam(':m_card', $m_card);   
     $stmt->execute();
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
