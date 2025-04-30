@@ -1,5 +1,4 @@
 <?php
-session_start();
 include './middleware.php';
 $title = 'CHECKIN | APPLICATION';
 $page = 'checkin';
@@ -10,114 +9,105 @@ $sql_total = $conndb->query($sql);
 $sql_total->execute();
 $count = $sql_total->rowCount();
 $result = $sql_total->fetchAll(PDO::FETCH_ASSOC);
+
+include './layout/header.php';
+
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
-  <title><?= $title ?></title>
-  <link rel="stylesheet" href="../dist/css/font.css">
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-  <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
-  <style>
-    .content-wrapper h2 {
-      color: #000;
-      text-transform: uppercase;
-      text-align: center;
-      font-weight: 900;
-      margin-top: 12px;
-      letter-spacing: 3px;
-    }
+<style>
+  .content-wrapper h2 {
+    color: #000;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: 900;
+    margin-top: 12px;
+    letter-spacing: 3px;
+  }
 
-    .table th {
-      text-transform: uppercase;
-      font-size: 16px;
-    }
+  .table th {
+    text-transform: uppercase;
+    font-size: 16px;
+  }
 
-    .table td {
-      font-size: 14px;
-    }
+  .table td {
+    font-size: 14px;
+  }
 
-    .table tr td {
-      font-size: 14px;
-      text-transform: uppercase;
-    }
+  .table tr td {
+    font-size: 14px;
+    text-transform: uppercase;
+  }
 
-    /* btn customer */
-    #customer {
-      background: linear-gradient(35deg, black 50%, rgb(221, 77, 10) 50%);
-      color: #fff;
-      overflow: hidden;
-      transition: 0.5s;
-    }
+  /* btn customer */
+  #customer {
+    background: linear-gradient(35deg, black 50%, rgb(221, 77, 10) 50%);
+    color: #fff;
+    overflow: hidden;
+    transition: 0.5s;
+  }
 
-    #customer:hover {
-      transform: scale(1.1);
-    }
+  #customer:hover {
+    transform: scale(1.1);
+  }
 
-    /* btn fighter */
-    #fighter {
-      background: linear-gradient(35deg, black 50%, rgb(17, 0, 255) 50%);
-      color: #fff;
-      ;
-      overflow: hidden;
-      transition: 0.5s;
-    }
+  /* btn fighter */
+  #fighter {
+    background: linear-gradient(35deg, black 50%, rgb(17, 0, 255) 50%);
+    color: #fff;
+    ;
+    overflow: hidden;
+    transition: 0.5s;
+  }
 
-    #fighter:hover {
-      transform: scale(1.1);
-    }
+  #fighter:hover {
+    transform: scale(1.1);
+  }
 
-    /* btn daypass */
-    #daypass {
-      background: linear-gradient(35deg, black 50%, rgb(255, 0, 208) 50%);
-      color: #fff;
-      ;
-      overflow: hidden;
-      transition: 0.5s;
-    }
+  /* btn daypass */
+  #daypass {
+    background: linear-gradient(35deg, black 50%, rgb(255, 0, 208) 50%);
+    color: #fff;
+    ;
+    overflow: hidden;
+    transition: 0.5s;
+  }
 
-    #daypass:hover {
-      transform: scale(1.1);
-    }
+  #daypass:hover {
+    transform: scale(1.1);
+  }
 
-    #Dropin {
-      background: linear-gradient(35deg, black 50%, rgb(255, 0, 208) 50%);
-      color: #fff;
-      ;
-      overflow: hidden;
-      transition: 0.5s;
-    }
+  #Dropin {
+    background: linear-gradient(35deg, black 50%, rgb(255, 0, 208) 50%);
+    color: #fff;
+    ;
+    overflow: hidden;
+    transition: 0.5s;
+  }
 
-    #Dropin:hover {
-      transform: scale(1.1);
-    }
+  #Dropin:hover {
+    transform: scale(1.1);
+  }
 
-    .content-wrapper .col-4 .img {
-      position: relative;
-      align-items: center;
-      justify-content: center;
-      border-radius: 15px;
-      margin-left: 15%;
-      box-shadow: 0 0 10px #113af1;
-    }
+  .content-wrapper .col-4 .img {
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    border-radius: 15px;
+    margin-left: 15%;
+    box-shadow: 0 0 10px #113af1;
+  }
 
-    #exp {
-      display: block;
-      width: 100%;
-      justify-content: center;
-    }
+  #exp {
+    display: block;
+    width: 100%;
+    justify-content: center;
+  }
 
-    #clock {
-      font-size: 24px;
-      width: 100%;
-    }
-  </style>
-</head>
+  #clock {
+    font-size: 24px;
+    width: 100%;
+  }
+</style>
 
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper">
@@ -218,8 +208,12 @@ $result = $sql_total->fetchAll(PDO::FETCH_ASSOC);
       icon: 'error',
       title: 'อุ๊ปส์...',
       text: 'ไม่มีหมายเลขนี้ในระบบ!',
-      footer: 'This card number has expired.!'
-    })
+      showConfirmButton: true,
+
+      // timer: 4000,
+      // timerProgressBar: true,
+      // color: 'red',
+    });
   </script>
 <?php }
 unset($_SESSION['number_error']); ?>
@@ -231,7 +225,10 @@ unset($_SESSION['number_error']); ?>
       icon: 'error',
       title: 'อุ๊ปส์...',
       text: 'บัตรหมดอายุการใช้งานแล้ว!',
-      footer: 'This card number has expired.!'
+      footer: 'This card number has expired.!',
+      timer: 10000,
+      timerProgressBar: true,
+      color: 'red',
     })
   </script>
 <?php }

@@ -1,5 +1,4 @@
 <?php
-    session_start();
     $title = 'REPORT | APPLICATION';
     include '../middleware.php';
     $page = 'reportTotal';

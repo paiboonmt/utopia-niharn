@@ -1,5 +1,4 @@
 <?php
-session_start();
 include('../middleware.php');
 include('../../includes/connection.php');
 

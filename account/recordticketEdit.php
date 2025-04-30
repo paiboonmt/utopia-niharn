@@ -1,5 +1,4 @@
 <?php 
-    session_start();
     $title = 'TICKET | TIGER APPLICATION';
     include 'middleware.php';
     $page = 'reportTicket';

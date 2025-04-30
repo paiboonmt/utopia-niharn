@@ -4,8 +4,14 @@
     $page = 'searchreport';
     include('../../includes/connection.php');
     date_default_timezone_set('Asia/Bangkok');
+    // วันปัจจุบัน
     $currentDate = date("Y-m-d");
+
+    // ลดวันลง 1 วัน
     $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
+
+    // echo "วันที่ลดลง 1 วัน: " . $newDate;
+
 ?> 
 
 <!DOCTYPE html>
@@ -20,11 +26,8 @@
             <div class="content">
                 <div class="container-fluid">
                     
-                <?php if(isset($_POST['search'])) { ?>
-                   
-                <?php } else {  ?>
-                     <!-- from -->
-                     <div class="row" id="formData">
+                    <!-- from -->
+                    <div class="row" id="formData">
                         <div class="col-md-4 mx-auto mt-2">
                             <form action="" method="post" id="form">
                                 <div class="card">
@@ -44,8 +47,7 @@
                             </form>
                         </div>
                     </div>
-                <?php } ?>
-
+                    
                     <?php if(isset($_POST['search'])) {
                             $date = $_POST['date'];
                             $_SESSION['date'] = $_POST['date'];
@@ -57,25 +59,49 @@
                             $rowTotal = $stmtTotal->fetchAll();
                         ?> 
                         <div class="row">
-
                         <!-- หัวบิล -->
                         <div class="col-md-12 mt-3">
-                            <table class="table" id="example1">
+                            <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>ยูโทเปีย มวยไทย ( ไทยแลนด์ ) จำกัด</th>
+                                        <th>ไทเกอร์ มวยไทย ( ไทยแลนด์ ) จำกัด</th>
+                                        <!-- <th> <?= 'POS :' . ' ' . $computerName ?> </th> -->
                                         <th> <?= 'วันที่ :' . ' ' . date('d-m-Y', strtotime($date) ) ?></th>
                                         <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
                                     </tr>
                                 </thead>
-                             
+                            </table>
+                        </div>
+
+                        <!-- ยอดขายสินค้า -->
+                        <div class="col-md-12 mt-3">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th>รายการ</th>
+                                        <th class="text-right">ยอดรวม</th>
+                                        <th class="text-right">หน่วย</th>
+                                    </tr>
                                 <tbody>
                                     <tr>
                                         <td>ยอดขายทั้งหมด</td>
-                                        <td></td>
                                         <td class="text-right"><?= number_format($rowTotal[0]['sum'],2)  ?></td>
+                                        <td class="text-right">บาท</td>
                                     </tr>
+                                </tbody>
+                                </thead>
+                            </table>
+                        </div>
 
+                        <!-- ยอดรวมส่วนลดวันนี้ -->
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <thead>
+                                    <th>หมายเลขบิล</th>
+                                    <th class="text-right">ส่วนลด</th>
+                                    <th class="text-right">จำนวนส่วนลด</th>
+                                </thead>
+                                <tbody>
                                     <?php
                                         $totalDis = 0;
                                         $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
@@ -97,18 +123,14 @@
                                         <td colspan="2">รวม</td>
                                         <td class="text-right"><?= number_format($totalDis,2) ?></td>
                                     </tr>
-                                    
                                 </tbody>
+                            </table>
+                        </div>
 
-                                <thead>
-                                    <th>หมายเลขบิล</th>
-                                    <th class="text-right">ส่วนลด</th>
-                                    <th class="text-right">จำนวนส่วนลด</th>
-                                </thead>
-                                <tbody>
-                                   
-                                </tbody>
-
+                        <!-- ยอดรับชำระแยกประเภท -->
+                        <div class="col-md-12">
+                            <?php echo $date ?>
+                            <table class="table table-sm" id="tablePay">
                                 <thead>
                                     <th>ประเภท การจ่าย</th>
                                     <th class="text-right">จำนวนครั้ง</th>
@@ -137,7 +159,12 @@
                                         <th class="text-right"><?= number_format($totalAmount,2) ?></th>
                                     </tr>
                                 </tbody>
+                            </table>
+                        </div>
 
+                        <!-- รายการสินค้า ไม่รวมภาษี-->
+                        <div class="col-md-12">
+                            <table class="table table-sm">
                                 <thead>
                                     <th>ประเภทรายการ</th>
                                     <th class="text-right">ขาย / จำนวนครั้ง</th>
@@ -158,6 +185,8 @@
                                         $stmtProduct->execute();
                                         $sumTotal = 0;
                                         foreach ( $stmtProduct AS $rowProduct ) :?>
+
+
                                     <tr>
                                         <td><?= $rowProduct['product_name'] ?></td>
                                         <td class="text-right"><?= $rowProduct['count'] ?></td>
@@ -174,10 +203,10 @@
                             </table>
                         </div>
 
+
                         <div class="col-12">
                             <button class="btn btn-success mb-3 form-control" id="printButton"><i class="fas fa-print">Print</i></button>
                         </div>
-
                      <?php } else {
                         
                      } ?> 

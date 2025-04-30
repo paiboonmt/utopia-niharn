@@ -1,5 +1,4 @@
 <?php 
-    session_start();
     $title = 'TICKET EDIT PAGE';
     include './middleware.php';
     $page = 'recordticket';

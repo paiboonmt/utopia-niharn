@@ -32,7 +32,7 @@
     <div class="sidebar">
         <div class="user-panel py-2 d-flex">
             <div class="info">
-                <a href="user.php" class="d-block" style="text-transform: uppercase;"><?= $rows[0]['username'] ?></a>
+                <a href="user.php" class="d-block" style="text-transform: uppercase;">ผู้ใช้งาน : <?= $rows[0]['username'] ?></a>
             </div>
         </div>
         <nav class="mt-2">

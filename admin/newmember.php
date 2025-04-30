@@ -1,27 +1,15 @@
 <?php
-session_start();
 include './middleware.php';
 $title = 'NEW MEMBER | APPLICATION';
 $page = 'newmember';
+require_once '../includes/connection.php';
+$sql = "SELECT * FROM customer ORDER BY id DESC";
+$stmt = $conndb->prepare($sql);
+$stmt->execute();
+$result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+include './layout/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
-  <title><?= $title ?></title>
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-  <link rel="stylesheet" href="../dist/css/font.css">
-  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-  <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
-</head>
-
-<body class="hold-transition sidebar-mini">
   <div class="wrapper">
     <?php include 'aside.php' ?>
     <div class="content-wrapper">
@@ -61,11 +49,8 @@ $page = 'newmember';
                     </thead>
                     <tbody class="text-sm">
                       <?php
-                        $sql = "SELECT * FROM customer ORDER BY id DESC";
-                        $stmt = $conndb->prepare($sql);
-                        $stmt->execute();
-                        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
-                        $i = 1;
+
+                      $i = 1;
                       foreach ($result as $row): ?>
                         <tr>
                           <td><?= $i++ ?></td>

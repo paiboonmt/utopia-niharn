@@ -1,27 +1,15 @@
 <?php
-session_start();
-$title = 'PRODUCT | APPLICATION';
+$title = 'สินค้าและบริการ';
 include 'middleware.php';
 $page = 'product';
+
+require_once("../includes/connection.php");
+$stmt = $conndb->query("SELECT * FROM `products` ORDER BY  `id` DESC");
+$stmt->execute();
+
+include './layout/header.php';
 ?>
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="../dist/img/logo.png">
-    <title><?= $title ?></title>
-    <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
-    <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-    <link rel="stylesheet" href="../dist/css/font.css">
-    <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
-    <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
-    <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
-    <script src="../plugins/sweetalert2/sweetalert2.all.min.js"></script>
-</head>
-
-<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php include './aside.php' ?>
         <div class="content-wrapper">
@@ -110,9 +98,7 @@ $page = 'product';
                                         <tbody>
                                             <?php
                                             $i = 1;
-                                            require_once("../includes/connection.php");
-                                            $stmt = $conndb->query("SELECT * FROM `products` ORDER BY  `id` DESC");
-                                            $stmt->execute();
+
                                             foreach ($stmt as $row) :
                                             ?>
                                                 <tr>
@@ -126,7 +112,7 @@ $page = 'product';
                                                         <?php elseif ($row['product_type'] == 2) : ?>
                                                             <span class="badge badge-warning">ประเภท นับจำนวนครั้ง</span>
                                                         <?php endif ?>
-                                                          
+
                                                     <td class="text-center">
                                                         <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                             <i class="fas fa-edit"></i>
@@ -188,22 +174,7 @@ $page = 'product';
         </div>
     </div>
 
-    <script src="../plugins/jquery/jquery.min.js"></script>
-    <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="../dist/js/adminlte.js"></script>
-    <!-- datatables -->
-    <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
-    <script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
-    <script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
-    <script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
-    <script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
-    <script src="../plugins/jszip/jszip.min.js"></script>
-    <script src="../plugins/pdfmake/pdfmake.min.js"></script>
-    <script src="../plugins/pdfmake/vfs_fonts.js"></script>
-    <script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
-    <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
-    <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+    <?php include './layout/footer.php'; ?>
 
     <script>
         $(function() {

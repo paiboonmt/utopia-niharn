@@ -7,8 +7,8 @@
 
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
     <a href="recordTicket.php" class="brand-link">
-        <img src="../dist/img/logo.jpg" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">Back Office</span>
+        <img src="../dist/img/logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
+        <span class="brand-text font-weight-light">TIGER | Utopia </span>
     </a>
     <div class="sidebar">
         <nav class="mt-2">
@@ -42,21 +42,7 @@
                     </a>
                 </li>
 
-                <?php
-                    if ($page == 'telephone') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                ?>
-                <li class="nav-item">
-                    <a href="telephone.php" class="nav-link <?= $active ?>">
-                    <i class="nav-icon fas fa-phone"></i>
-                        <p>
-                            Telephone
-                        </p>
-                    </a>
-                </li>
+              
 
                 <li class="nav-item">
                     <a href="#" onclick="logout()" class="nav-link">

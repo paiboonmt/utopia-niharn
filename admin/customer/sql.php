@@ -247,7 +247,7 @@ if (isset($_POST['updateProfile'])) {
     }
 
     $conndb = null;
-    header("Location: ../editmember.php?id=$id");
+    header("Location: ../editmember.php?id=$m_card");
     exit;
 }
 

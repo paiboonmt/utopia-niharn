@@ -1,12 +1,11 @@
 <?php
-    session_start();
-    include './middleware.php';
-    $title = 'NEW MEMBER | TIGER APPLICATION';
-    $page = 'newmember';
-    include('../includes/connection.php');
-    include('./customer/edit.php');
-    $data = getData($conndb, $_GET['id']);
-    $m_card = $data['m_card'];
+include './middleware.php';
+$title = 'NEW MEMBER | TIGER APPLICATION';
+$page = 'newmember';
+include('../includes/connection.php');
+include('./customer/edit.php');
+$data = getData($conndb, $_GET['id']);
+$m_card = $data['m_card'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -93,6 +92,7 @@
                             </div>
                             <!-- /.card -->
                         </div>
+                        
                         <!-- /.col -->
                         <div class="col-md-9 mt-2">
                             <div class="card">
@@ -253,7 +253,6 @@
                                         <!-- /.tab-pane -->
                                         <div class="tab-pane" id="document">
                                             <h5>Upload a Document</h5>
-
                                             <form action="./customer/sql.php" method="POST" enctype="multipart/form-data">
                                                 <input type="file" class="form-control" name="documents[]" id="documents" multiple required accept="image/*">
                                                 <p id="fileCount">No files selected</p>
@@ -398,10 +397,10 @@
                                                         </select>
                                                     </div>
                                                     <div class="form-group col">
-                                                    <div class="col">
-                                                    <label>จำวนวนครั้ง</label>
-                                                    <input type="text" name="product_value" class="form-control" value="<?= $data['product_value'] ?>">
-                                                </div>
+                                                        <div class="col">
+                                                            <label>จำวนวนครั้ง</label>
+                                                            <input type="text" name="product_value" class="form-control" value="<?= $data['product_value'] ?>">
+                                                        </div>
                                                     </div>
                                                 </div>
 
