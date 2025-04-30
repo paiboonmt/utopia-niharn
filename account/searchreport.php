@@ -26,7 +26,7 @@ $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
                 <div class="container-fluid">
 
                     <?php if (isset($_POST['search'])) : ?>
-                            <!-- ว่าง -->
+                        <!-- ว่าง -->
                     <?php else : ?>
                         <!-- from -->
                         <div class="row" id="formData">
@@ -64,14 +64,15 @@ $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
                         $rowTotal = $stmtTotal->fetchAll();
                     ?>
                         <div class="row">
+
                             <!-- หัวบิล -->
                             <div class="col-md-12 mt-3">
                                 <table class="table">
                                     <thead>
                                         <tr>
-                                            <th>ไทเกอร์ มวยไทย ( ไทยแลนด์ ) จำกัด</th>
-                                            <!-- <th> <?= 'POS :' . ' ' . $computerName ?> </th> -->
-                                            <th> <?= 'วันที่ :' . ' ' .  date('d/m/Y', strtotime($date)) ?></th>
+                                            <th>บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด</th>
+                                            <th> <?= 'POS :' . ' ' . $computerName ?> </th>
+                                            <th> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
                                             <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
                                         </tr>
                                     </thead>
@@ -165,6 +166,7 @@ $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
                                     </tbody>
                                 </table>
                             </div>
+
                             <!-- ถอดvat -->
                             <div class="col-md-12">
                                 <table class="table table-sm">
@@ -179,9 +181,9 @@ $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
                                     <tbody>
                                         <?php
                                         $sql_pay = "SELECT id , pay , num_bill , total 
-                    FROM `orders` 
-                    WHERE `date` LIKE '%$date%' AND pay != 'Cash'
-                    GROUP BY id";
+                                        FROM `orders` 
+                                        WHERE `date` LIKE '%$date%' AND pay != 'Cash'
+                                        GROUP BY id";
                                         $stmt_pay = $conndb->query($sql_pay);
                                         $stmt_pay->execute();
                                         $vat = 0;
@@ -212,6 +214,7 @@ $newDate = date("Y-m-d", strtotime("-1 day", strtotime($currentDate)));
                                 </table>
                             </div>
                             <!-- ถอดvat -->
+                             
                             <!-- รายการสินค้า ไม่รวมภาษี-->
 
                             <div class="col-md-12">

@@ -3,7 +3,7 @@ include("middleware.php");
 $date = date('Y-m-d');
 $title = 'DASHBOARD | ' . $date;
 $page = 'index';
-$computerName = php_uname('n');
+
 include("../includes/connection.php");
 $sqlTotal = "SELECT * , SUM(total)AS sum 
   FROM `orders`
@@ -26,15 +26,15 @@ include("layout/header.php");
                 <div class="container-fluid">
 
                     <div class="row">
+
                         <!-- หัวบิล -->
                         <div class="col-md-12 mt-3">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th>ไทเกอร์ มวยไทย ( ไทยแลนด์ ) จำกัด</th>
-                                        <th> <?= 'POS :' . ' ' . $computerName ?> </th>
-                                        <th> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
-                                        <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
+                                        <th class="text-left">บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด</th>
+                                        <th class="text-right"> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
+                                        <th class="text-right"> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
                                     </tr>
                                 </thead>
                             </table>
@@ -45,7 +45,7 @@ include("layout/header.php");
                             <table class="table table-sm">
                                 <thead>
                                     <tr>
-                                        <th>รายการ</th>
+                                        <th class="text-left">รายการ</th>
                                         <th class="text-right">ยอดรวม</th>
                                         <th class="text-right">หน่วย</th>
                                     </tr>
@@ -62,20 +62,20 @@ include("layout/header.php");
 
                         <!-- ยอดรวมส่วนลดวันนี้ -->
                         <div class="col-md-12">
-                            <table class="table table-sm">
+                            <table class="table">
                                 <thead>
-                                    <th>หมายเลขบิล</th>
+                                    <th class="text-left">หมายเลขบิล</th>
                                     <th class="text-right">ส่วนลด</th>
                                     <th class="text-right">จำนวนส่วนลด</th>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $totalDis = 0;
-                                    $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
+                                        $totalDis = 0;
+                                        $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
                                         FROM `orders` 
                                         WHERE  `discount` > 0  AND date(date) LIKE '%$date%'";
-                                    $stmtDis = $conndb->query($sqlDis);
-                                    $stmtDis->execute();
+                                        $stmtDis = $conndb->query($sqlDis);
+                                        $stmtDis->execute();
                                     foreach ($stmtDis as $rowDis) : ?>
                                         <tr>
                                             <td><?= $rowDis['num_bill'] ?></td>
@@ -128,41 +128,87 @@ include("layout/header.php");
                             </table>
                         </div>
 
+                        <!-- ถอดvat -->
+                        <div class="col-md-12">
+                            <table class="table table-sm">
+                                <thead>
+                                    <tr>
+                                        <th style="color: red;">ประเภาทการจ่าย ทดสอบแสดงผล</th>
+                                        <th class="text-right">หมายเลขบิล</th>
+                                        <th class="text-right">ยอด</th>
+                                        <th class="text-right">จำนวนจริง</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                        $sql_pay = "SELECT id , pay , num_bill , total 
+                                        FROM `orders` 
+                                        WHERE `date` LIKE '%$date%' AND pay != 'Cash'
+                                        GROUP BY id";
+                                        $stmt_pay = $conndb->query($sql_pay);
+                                        $stmt_pay->execute();
+                                        $vat = 0;
+                                        $sumVat = 0;
+                                    foreach ($stmt_pay as $row_pay) : ?>
+                                        <tr>
+                                            <td> <?= $row_pay['pay'] ?> </td>
+                                            <td class="text-right"> <?= $row_pay['num_bill'] ?> </td>
+                                            <td class="text-right"> <?= number_format($row_pay['total'], 2) ?> </td>
+                                            <?php
+
+                                            $vat = ($row_pay['total'] * 3) / 103
+
+                                            ?>
+                                            <td class="text-right"> <?= number_format($vat, 2) ?> </td>
+                                        </tr>
+
+                                        <?php $sumVat = $sumVat += $vat  ?>
+
+                                    <?php endforeach; ?>
+
+                                    <tr>
+                                        <td style="color: red;">ยอดรวมที่งหมด</td>
+                                        <td colspan="2"></td>
+                                        <th class="text-right"><?= number_format($sumVat, 2) ?> </th>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- ถอดvat -->
+
                         <!-- รายการสินค้า ไม่รวมภาษี-->
                         <div class="col-md-12">
                             <table class="table table-sm">
                                 <thead>
                                     <th>ประเภทรายการ</th>
+                                    <th> ราคาสินค้า </th>
                                     <th class="text-right">ขาย / จำนวนครั้ง</th>
-                                    <th class="text-right">รายการสินค้า ไม่รวมภาษี</th>
+                                    <th class="text-right">รายการสินค้า รวมภาษี</th>
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sqlProduct = "SELECT order_details.product_name , orders.vat7 , orders.vat3 ,
-                                        COUNT(product_name) AS count , 
-                                        SUM(order_details.total) AS sum
+                                    $sqlProduct = "SELECT order_details.product_id , order_details.product_name , 
+                                        SUM(order_details.quantity ) AS quantity , order_details.price AS price
                                         FROM `orders` 
-                                        INNER JOIN `order_details`
-                                        ON order_details.order_id = orders.id
+                                        INNER JOIN `order_details` ON order_details.order_id = orders.id
                                         WHERE date(orders.date) LIKE '%$date%'
                                         GROUP BY order_details.product_id 
-                                        ORDER BY count DESC ";
+                                        ORDER BY quantity DESC;";
                                     $stmtProduct = $conndb->query($sqlProduct);
                                     $stmtProduct->execute();
                                     $sumTotal = 0;
                                     foreach ($stmtProduct as $rowProduct) : ?>
-
-
                                         <tr>
                                             <td><?= $rowProduct['product_name'] ?></td>
-                                            <td class="text-right"><?= $rowProduct['count'] ?></td>
-                                            <td class="text-right"><?= number_format($rowProduct['sum'], 2) ?></td>
+                                            <td><?= number_format($rowProduct['price'], 2) ?></td>
+                                            <td class="text-right"><?= $rowProduct['quantity'] ?></td>
+                                            <td class="text-right"><?= number_format($rowProduct['quantity'] * $rowProduct['price'], 2) ?></td>
                                         </tr>
-                                        <?php $sumTotal = $sumTotal += $rowProduct['sum'] ?>
+                                        <?php $sumTotal = $sumTotal += ($rowProduct['quantity'] * $rowProduct['price']) ?>
                                     <?php endforeach ?>
                                     <tr>
                                         <td>ยอดรวมทั้งหมด</td>
-                                        <td></td>
+                                        <td colspan="2"></td>
                                         <th class="text-right"><?= number_format($sumTotal, 2) ?></th>
                                     </tr>
                                 </tbody>
@@ -201,5 +247,6 @@ include("layout/header.php");
         });
     </script>
 </body>
+
 </html>
 <?php $conndb = null; ?>

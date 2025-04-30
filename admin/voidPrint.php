@@ -60,8 +60,8 @@
             font-weight: bold;    
             width: 100%;    
             pointer-events: none;
-            -webkit-transform: rotate(-45deg);
-            -moz-transform: rotate(-45deg);        
+            /* -webkit-transform: rotate(-45deg);
+            -moz-transform: rotate(-45deg);         */
         } 
     </style>
 </head>
