@@ -53,11 +53,11 @@ include './layout/header.php';
                                             AND orders.date LIKE '%$date%'
                                             GROUP BY member.m_card
                                             ORDER BY member.id DESC";
-                                        $stmt = $conndb->query($sql);
-                                        $stmt->execute();
-                                        $count = 1;
-                                        foreach ($stmt as $row) {
-                                            if ($row['status_code'] == 5) { ?>
+                                            $stmt = $conndb->query($sql);
+                                            $stmt->execute();
+                                            $count = 1;
+                                        foreach ($stmt as $row) : ?>
+                                            <?php if ($row['status_code'] == 5) : ?>
                                                 <tr class="bg-warning" style="font-size: 14px;">
                                                     <td><?= $count++ ?></td>
                                                     <td><?= $row['m_card'] ?></td>
@@ -79,7 +79,7 @@ include './layout/header.php';
                                                         <a href="./voidPrint.php?ref_order_id=<?= $row['ref_order_id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
                                                     </td>
                                                 </tr>
-                                            <?php } else { ?>
+                                            <?php else : ?>
                                                 <tr style="font-size: 14px;">
                                                     <td><?= $count++ ?></td>
                                                     <td><?= $row['ref_order_id'] ?></td>
@@ -115,7 +115,7 @@ include './layout/header.php';
                                                         <a href="./cart/print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
                                                     </td>
 
-                                                    <!-- Modal -->
+                                                    <!-- Modal Voice ticket -->
                                                     <div class="modal fade" id="id<?= $row['id'] ?>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                         <div class="modal-dialog modal-lg">
                                                             <div class="modal-content">
@@ -126,8 +126,9 @@ include './layout/header.php';
                                                                     </button>
                                                                 </div>
                                                                 <div class="modal-body">
-                                                                    <form action="./NewvoiceTicket.php" method="post">
 
+                                                                    <!-- <form action="./NewvoiceTicket.php" method="post"> -->
+                                                                    <form action="./ticket/voiceTicket.php" method="post">
 
                                                                         <input type="hidden" name="comment" value="<?= $row['comment'] ?>">
                                                                         <input type="hidden" name="hostname " value="<?= $hostname ?>">
@@ -232,17 +233,19 @@ include './layout/header.php';
                                                                         <input type="hidden" class="form-control" name="user" value="<?= $_SESSION['username'] ?>">
 
                                                                 </div>
+
                                                                 <div class="modal-footer">
-                                                                    <input type="submit" name="voice" class="btn btn-danger col-7" value="Voicie" onclick="return confirm('Are your sure delete it ?')">
+                                                                    <input type="submit" name="voice" class="btn btn-danger col-7" value="ยกเลิกรายการ" onclick="return confirm('Are your sure delete it ?')">
                                                                     <button type="button" class="btn btn-secondary col-4" data-dismiss="modal">ยกเลิก</button>
                                                                 </div>
+
                                                             </div>
                                                             </form>
                                                         </div>
                                                     </div>
                                                 </tr>
-                                            <?php  } ?>
-                                        <?php } ?>
+                                            <?php endif ?>
+                                        <?php endforeach ?>
                                     </tbody>
                                 </table>
                             </div>

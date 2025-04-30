@@ -226,7 +226,7 @@
 
 <div class="foot" style="font-size: 12px; margin-bottom: 250px;" >
     <div class="row">
-        <p style="font-size: 12px;"><?= $row[0]['detail'] ?></p>
+        <p style="font-size: 12px;"></p>
      </div> 
 </div>
 <hr class="mt-3">

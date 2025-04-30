@@ -90,7 +90,7 @@
                 $stmts->execute();
 
                 include("printCustomer.php");
-                // include("printVendor.php");
+                include("printVendor.php");
 
                 ?>
             </div>

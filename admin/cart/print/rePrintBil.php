@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include('../../middleware.php');
     $title = 'PRINT BILL | TIGER APPLICATION';
 ?>
@@ -62,7 +61,7 @@
                     $id = $_GET['id'];
                     $sql = $conndb->prepare("SELECT o.ref_order_id , os.product_name , o.price , 
                     o.discount , o.vat7 , o.vat3 , o.fname , o.sta_date , o.exp_date , 
-                    o.comment , m.AddBy , o.num_bill , o.pay , m.code , m.m_card , o.date , p.detail
+                    o.comment , m.AddBy , o.num_bill , o.pay , m.code , m.m_card , o.date 
                     FROM `orders` as o
                     INNER JOIN `order_details` as  os ON o.id = os.order_id
                     INNER JOIN `member` as m ON m.package = o.id
@@ -101,9 +100,9 @@
 </body>
 <script>
     window.print();
-    // setTimeout(() => {
-    //    window.location.href = '../../recordticket.php';
-    // }, 2000);
+    setTimeout(() => { 
+       window.location.href = '../../recordticket.php';
+    }, 2000);
 </script>
 </html>
 <?php $conndb = null; ?> 
