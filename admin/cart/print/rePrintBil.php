@@ -51,7 +51,7 @@
 
                     
                     include("rePrintCustomer.php");
-                    // include("rePrintVender.php");
+                    include("rePrintVender.php");
                     
                 ?> 
             </div>
@@ -61,9 +61,9 @@
 </body>
 <script>
     window.print();
-    //setTimeout(() => { 
-    //   window.location.href = '../../recordticket.php';
-    //}, 2000);
+    setTimeout(() => { 
+      window.location.href = '../../recordticket.php';
+    }, 2000);
 </script>
 </html>
 <?php $conndb = null; ?> 

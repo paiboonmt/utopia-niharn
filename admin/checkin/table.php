@@ -1,4 +1,4 @@
-<table class="table table-sm table-hover py-2">
+<table class="table table-sm table-hover py-2" id="table">
     <thead>
         <tr>
             <th> No </th>

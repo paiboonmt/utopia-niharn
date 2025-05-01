@@ -182,7 +182,6 @@
     <div class="col"><span>Payment :</span></div>
     <div class="col" id="col"><span><?= $row[0]['pay'] ?></span></div>
 </div>
-
 <hr>
 
 <!-- Customer Name  -->
@@ -190,11 +189,7 @@
     <div class="col"><span>Customer Name :</span></div>
     <div class="col" id="col"><span><?= $row[0]['fname'] ?></span></div>
 </div>
-<!-- Time to buy -->
-<div class="row">
-    <div class="col"><span>Time to buy :</span></div>
-    <div class="col" id="col"><span><?= date('H:i:s , d/m/Y', strtotime($row[0]['date'])) ?></span></div>
-</div>
+
 <!-- Start / End -->
 <div class="row">
     <div class="col"><span>Start : <?= date('d/m/y', strtotime($row[0]['sta_date'])) ?></span></div>
@@ -206,13 +201,11 @@
 </div>
 <!-- Sale Employee -->
 <div class="row">
-    <div class="col"><span>Employee : <?= $row[0]['AddBy']  ?></span></div>
+    <div class="col"><span>Cashier : <?= $row[0]['AddBy']  ?></span></div>
 </div>
 
 <div class="foot text-center" style="font-size: 10px; margin-top: 150px;">
     <div class="row">
-        <p>reprint</p>
         <p>Thank You.</p>
-        <hr>
     </div>
 </div>

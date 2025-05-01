@@ -1,12 +1,8 @@
 <hr>
 <div class="row">
-    <h5>Rattachai Acdemy Gym</h5>
-    <h5 class="text-center">
-    บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด
-    สำนักงานใหญ่ เลขที่ 22/4 หมู่ที่ 3 ตำบลฉลอง
-    อำเภอเมืองภูเก็ต จังหวัดภูเก็ต 83000
-    ทะเบียนนิติบุคคลเลขที่ 0835561018895
-    </h5>
+    <h5>Rattachai Academy Gym</h5>
+    <h5>TAX : 0835561020601 ( VAT Included )</h5>
+    <h5>ใบเสร็จรับเงิน/ใบกำกับภาษีอย่างย่อ</h5>
 </div>
 <hr>
 
@@ -29,9 +25,9 @@
 <?php foreach ($stmts as $rows) : ?>
 
     <div class="row">
-        <div class="col"><span><?= $rows['product_name'] ?></span></div>
-        <!-- <div class="col text-right"><span><?= $rows['quantity'] ?></span> </div> -->
-        <div class="col" id="col"><span><?= $rows['quantity'] . ' | ' .  number_format($rows['price'] * $rows['quantity'], 2) ?></span> </div>
+        <div class="col col-12"><span><?= $rows['product_name'] ?></span></div>
+        <div class="col"><span>Qty :<?= $rows['quantity'] ?></span> </div>
+        <div class="col" id="col"><span><?= number_format($rows['price'] * $rows['quantity'], 2) ?></span> </div>
     </div>
 
     <?php $grantotal += $_SESSION['cart'][$rows['id']] * $rows['price'] ?>
@@ -44,7 +40,6 @@
     <div class="col"><span>Total Bath : </span></div>
     <div class="col" id="col"><span><?= number_format($grantotal, 2) ?></span></div>
 </div>
-
 
 <!-- ถ้ามี Discount -->
 <?php if ($_SESSION['discountOraginal'] != 0) { ?>

@@ -1,12 +1,10 @@
 <?php
-session_start();
 $title = 'TICKET | TIGER APPLICATION';
 include './middleware.php';
 $page = 'recordticket';
 
 if (isset($_GET['ref_order_id'])) {
     $ref_order_id = $_GET['ref_order_id'];
-    echo $ref_order_id;
     $i = 1;
     $total = 0;
     $befortotal = 0;

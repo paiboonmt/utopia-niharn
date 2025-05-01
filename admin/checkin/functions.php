@@ -1,5 +1,14 @@
 <?php
 
+// ดูข้อมูล
+function View()
+{
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+    echo '<hr>';
+}
+
 // เช็คหมายเลขบัตรว่าอยู่ในฐานข้อมูลหรือไม่
 function checkNumberCard($conndb, $m_card)
 {
@@ -67,7 +76,7 @@ function exp_date($conndb, $m_card)
     $stmt->bindParam(':m_card', $m_card);
     $stmt->execute();
     $result = $stmt->fetch(PDO::FETCH_ASSOC);
-    return $result['exp_date'];
+    return $result[0]['exp_date'];
     $conndb = null;
 }
 

@@ -363,6 +363,7 @@ include './layout/header.php';
         </div>
     </div>
 
+
     <?php include './layout/footer.php' ?>
 
     <script>

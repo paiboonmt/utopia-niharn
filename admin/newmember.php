@@ -44,7 +44,7 @@ include './layout/header.php';
                         <th>เบอร์โทร</th>
                         <th>อีเมล</th>
                         <th>ภาพ</th>
-                        <th>จัดการ</th>
+                        <th class="text-center">จัดการ</th>
                       </tr>
                     </thead>
                     <tbody class="text-sm">
@@ -68,13 +68,15 @@ include './layout/header.php';
                               <span>ไม่มีภาพ</span>
                             <?php endif; ?>
                           </td>
-                          <td>
+                          <td class="text-center">
                             <a href="editmember.php?id=<?= $row['m_card'] ?>" class="btn btn-sm btn-warning">
-                              <i class="fas fa-edit"></i>
+                              <i class="fas fa-edit"></i>|แก้ไข
                             </a>
-                            <a href="./customer/sql.php?id=<?= $row['id'] ?>&action=deleteMember" class="btn btn-sm btn-danger" onclick="return confirm('คุณแน่ใจหรือไม่ที่จะลบสมาชิกนี้?')">
-                              <i class="fas fa-trash"></i>
-                            </a>
+                           <?php if ($_SESSION['role'] == 'admin'): ?>
+                              <a href="delete.php?id=<?= $row['m_card'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this item?');">
+                                <i class="fas fa-trash"></i>
+                              </a>
+                            <?php endif; ?>
                           </td>
                         </tr>
                       <?php endforeach ?>

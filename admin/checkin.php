@@ -167,9 +167,9 @@ include './layout/header.php';
       </div>
     </div>
   </div>
-  <script src="../plugins/jquery/jquery.min.js"></script>
-  <script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="../dist/js/adminlte.min.js"></script>
+
+  <?php include './layout/footer.php'; ?>
+
 </body>
 
 </html>
@@ -199,6 +199,21 @@ include './layout/header.php';
     document.getElementById("clock").innerHTML = currentTime;
   }
   showTime();
+
+
+  $(function() {
+    $("#table").DataTable({
+      "pageLength": 13,
+      "stateSave": false,
+      "dom": 'rtip',
+      "searching": false,
+      "lengthChange": false,
+      "ordering": false,
+      "info": false,
+      "paging": false,
+    });
+  });
+  
 </script>
 
 <!-- sweet -->
@@ -291,10 +306,6 @@ unset($_SESSION['not']); ?>
 unset($_SESSION['less']); ?>
 
 <script>
-  $(function() {
-    $("#table").DataTable({});
-  });
-
   $(document).ready(function() {
     $('.delete_btn').click(function() {
       let uid = $(this).attr("id");
@@ -349,7 +360,5 @@ unset($_SESSION['less']); ?>
     })
   }
 </script>
-
-
 
 <?php $conndb = null; ?>
