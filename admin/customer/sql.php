@@ -1,5 +1,5 @@
 <?php
-session_start();
+
 include('../middleware.php');
 include('../../includes/connection.php');
 
@@ -130,6 +130,11 @@ if (isset($_GET['id']) && $_GET['action'] == 'delete') {
 
 // อัพเดทข้อมูลสมาชิก
 if (isset($_POST['updateProfile'])) {
+
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    exit;
 
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];

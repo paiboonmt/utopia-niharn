@@ -1,11 +1,11 @@
 <?php
-include './middleware.php';
-$title = 'NEW MEMBER | TIGER APPLICATION';
-$page = 'newmember';
-include('../includes/connection.php');
-include('./customer/edit.php');
-$data = getData($conndb, $_GET['id']);
-$m_card = $data['m_card'];
+    include './middleware.php';
+    $title = 'NEW MEMBER | TIGER APPLICATION';
+    $page = 'newmember';
+    include('../includes/connection.php');
+    include('./customer/edit.php');
+    $data = getData($conndb, $_GET['id']);
+    $m_card = $data['m_card'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -22,7 +22,7 @@ $m_card = $data['m_card'];
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <style>
         .preview img {
-            max-width: 150px;
+            max-width: 350px;
             margin: 10px;
         }
     </style>
@@ -398,7 +398,7 @@ $m_card = $data['m_card'];
                                                     </div>
                                                     <div class="form-group col">
                                                         <div class="col">
-                                                            <label>จำวนวนครั้ง</label>
+                                                            <label>จำนวนครั้ง</label>
                                                             <input type="text" name="product_value" class="form-control" value="<?= $data['product_value'] ?>">
                                                         </div>
                                                     </div>
@@ -472,14 +472,15 @@ $m_card = $data['m_card'];
 
 </html>
 <?php $conndb = null; ?>
+
 <script>
+
     // Customization example
     Fancybox.bind('[data-fancybox="gallery"]', {
         infinite: false
     });
-</script>
 
-<script>
+    // File upload preview
     const input = document.getElementById('documents');
     const preview = document.getElementById('preview');
     const fileCount = document.getElementById('fileCount');
