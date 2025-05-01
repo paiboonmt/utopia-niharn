@@ -1,6 +1,7 @@
 <?php
     include('../../middleware.php');
     $title = 'PRINT BILL | TIGER APPLICATION';
+    date_default_timezone_set('Asia/Bangkok');
 ?>
 <!doctype html>
 <html lang="en">
@@ -10,47 +11,7 @@
     <title><?= $title ?></title>
     <link rel="stylesheet" href="../../../plugins/fontawesome-free/css/all.min.css">
     <link rel="stylesheet" href="../../../dist/css/bootstrap.min.css">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        .imgqrcode {
-            height: 150px;
-            width: 150px;
-            background-repeat: no-repeat;
-            background-size: cover;
-            background-position: center;
-            align-items: center;
-            margin-bottom: 5px;
-        }
-
-        hr {
-            border-top: 2px dashed #8c8b8b;
-            outline:2px dashed #8c8b8b;
-        }
-
-        span {
-            font-size: 12px;
-        }
-
-        #col{
-            margin-right: 20px;
-            text-align: right;
-        }
-        h5 {
-            font-size: 10px;
-            text-align: center;
-        }
-        .dt{
-            font-size: 9px;
-        }
-        dd{
-            font-size: 9px;
-        }
-    </style>
+    <link rel="stylesheet" href="./print.css">
 </head>
 <body>
     <div class="container-fluid">
@@ -90,7 +51,7 @@
 
                     
                     include("rePrintCustomer.php");
-                    include("rePrintVender.php");
+                    // include("rePrintVender.php");
                     
                 ?> 
             </div>
@@ -100,9 +61,9 @@
 </body>
 <script>
     window.print();
-    setTimeout(() => { 
-       window.location.href = '../../recordticket.php';
-    }, 2000);
+    //setTimeout(() => { 
+    //   window.location.href = '../../recordticket.php';
+    //}, 2000);
 </script>
 </html>
 <?php $conndb = null; ?> 
