@@ -1,38 +1,22 @@
 <?php 
 
-    session_start();
-
     include("../middleware.php");
-
-    require_once("../../includes/connection.php");
-  
+    
     if (isset($_POST['saveOrder'])) {
+        require_once("../../includes/connection.php");
 
         $detail = $_POST['detail'];
-
         $hostname = $_POST['hostname'];
-
         $num_bill = $_POST['num_bill'];
-
         $conNum_bill = intval($num_bill);
-
         $converBill = $hostname .'-'. $conNum_bill ; // แปลงค่าไปบันทึกในตาราง Orders
-
         $code = $_POST['code'];
-
         $price = $_POST['price'];
-
         $discount = $_POST['discount'];
 
-        // $pay = $_POST['pay'];
-        
         $payment = $_POST['pay'];;
-        
+    
         $dataSet = explode(',',$payment);
-
-        // echo "<pre>";
-        // print_r($dataSet);
-        // echo "</pre>";
 
         $vat = $dataSet[1];
 
@@ -44,18 +28,10 @@
 
         $pay = $dataSet[0];
 
-        // exit;
-
-        // $vat7 = $_POST['vat7'];
-
-        // $vat3 = $_POST['vat3'];
 
         $sta_date = $_POST['sta_date'];
-
         $exp_date = $_POST['exp_date'];
-
         $fname = $_POST['fname'];
-
         $comment = $_POST['comment'];
 
         $m_card = $_POST['m_card'];

@@ -142,7 +142,7 @@ function countNew($conndb)
 
 
                 <?php
-                if ($page == 'recordticket') {
+                if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
                     $active = 'active';
                 } else {
                     $active = '';

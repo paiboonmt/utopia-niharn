@@ -105,12 +105,13 @@ include './layout/header.php';
 
                                                     <td>
                                                         <?php if ($_SESSION['role'] == 'admin') { ?>
-                                                            <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
+                                                            <!-- <button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                                 <i class="fas fa-ban"></i>
-                                                            </button>
+                                                            </button> -->
+                                                            <a href="cancel_ticket.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
                                                         <?php } ?>
-                                                        <a href="recordticketEdit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i></a>
-                                                        <a href="./cart/print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
+                                                        <a href="recordticketEdit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i>  | แก้ไขบิล </a>
+                                                        <a href="cart/print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
                                                     </td>
 
                                                     <!-- Modal Voice ticket -->
@@ -252,12 +253,12 @@ include './layout/header.php';
                     </div>
                 </div>
 
+                </div>
             </div>
         </div>
     </div>
-</div>
 
-<?php include './layout/footer.php'; ?>
+    <?php include './layout/footer.php'; ?>
 
 
 <?php if (isset($_SESSION['canotFind'])) : ?>
