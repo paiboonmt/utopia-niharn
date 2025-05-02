@@ -370,12 +370,6 @@ include './layout/header.php';
         $(function() {
             $("#table").DataTable({
                 "pageLength": 13,
-                // "stateSave": true,
-                // "dom": 'rtip',
-                // "searching": true,
-                // "dom": 'rtip'
-                // "info" : false
-                // "stateSave" : true
             });
         });
     </script>
@@ -414,7 +408,7 @@ include './layout/header.php';
                 toast: true,
                 position: 'top-end',
                 showConfirmButton: false,
-                timer: 2000,
+                timer: 500,
                 icon: 'success',
                 title: 'Add item successfully!'
             })
@@ -442,7 +436,7 @@ include './layout/header.php';
                 toast: true,
                 position: 'top-center',
                 showConfirmButton: false,
-                timer: 2000,
+                timer: 1000,
                 icon: 'info',
                 background: '#B6FFFA',
                 title: 'Item add to cart '
