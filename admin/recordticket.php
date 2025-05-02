@@ -234,7 +234,7 @@ include './layout/header.php';
                                                                 </div>
 
                                                                 <div class="modal-footer">
-                                                                    <input type="submit" name="voice" class="btn btn-danger col-7" value="ยกเลิกรายการ" onclick="return confirm('Are your sure delete it ?')">
+                                                                    <input type="submit" name="voice" class="btn btn-danger col-7 " value="ยกเลิกรายการ" onclick="return confirm('Are your sure delete it ?')">
                                                                     <button type="button" class="btn btn-secondary col-4" data-dismiss="modal">ยกเลิก</button>
                                                                 </div>
 

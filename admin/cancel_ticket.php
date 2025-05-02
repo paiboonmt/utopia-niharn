@@ -25,7 +25,7 @@ include 'layout/header.php';
                             <div class="card-header bg-danger">
                                 <h3 class="card-title">ยกเลิกบิล <?php echo $result['num_bill']; ?></h3>
                             </div>
-                            <form action="ticket/cancel_ticket.php" method="post" id="cancelTicketForm">
+                            <form action="ticket/voiceTicket.php" method="post">
                                 <div class="card-body">
 
                                     <div class="row">
@@ -49,13 +49,6 @@ include 'layout/header.php';
                                             <div class="form-group">
                                                 <label for="ref_order_id">เลขที่อ้างอิง</label>
                                                 <input type="text" class="form-control" id="ref_order_id" name="ref_order_id" value="<?= $result['num_bill']; ?>" readonly>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-12 col-md-6 col-lg-6">
-                                            <div class="form-group">
-                                                <label for="cancel_by">ยกเลิกโดย</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $_SESSION['username']; ?>" readonly>
                                             </div>
                                         </div>
 
@@ -94,6 +87,13 @@ include 'layout/header.php';
                                             </div>
                                         </div>
 
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="cancel_by">ยกเลิกโดย</label>
+                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $_SESSION['username']; ?>" readonly>
+                                            </div>
+                                        </div>
+
                                     </div>
 
                                     <div class="row">
@@ -106,13 +106,14 @@ include 'layout/header.php';
                                     </div>
 
                                 </div>
+                              
                                 <div class="modal-footer">
-                                    <div class="row">
-                                        <div class="col me-auto">
-                                            <a href="" class="btn btn-dark">ย้อนกลับ</a>
-                                        </div>
-                                        <input type="submit" name="cancel_bill" class="btn btn-danger col-6" value="ยกเลิกรายการ" onclick="return confirm('คุณแน่ใจแล้วใช่ไหม?')">
-                                    </div>
+
+                                    <input type="submit" name="cancel_bill" class="btn btn-danger col-4 mr-auto" value="ยกเลิกรายการ" onclick="return confirm('คุณแน่ใจแล้วใช่ไหม?')">
+                                    
+                                    <a href="./recordticket.php" class="btn btn-dark col-4">ย้อนกลับ</a>
+
+                                
                                 </div>
 
 

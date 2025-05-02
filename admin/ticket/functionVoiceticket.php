@@ -1,5 +1,5 @@
 <?php
-include '../middleware.php';
+
 function viewdata()
 {
     echo '<pre>';

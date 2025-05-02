@@ -3,8 +3,9 @@
     include '../middleware.php';
     include './functionVoiceticket.php';
 
-    if ( isset($_POST['voice']) ) {
+    if ( isset($_POST['cancel_bill']) ) {
         viewPost();
+        exit();
         include('../../includes/connection.php');
 
         $comment = $_POST['comment'];
