@@ -80,15 +80,14 @@ session_start();
         return $status = true;
     }
 
-    function updateStatus( $conndb , $ref_order_id ) {
-        $status = false;
-        $sql = "UPDATE `member` SET `status_code` = 5
-        WHERE m_card = ? ";
-        $stmt = $conndb->prepare($sql);
-        $stmt->bindParam( 1 , $ref_order_id );
-        $stmt->execute();
-        return $status = true;
-    }
+        function updateStatus( $conndb , $ref_order_id ) {
+            $sql = "UPDATE `member` SET `status_code` = 5
+            WHERE m_card = ? ";
+            $stmt = $conndb->prepare($sql);
+            $stmt->bindParam( 1 , $ref_order_id );
+            $stmt->execute();
+            return $stmt = true;
+        }
 
     function saveOrderDetail( $conndb , $order_id ){
         $status = false;

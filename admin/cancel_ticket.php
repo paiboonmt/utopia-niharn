@@ -10,7 +10,6 @@ if (isset($_GET['id'])) {
 }
 
 
-
 include 'layout/header.php';
 ?>
 
@@ -41,56 +40,106 @@ include 'layout/header.php';
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
                                                 <label for="num_bill">หมายเลขบัตร</label>
-                                                <input type="text" class="form-control" id="num_bill" name="num_bill" value="<?= $result['ref_order_id']; ?>" readonly>
+                                                <input type="text" class="form-control"  name="num_bill" value="<?= $result['ref_order_id']; ?>" readonly>
                                             </div>
                                         </div>
-                                        <!-- num_bill -->
+                                        <!-- fname -->
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="ref_order_id">เลขที่อ้างอิง</label>
-                                                <input type="text" class="form-control" id="ref_order_id" name="ref_order_id" value="<?= $result['num_bill']; ?>" readonly>
+                                                <label for="fname">ชื่อ-นามสกุล</label>
+                                                <input type="text" class="form-control"  name="fname" value="<?= $result['fname']; ?>" readonly>
                                             </div>
                                         </div>
-
+                                        <!-- discount -->
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="cancel_by">วิธีการชำระสินค้า</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $result['pay']; ?>" readonly>
+                                                <label for="discount">ส่วนลด</label>
+                                                <input type="text" class="form-control"  name="discount" value="<?= $result['discount']; ?>" readonly>
                                             </div>
                                         </div>
-
+                                        <!-- price -->
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="cancel_by">ส่วนลดสินค้า</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $result['discount']; ?>" readonly>
+                                                <label for="price">ราคาสินค้า</label>
+                                                <input type="text" class="form-control"  name="price" value="<?= $result['price']; ?>" readonly>
                                             </div>
                                         </div>
-
+                                        <!-- vat7 -->   
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="cancel_by">ภาษี7%</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $result['vat7']; ?>" readonly>
+                                                <label for="vat7">ภาษี 7%</label>
+                                                <input type="text" class="form-control"  name="vat7" value="<?= $result['vat7']; ?>" readonly>
                                             </div>
                                         </div>
-
+                                        <!-- vat3 -->
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="cancel_by">ภาษี3%</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $result['vat3']; ?>" readonly>
+                                                <label for="vat3">ภาษี 3%</label>
+                                                <input type="text" class="form-control" name="vat3" value="<?= $result['vat3']; ?>" readonly>
                                             </div>
                                         </div>
-
+                                        <!-- pay -->
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
-                                                <label for="cancel_by">ราคาสินค้า</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $result['price']; ?>" readonly>
+                                                <label for="pay">วิธีการชำระเงิน</label>
+                                                <input type="text" class="form-control"  name="pay" value="<?= $result['pay']; ?>" readonly>
                                             </div>
                                         </div>
+                                        <!-- sta_date -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="sta_date">วันที่เริ่มต้น</label>
+                                                <input type="text" class="form-control"  name="sta_date" value="<?= $result['sta_date']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- exp_date -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="exp_date">วันที่สิ้นสุด</label>
+                                                <input type="text" class="form-control"  name="exp_date" value="<?= $result['exp_date']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- comment -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="comment">หมายเหตุ</label>
+                                                <input type="text" class="form-control"  name="comment" value="<?= $result['comment']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- total -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="total">ยอดรวม</label>
+                                                <input type="text" class="form-control"  name="total" value="<?= $result['total']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- date -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="date">วันที่</label>
+                                                <input type="text" class="form-control"  name="date" value="<?= $result['date']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- hostname -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="hostname">ชื่อเครื่อง</label>
+                                                <input type="text" class="form-control"  name="hostname" value="<?= $result['hostname']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                        <!-- emp -->
+                                        <div class="col-12 col-md-6 col-lg-6">
+                                            <div class="form-group">
+                                                <label for="emp">พนักงาน</label>
+                                                <input type="text" class="form-control"  name="emp" value="<?= $result['emp']; ?>" readonly>
+                                            </div>
+                                        </div>
+                                      
 
                                         <div class="col-12 col-md-6 col-lg-6">
                                             <div class="form-group">
                                                 <label for="cancel_by">ยกเลิกโดย</label>
-                                                <input type="text" class="form-control" id="cancel_by" name="cancel_by" value="<?= $_SESSION['username']; ?>" readonly>
+                                                <input type="text" class="form-control"  name="cancel_by" value="<?= $_SESSION['username']; ?>" readonly>
                                             </div>
                                         </div>
 
@@ -131,9 +180,9 @@ include 'layout/header.php';
 
         </html>
         <?php $conndb = null; ?>
-
+<!-- 
         <?php
         echo '<pre>';
         print_r($result);
         echo '</pre>';
-        ?>
+        ?> -->

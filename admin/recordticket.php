@@ -35,7 +35,7 @@ include './layout/header.php';
                                             <th>ส่วนลด</th>
                                             <th>ภาษี 7%</th>
                                             <th>ภาษี 3%</th>
-                                            <th class="text-right">ยอดรวม</th>
+                                            <th>ยอดรวม</th>
                                             <th>เวลา</th>
                                             <th>ผู้ขาย</th>
                                             <th class="text-center">จัดการ</th>
@@ -61,7 +61,7 @@ include './layout/header.php';
                                                 <tr class="bg-warning" style="font-size: 14px;">
                                                     <td><?= $count++ ?></td>
                                                     <td><?= $row['m_card'] ?></td>
-                                                    <td hidden><?= $row['num_bill'] ?></td>
+                                                    <td><?= $row['num_bill'] ?></td>
                                                     <td hidden><?= $row['fname'] ?></td>
                                                     <td><?= 0 ?></td>
                                                     <td><?= 0 ?></td>
@@ -99,7 +99,7 @@ include './layout/header.php';
                                                     <td><?= $row['discount'] ?></td>
                                                     <td><?= $row['vat7'] ?></td>
                                                     <td><?= $row['vat3'] ?></td>
-                                                    <td class="text-right" style="width: 170px;"><?= number_format($row['total'], 2) ?></td>
+                                                    <td style="width: 170px;"><?= number_format($row['total'], 2) ?></td>
                                                     <td><?= date('H:i', strtotime($row['date'])) ?></td>
                                                     <td><?= $row['AddBy'] ?></td>
 
