@@ -132,6 +132,37 @@ include("layout/header.php");
                                         <th class="text-right"><?= number_format($sumVat, 2) ?> </th>
                                     </tr>
                                 </tbody>
+
+                                <thead>
+                                <th class="text-left">หมายเลขบิล</th>
+                                <th></th>
+                                <th class="text-right">ส่วนลด</th>
+                                <th class="text-right">จำนวนส่วนลด</th>
+                            </thead>
+                            <tbody>
+                                <?php
+                                $totalDis = 0;
+                                $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
+                                        FROM `orders` 
+                                        WHERE  `discount` > 0  AND date(date) LIKE '%$date%'";
+                                $stmtDis = $conndb->query($sqlDis);
+                                $stmtDis->execute();
+                                foreach ($stmtDis as $rowDis) : ?>
+                                    <tr>
+                                        <td><?= $rowDis['num_bill'] ?></td>
+                                        <td class="text-right"><?= $rowDis['discount'] ?> % </td>
+                                        <td class="text-right">
+                                            <?= number_format(($rowDis['price'] * $rowDis['discount']) / 100, 2)  ?>
+                                        </td>
+                                    </tr>
+                                    <?php $totalDis = $totalDis += ($rowDis['price'] * $rowDis['discount']) / 100 ?>
+                                <?php endforeach ?>
+                                <tr>
+                                    <td colspan="2">รวม</td>
+                                    <td class="text-right"><?= number_format($totalDis, 2) ?></td>
+                                </tr>
+                            </tbody>
+                            
                             </table>
                         </div>
                         <!-- ถอดvat -->
@@ -174,38 +205,7 @@ include("layout/header.php");
                             </table>
                         </div>
 
-                        <table class="table table-sm" id="tableProduct">
-                            <thead>
-                                <th class="text-left">หมายเลขบิล</th>
-                                <th></th>
-                                <th class="text-right">ส่วนลด</th>
-                                <th class="text-right">จำนวนส่วนลด</th>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $totalDis = 0;
-                                $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
-                                        FROM `orders` 
-                                        WHERE  `discount` > 0  AND date(date) LIKE '%$date%'";
-                                $stmtDis = $conndb->query($sqlDis);
-                                $stmtDis->execute();
-                                foreach ($stmtDis as $rowDis) : ?>
-                                    <tr>
-                                        <td><?= $rowDis['num_bill'] ?></td>
-                                        <td class="text-right"><?= $rowDis['discount'] ?> % </td>
-                                        <td class="text-right">
-                                            <?= number_format(($rowDis['price'] * $rowDis['discount']) / 100, 2)  ?>
-                                        </td>
-                                    </tr>
-                                    <?php $totalDis = $totalDis += ($rowDis['price'] * $rowDis['discount']) / 100 ?>
-                                <?php endforeach ?>
-                                <tr>
-                                    <td colspan="2">รวม</td>
-                                    <td class="text-right"><?= number_format($totalDis, 2) ?></td>
-                                </tr>
-                            </tbody>
-
-                        </table>
+                      
 
                     </div>
                     <div class="col-12">
