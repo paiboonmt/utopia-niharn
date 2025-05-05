@@ -131,15 +131,16 @@ function countNew($conndb)
                 }
                 ?>
 
-                <li class="nav-item">
-                    <a href="payment.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fab fa-cc-amazon-pay"></i>
-                        <p>
-                            การชำระเงิน
-                        </p>
-                    </a>
-                </li>
-
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <li class="nav-item">
+                        <a href="payment.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
+                            <p>
+                                การชำระเงิน
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
 
                 <?php
                 if ($page == 'recordticket' ||  $page == 'cancel_ticket') {

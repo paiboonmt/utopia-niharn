@@ -28,41 +28,24 @@ include("layout/header.php");
                     <div class="row">
 
                         <!-- หัวบิล -->
-                        <div class="col-md-12 mt-3">
+                        <div class="col mt-3">
                             <table class="table">
+
+                                <!-- หัวบิล -->
                                 <thead>
-                                    <tr>
-                                        <th class="text-left">บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด</th>
-                                        <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
-                                        <th>Rattachai muay thai gym ( Rawai )</th>
-                                        <th> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
-                                    </tr>
-                                </thead>
-                                <!-- 
-                                <thead>
-                                    <tr>
-                                        <th class="text-left">รายการ</th>
-                                        <th></th>
-                                        <th></th>
-                                        <th class="text-right">ยอดรวม</th>
-
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr class="bg-danger">
-                                        <td>ยอดขายทั้งหมด</td>
-                                        <td></td>
-                                        <td></td>
-                                        <td class="text-right"><?= number_format((float)$rowTotal[0]['sum'], 2) ?></td>
-
-                                    </tr>
-                                </tbody> -->
-
-                                <thead>
-                                    <th>ประเภท การจ่าย</th>
-                                    <th class="text-right">จำนวนครั้ง</th>
+                                    <th class="text-left">บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด</th>
+                                    <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
                                     <th></th>
+                                    <th>Rattachai muay thai gym ( Rawai )</th>
+                                    <th> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
+                                </thead>
+
+                                <!-- แยกประเภทวิธีการชำระ -->
+                                <thead>
+                                    <th> แยกประเภทวิธีการชำระ </th>
+                                    <th></th>
+                                    <th></th>
+                                    <th class="text-right"> จำนวนครั้ง </th>
                                     <th class="text-right">ยอดขายรวม</th>
                                 </thead>
                                 <tbody>
@@ -77,26 +60,29 @@ include("layout/header.php");
                                     foreach ($sqlCash as $rowCash) : ?>
                                         <tr>
                                             <td><?= $rowCash['pay'] ?></td>
+                                            <td></td>
+                                            <td></td>
                                             <td class="text-right"><?= $rowCash['count'] ?></td>
                                             <td colspan="2" class="text-right"><?= number_format($rowCash['total'], 2) ?></td>
                                         </tr>
                                         <?php $totalAmount =  $totalAmount += $rowCash['total'] ?>
                                     <?php endforeach ?>
-                                    <tr class="bg-danger">
+                                    <tr class="text-danger">
                                         <th>ยอดรวมทั้งหมด</th>
+                                        <th></th>
                                         <th></th>
                                         <th></th>
                                         <th class="text-right "><?= number_format($totalAmount, 2) ?></th>
                                     </tr>
                                 </tbody>
 
+                                <!-- แยกประเภทการชำระแบบมีภาษี -->
                                 <thead>
-                                    <tr>
-                                        <th>ประเภาทการจ่าย</th>
-                                        <th class="text-right">หมายเลขบิล</th>
-                                        <th class="text-right">ยอด</th>
-                                        <th class="text-right">จำนวนภาษี</th>
-                                    </tr>
+                                    <th>แยกประเภทการชำระแบบมีภาษี</th>
+                                    <th></th>
+                                    <th class="text-right">หมายเลขบิล</th>
+                                    <th class="text-right">ยอด</th>
+                                    <th class="text-right">จำนวนภาษี</th>
                                 </thead>
                                 <tbody>
                                     <?php
@@ -108,9 +94,11 @@ include("layout/header.php");
                                     $stmt_pay->execute();
                                     $vat = 0;
                                     $sumVat = 0;
+                                    $sumRowPay = 0;
                                     foreach ($stmt_pay as $row_pay) : ?>
                                         <tr>
                                             <td> <?= $row_pay['pay'] ?> </td>
+                                            <td></td>
                                             <td class="text-right"> <?= $row_pay['num_bill'] ?> </td>
                                             <td class="text-right"> <?= number_format($row_pay['total'], 2) ?> </td>
                                             <?php
@@ -121,61 +109,24 @@ include("layout/header.php");
                                             <td class="text-right"> <?= number_format($vat, 2) ?> </td>
                                         </tr>
 
+                                        <?php $sumRowPay = $sumRowPay += $row_pay['total'] ?>
                                         <?php $sumVat = $sumVat += $vat  ?>
 
                                     <?php endforeach; ?>
 
-                                    <tr class="bg-danger">
+                                    <tr class="text-danger">
                                         <td>ยอดรวมภาษี</td>
-                                        <!-- <td style="color: red;">ยอดรวมทั้งหมด</td> -->
-                                        <td colspan="2"></td>
-                                        <th class="text-right"><?= number_format($sumVat, 2) ?> </th>
+                                        <th colspan="4" class="text-right"><?= number_format($sumVat, 2) ?></th>
                                     </tr>
                                 </tbody>
 
+                                <!-- ประเภทรายการ -->
                                 <thead>
-                                <th class="text-left">หมายเลขบิล</th>
-                                <th></th>
-                                <th class="text-right">ส่วนลด</th>
-                                <th class="text-right">จำนวนส่วนลด</th>
-                            </thead>
-                            <tbody>
-                                <?php
-                                $totalDis = 0;
-                                $sqlDis = "SELECT `num_bill`,`fname`,`discount`,`price`
-                                        FROM `orders` 
-                                        WHERE  `discount` > 0  AND date(date) LIKE '%$date%'";
-                                $stmtDis = $conndb->query($sqlDis);
-                                $stmtDis->execute();
-                                foreach ($stmtDis as $rowDis) : ?>
-                                    <tr>
-                                        <td><?= $rowDis['num_bill'] ?></td>
-                                        <td class="text-right"><?= $rowDis['discount'] ?> % </td>
-                                        <td class="text-right">
-                                            <?= number_format(($rowDis['price'] * $rowDis['discount']) / 100, 2)  ?>
-                                        </td>
-                                    </tr>
-                                    <?php $totalDis = $totalDis += ($rowDis['price'] * $rowDis['discount']) / 100 ?>
-                                <?php endforeach ?>
-                                <tr>
-                                    <td colspan="2">รวม</td>
-                                    <td class="text-right"><?= number_format($totalDis, 2) ?></td>
-                                </tr>
-                            </tbody>
-                            
-                            </table>
-                        </div>
-                        <!-- ถอดvat -->
-
-                        <!-- รายการสินค้า ไม่รวมภาษี-->
-                        <div class="col-md-12">
-                            <table class="table table-sm">
-                                <thead>
-                                    <th>ประเภทรายการ</th>
-                                    <th> ราคาสินค้า </th>
-                                    <th>ประเภทการชำระ</th>
-                                    <th>ขาย / จำนวนครั้ง</th>
+                                    <th> ประเภทรายการสินค้าและบริการ </th>
                                     <th></th>
+                                    <th class="text-right"> ราคาสินค้า </th>
+                                    <th class="text-right"> จำนวนครั้ง </th>
+                                    <th class="text-right">ยอดรวม ( ไม่มีภาษี )</th>
                                 </thead>
                                 <tbody>
                                     <?php
@@ -192,21 +143,60 @@ include("layout/header.php");
                                     foreach ($stmtProduct as $rowProduct) : ?>
                                         <tr>
                                             <td><?= $rowProduct['product_name'] ?></td>
-                                            <td><?= number_format($rowProduct['price'], 2) ?></td>
-                                            <td><?= $rowProduct['pay'] ?></td>
-                                            <td><?= $rowProduct['quantity'] ?></td>
-                                            <!-- <td><?= $rowProduct['total'] ?></td> -->
-                                            <td class="text-right"><?= number_format($rowProduct['quantity'] * $rowProduct['total'], 2) ?></td>
+                                            <td></td>
+                                            <td class="text-right"><?= number_format($rowProduct['price'], 2) ?></td>
+                                            <td class="text-right"><?= $rowProduct['quantity'] ?></td>
+                                            <td class="text-right"><?= number_format($rowProduct['quantity'] * $rowProduct['price'], 2) ?></td>
                                         </tr>
+
+                                        <?php $sumTotal = $sumTotal += ($rowProduct['quantity'] * $rowProduct['price']) ?>
                                     <?php endforeach ?>
 
+                                    <tr class="text-danger">
+                                        <td>ยอดรวมทั้งหมด</td>
+                                        <th></th>
+                                        <th colspan="3" class="text-right"><?= number_format($sumTotal, 2) ?></th>
+                                    </tr>
+                                </tbody>
+
+                                <!-- ส่วนลด -->
+                                <thead>
+                                    <th class="text-left">รายการส่วนลด</th>
+                                    <th></th>
+                                    <th class="text-right">ราคาสินค้า</th>
+                                    <th class="text-right">ส่วนลด</th>
+                                    <th class="text-right">จำนวนส่วนลด</th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $totalDis = 0;
+                                    $sqlDis = "SELECT orders.num_bill , orders.discount , orders.price , orders.date , order_details.product_name
+                                        FROM `orders`
+                                        join `order_details` ON order_details.order_id = orders.id
+                                        WHERE  `discount` > 0  AND date(orders.date) LIKE '%$date%'";
+                                    $stmtDis = $conndb->query($sqlDis);
+                                    $stmtDis->execute();
+                                    foreach ($stmtDis as $rowDis) : ?>
+                                        <tr>
+                                            <td><?= $rowDis['num_bill'] ?></td>
+                                            <td></td>
+                                            <td class="text-right"><?= $rowDis['product_name'] ?></td>
+                                            <td class="text-right"><?= $rowDis['discount'] ?> % </td>
+                                            <td class="text-right">
+                                                <?= number_format(($rowDis['price'] * $rowDis['discount']) / 100, 2)  ?>
+                                            </td>
+                                        </tr>
+                                        <?php $totalDis = $totalDis += ($rowDis['price'] * $rowDis['discount']) / 100 ?>
+                                    <?php endforeach ?>
+                                    <tr class="text-danger">
+                                        <td colspan="3">ยอดรวมส่วนลด</td>
+                                        <td></td>
+                                        <td class="text-right"><?= number_format($totalDis, 2) ?></td>
+                                    </tr>
                                 </tbody>
 
                             </table>
                         </div>
-
-                      
-
                     </div>
                     <div class="col-12">
                         <button class="btn btn-success mb-3 form-control" id="printButton"><i class="fas fa-print">Print</i></button>

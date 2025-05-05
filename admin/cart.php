@@ -52,7 +52,6 @@ include './layout/header.php';
 ?>
 
 
-<body class="hold-transition sidebar-mini layout-fixed">
     <div class="wrapper">
         <?php include 'aside.php' ?>
         <div class="content-wrapper">
@@ -266,23 +265,6 @@ include './layout/header.php';
                                             </select>
                                         </div>
 
-                                        <!-- Vat 7% -->
-                                        <!-- <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Vat 7%</span>
-                                        </div>
-                                        <input type="text" name="vat7" class="form-control" id="paymentDetails7" value="0" required>
-                                    </div> -->
-
-                                        <!-- Charge Card 3% -->
-                                        <!-- <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">Charge Card 3%</span>
-                                        </div>
-                                        <input type="text" name="vat3" class="form-control" id="paymentDetails3"
-                                            value="0" required>
-                                    </div> -->
-
                                         <!-- เริ่ม / หมด -->
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -385,8 +367,7 @@ include './layout/header.php';
                 title: 'หมายเลขบัตรซ้ำ กรูณากดใหม่'
             })
         </script>
-    <?php }
-    unset($_SESSION['carderror']); ?>
+    <?php } unset($_SESSION['carderror']); ?>
 
     <?php if (isset($_SESSION['remove'])) { ?>
         <script>

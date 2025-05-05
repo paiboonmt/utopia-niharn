@@ -57,6 +57,16 @@ if (isset($_POST['updateUset'])) {
     }
 }
 
+if (isset($_GET['action']) && $_GET['action'] == 'delete') {
+    $id = $_GET['id'];
+    $sql = "DELETE FROM `tb_user` WHERE `id` = :id";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':id', $id);
+    if ($stmt->execute()) {
+        header('location: usersetting.php');
+        $conndb = null;
+    }
+}
 
 include './layout/header.php';
 ?>
@@ -174,12 +184,17 @@ include './layout/header.php';
                                                     <td><?= $item['id'] ?></td>
                                                     <td><?= htmlspecialchars($item['username']); ?></td>
                                                     <td><?= htmlspecialchars($item['role']); ?></td>
-                                                    <td><?= htmlspecialchars($item['status']); ?></td>
+                                                    <td><?= htmlspecialchars($item['status']); ?>
+                                                    <input type="checkbox" checked data-toggle="toggle" data-onstyle="success">
+
+                                                </td>
                                                     <td class="text-center">
-                                                        <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $item['id'] ?>">
+                                                        <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#id<?= $item['id'] ?>">
                                                             <i class="fas fa-edit"></i> | แก้ไข
                                                         </button>
-                                                        <button class="btn btn-danger btn-sm trash">Delete</button>
+                                                        <a href="./usersetting.php?id=<?= $item['id'] ?>&action=delete" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this user?');">
+                                                            <i class="fas fa-trash"></i> | ลบ
+                                                        </a>
                                                     </td>
 
                                                     <!-- Modal -->

@@ -1,5 +1,4 @@
 <?php
-    session_start();
     include('./middleware.php');
     require_once("../includes/connection.php");
 
@@ -52,7 +51,7 @@
 
     // ลบข้อมูล
     if ( isset($_GET['act']) == 'delete' && $_GET['id'] ) {
-        global $conndb;
+        // global $conndb;
         $id = $_GET['id'];
        try {
             $sqlMember = $conndb->prepare("DELETE FROM `member` WHERE `package` =  '$id'");
@@ -105,17 +104,19 @@
 
     // อัปเดทสินค้าและราคา
     if (isset($_POST['updateOrder'])) {
-
-        // echo '<pre>';
-        // print_r($_POST);
-        // echo '</pre>';
-      
-
         $m_card = $_POST['m_card'];
         $discount = $_POST['discount'];
         $pay = $_POST['pay'];
-        $vat7 = $_POST['vat7'];
-        $vat3 = $_POST['vat3'];
+        $dataSet = explode(',', $pay);
+        $pay = $dataSet[0];
+        $vat = $dataSet[1];
+
+        if ( $vat == 3 ) {
+            $vat3 = $dataSet[1];
+        } elseif ( $vat == 7 ) {
+            $vat7 = $dataSet[1];
+        }
+        
         $sta_date = $_POST['sta_date'];
         $exp_date = $_POST['exp_date'];
         $fname = $_POST['fname'];
@@ -126,17 +127,15 @@
 
         $grandTotal = round($grandTotal, 2);
 
-
         $sql = "UPDATE member SET discount = '$discount', pay = '$pay' , vat7 = '$vat7' , vat3 = '$vat3' , sta_date = '$sta_date' , exp_date = '$exp_date' , fname = '$fname' , comment = '$comment' , total = '$grandTotal'  
         WHERE package = '$order_id' ";
         $stmt = $conndb->prepare($sql);
-        if ( $stmt->execute()) {
-
-            // อัปเดท ตาราง order
+        if ( $stmt->execute() == true) {
             $sqlOrder = $conndb->prepare("UPDATE `orders` 
             SET `fname`= '$fname',`discount`= '$discount',`price`= '$befortotal',`vat7`= '$vat7',`vat3`= '$vat3',`pay`='$pay',`sta_date`='$sta_date',`exp_date`='$exp_date',`comment`='$comment',`total`='$grandTotal' 
             WHERE id = '$order_id'");
             if ($sqlOrder->execute()){
+                $conndb = null;
                 $_SESSION['updateBil'] = true;
                 header("location:recordticketEdit.php?id=".$order_id);
             }

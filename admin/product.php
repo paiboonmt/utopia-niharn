@@ -117,7 +117,9 @@ include './layout/header.php';
                                                         <button type="button" class="btn btn-sm btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>">
                                                             <i class="fas fa-edit"></i>
                                                         </button>
-                                                        <button class="btn btn-sm btn-danger trash" id="<?= $row['id'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                                        <?php  if ( $_SESSION['role'] == 'admin') : ?>
+                                                            <button class="btn btn-sm btn-danger trash" id="<?= $row['id'] ?>"><i class="fas fa-trash-alt"></i></button>
+                                                        <?php endif ?>
                                                     </td>
 
                                                     <!-- Modal -->
