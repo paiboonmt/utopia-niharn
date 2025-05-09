@@ -1,15 +1,9 @@
 <?php
-session_start();
 include './middleware.php';
 $title = 'NEW MEMBER | TIGER APPLICATION';
 $page = 'newmember';
-//   $refresh_interval = 10; // วินาที
+include '../includes/connection.php';
 ?>
-<!-- <script>
-    setTimeout(function(){
-        location.reload();
-    }, < $refresh_interval * 1000; ?>);
-</script> -->
 
 <!DOCTYPE html>
 <html lang="en">

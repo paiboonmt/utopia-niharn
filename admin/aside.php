@@ -90,6 +90,9 @@ function countNew($conndb)
                     </a>
                 </li>
 
+                <li class="nav-header" style="font-size: 20px;">ขาย | คลาสเรียนมวย</li>
+
+
                 <?php
                 if ($page == 'cart') {
                     $active = 'active';
@@ -98,10 +101,11 @@ function countNew($conndb)
                 }
                 ?>
                 <li class="nav-item">
+                    
                     <a href="cart.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
-                            ขายสินค้า
+                            ขาย Ticket
                         </p>
                     </a>
                 </li>
@@ -118,10 +122,48 @@ function countNew($conndb)
                     <a href="product.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
-                            สินค้า และ บริการ
+                            บริการ รายการสอน
                         </p>
                     </a>
                 </li>
+                
+                <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
+
+                <?php
+                    if ($page == 'shop') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                ?>
+                <li class="nav-item">
+                    <a href="shop.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fas fa-shopping-cart"></i>
+                        <p>
+                            ขายสินค้า
+                        </p>
+                    </a>
+                </li>
+
+                <?php
+                    if ($page == 'store') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                ?>
+
+                <li class="nav-item">
+                    <a href="shop_store.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>
+                            คลังสินค้า
+                        </p>
+                    </a>
+                </li>
+
+
+
 
                 <?php
                 if ($page == 'payment') {
