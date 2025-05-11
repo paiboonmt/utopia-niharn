@@ -2,10 +2,12 @@
 $title = 'SALE TICKET | APPLICATION';
 include './middleware.php';
 $page = 'shop';
+
 $code = round(microtime(true));
 date_default_timezone_set('Asia/Bangkok');
 $hostname = gethostbyaddr($_SERVER['REMOTE_ADDR']);
 require_once("../includes/connection.php");
+require_once("./shop/function_shop_cart.php");
 // ค้นหาหมายเลขบิล
 // <!-- หมายเลข บิล-->
 $rowBill['num_bill'] = 0;
@@ -51,7 +53,6 @@ unset($_SESSION['Last_order_details']);
 include './layout/header.php';
 ?>
 
-
     <div class="wrapper">
         <?php include 'aside.php' ?>
         <div class="content-wrapper">
@@ -67,59 +68,24 @@ include './layout/header.php';
                                             <th>#</th>
                                             <th>ชื่อสินค้า บริการ</th>
                                             <th>ราคา</th>
-                                            <th class="text-center">แก้ไขราคา</th>
-                                            <th class="text-center">จัดการ</th>
+                                            <th class="text-center">จำนวนสินค้าคงเหลือ</th>
+                                            <th class="text-center">เลือก</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         <?php
                                         $i = 1;
-                                        $stmt = $conndb->query("SELECT * FROM `products` ORDER BY `product_name` ASC ");
-                                        $stmt->execute();
-                                        foreach ($stmt as $row) : ?>
+                                        $products = getProduct($conndb);
+                                        foreach ($products as $row) : ?>
                                             <tr>
                                                 <td><?= $i++; ?></td>
-                                                <td><?= $row['product_name'] ?></td>
+                                                <td><?= $row['name'] ?></td>
                                                 <td><?= number_format($row['price'], 2) ?></td>
+                                                <th class="text-center"><?= $row['quantity'] ?> ชิ้น</th>
                                                 <td class="text-center">
-                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#id<?= $row['id'] ?>"><i class="fas fa-edit"></i></button>
+                                                    <a href="shop/cart_add.php?id=<?= $row['id'] ?>&numBill=<?= $num_bill ?>" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
                                                 </td>
-                                                <td class="text-center">
-                                                    <a href="cart/cart_add.php?id=<?= $row['id'] ?>&numBill=<?= $num_bill ?>" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
-                                                </td>
-                                                <!-- Modal แก้ราคาสินค้าที่นี้ -->
-                                                <div class="modal fade" id="id<?= $row['id'] ?>" tabindex="-1" role="dialog"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog" role="document">
-                                                        <div class="modal-content">
-                                                            <div class="modal-body">
-                                                                <form action="productSql.php" method="post">
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span
-                                                                                class="input-group-text">ชื่อสินค้าบริการ</span>
-                                                                        </div>
-                                                                        <input type="text" class="form-control"
-                                                                            name="product_name"
-                                                                            value="<?= $row['product_name'] ?>">
-                                                                    </div>
-                                                                    <div class="input-group mb-3">
-                                                                        <div class="input-group-prepend">
-                                                                            <span class="input-group-text">ราคา</span>
-                                                                        </div>
-                                                                        <input type="number" class="form-control"
-                                                                            name="price" value="<?= $row['price'] ?>">
-                                                                    </div>
-                                                                    <input type="hidden" name="id"
-                                                                        value="<?= $row['id'] ?>">
-                                                                    <input type="submit" name="UpdatePrice"
-                                                                        value="อัปเดท ราคา"
-                                                                        class="form-control btn btn-success">
-                                                                </form>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                              
                                             </tr>
                                         <?php endforeach; ?>
                                     </tbody>
@@ -130,7 +96,7 @@ include './layout/header.php';
                         <div class="col-6">
                             <?php if (isset($_SESSION['cart'])) : ?>
                                 <div class="card mt-2 p-2">
-                                    <a onclick="return confirm('Are your sure delete it ?')" href="cart/cart_remove.php" class="btn btn-danger">CLEAR CART</a>
+                                    <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">CLEAR CART</a>
                                     <form action="./cart/cart_process.php" method="post">
                                         <table class="table table-sm" id="table">
                                             <thead>
@@ -156,25 +122,25 @@ include './layout/header.php';
                                                     $Ids = implode(', ', $productIds);
                                                 }
                                                 $i = 1;
-                                                $stmts = $conndb->query("SELECT * FROM `products` WHERE id IN ($Ids)");
+                                                $stmts = $conndb->query("SELECT * FROM `store` WHERE id IN ($Ids)");
                                                 $stmts->execute();
                                                 foreach ($stmts as $rows) : ?>
                                                     <tr>
                                                         <td><?= $i++; ?></td>
-                                                        <td><?= $rows['product_name'] ?></td>
+                                                        <td><?= $rows['name'] ?></td>
                                                         <input type="hidden" name="product[<?= $rows['id'] ?>][id]" value="<?= $rows['id'] ?>">
                                                         <input type="hidden" name="product[<?= $rows['id'] ?>][price]" value="<?= $rows['price'] ?>">
-                                                        <input type="hidden" name="product[<?= $rows['id'] ?>][name]" value="<?= $rows['product_name'] ?>">
+                                                        <input type="hidden" name="product[<?= $rows['id'] ?>][name]" value="<?= $rows['name'] ?>">
                                                         <td>
                                                             <?= number_format($rows['price'], 2) ?>
                                                         </td>
                                                         <td style="width: 20px;">
-                                                            <input type="number" class="form-control text-center" value="<?= $_SESSION['cart'][$rows['id']]  ?>">
+                                                            <input type="text" class="btn btn-sm" value="<?= $_SESSION['cart'][$rows['id']]  ?>" readonly>
                                                             <input type="hidden" name="quantity[<?= $rows['id'] ?>][quantity]" value="<?= $_SESSION['cart'][$rows['id']]  ?>">
                                                         </td>
                                                         <td class="text-center">
-                                                            <a href="./cart/cart_update.php?id=<?= $rows['id'] ?>&action=updatecart" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a>
-                                                            <a href="./cart/cart_update.php?id=<?= $rows['id'] ?>&action=delete" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+                                                            <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=updatecart" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a>
+                                                            <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=delete" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
                                                         </td>
 
                                                         <td class="text-right">
@@ -345,7 +311,6 @@ include './layout/header.php';
         </div>
     </div>
 
-
     <?php include './layout/footer.php' ?>
 
     <script>
@@ -356,120 +321,6 @@ include './layout/header.php';
         });
     </script>
 
-    <?php if (isset($_SESSION['carderror'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'error',
-                title: 'หมายเลขบัตรซ้ำ กรูณากดใหม่'
-            })
-        </script>
-    <?php } unset($_SESSION['carderror']); ?>
-
-    <?php if (isset($_SESSION['remove'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'remove successfully!'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['remove']); ?>
-
-    <?php if (isset($_SESSION['add'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 500,
-                icon: 'success',
-                title: 'Add item successfully!'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['add']); ?>
-
-    <?php if (isset($_SESSION['update'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'Update item successfully!'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['update']); ?>
-
-    <?php if (isset($_SESSION['addCart'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-center',
-                showConfirmButton: false,
-                timer: 1000,
-                icon: 'info',
-                background: '#B6FFFA',
-                title: 'Item add to cart '
-            })
-        </script>
-    <?php }
-    unset($_SESSION['addCart']); ?>
-
-    <?php if (isset($_SESSION['unsetItem'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'Remove item Succeflully'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['unsetItem']); ?>
-
-    <?php if (isset($_SESSION['cartSuccess'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'ขายเรียบร้อยแล้ว'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['cartSuccess']); ?>
-
-    <?php if (isset($_SESSION['updatePrice'])) { ?>
-        <script>
-            Swal.fire({
-                toast: true,
-                position: 'top-end',
-                showConfirmButton: false,
-                timer: 2000,
-                icon: 'success',
-                title: 'อัปเดทราคาเรียบร้อย'
-            })
-        </script>
-    <?php }
-    unset($_SESSION['updatePrice']); ?>
-
 </body>
-
 </html>
-
 <?php $conndb = null; ?>
