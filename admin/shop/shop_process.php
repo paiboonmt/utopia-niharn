@@ -5,19 +5,10 @@ include("../middleware.php");
 if (isset($_POST['saveOrder'])) {
     require_once("../../includes/connection.php");
 
-
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
     exit;
-
-    // [code] => 1746952037
-    // [num_bill] => 110525101
-    // [m_card] => 8734760185
-    // [pay] => Cash,0
-    // [price] => 30.00
-    // [grandTotal] => 30
-    // [saveOrder] => ขายสินค้า
 
     $detail = $_POST['detail'];
     $hostname = $_POST['hostname'];
@@ -27,6 +18,7 @@ if (isset($_POST['saveOrder'])) {
     $code = $_POST['code'];
     $price = $_POST['price'];
     $discount = $_POST['discount'];
+    $grandTotal = $_POST['grandTotal'];
 
     $payment = $_POST['pay'];;
 
@@ -41,12 +33,6 @@ if (isset($_POST['saveOrder'])) {
     }
 
     $pay = $dataSet[0];
-
-
-    $sta_date = $_POST['sta_date'];
-    $exp_date = $_POST['exp_date'];
-    $fname = $_POST['fname'];
-    $comment = $_POST['comment'];
 
     $ref_order_id = $_POST['m_card'];
     $grandTotal = $_POST['grandTotal'];

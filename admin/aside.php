@@ -101,7 +101,7 @@ function countNew($conndb)
                 }
                 ?>
                 <li class="nav-item">
-                    
+
                     <a href="cart.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
@@ -126,42 +126,44 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
-                
-                <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
 
-                <?php
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
+                    <?php
                     if ($page == 'shop') {
                         $active = 'active';
                     } else {
                         $active = '';
                     }
-                ?>
-                <li class="nav-item">
-                    <a href="shop.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
-                        <p>
-                            ขายสินค้า
-                        </p>
-                    </a>
-                </li>
+                    ?>
 
-                <?php
+                    <li class="nav-item">
+                        <a href="shop.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                                ขายสินค้า
+                            </p>
+                        </a>
+                    </li>
+
+
+                    <?php
                     if ($page == 'store') {
                         $active = 'active';
                     } else {
                         $active = '';
                     }
-                ?>
+                    ?>
 
-                <li class="nav-item">
-                    <a href="shop_store.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-store"></i>
-                        <p>
-                            คลังสินค้า
-                        </p>
-                    </a>
-                </li>
-
+                    <li class="nav-item">
+                        <a href="shop_store.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-store"></i>
+                            <p>
+                                คลังสินค้า
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
 
 
 
