@@ -5,6 +5,20 @@ include("../middleware.php");
 if (isset($_POST['saveOrder'])) {
     require_once("../../includes/connection.php");
 
+
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+    exit;
+
+    // [code] => 1746952037
+    // [num_bill] => 110525101
+    // [m_card] => 8734760185
+    // [pay] => Cash,0
+    // [price] => 30.00
+    // [grandTotal] => 30
+    // [saveOrder] => ขายสินค้า
+
     $detail = $_POST['detail'];
     $hostname = $_POST['hostname'];
     $num_bill = $_POST['num_bill'];
@@ -34,34 +48,22 @@ if (isset($_POST['saveOrder'])) {
     $fname = $_POST['fname'];
     $comment = $_POST['comment'];
 
-    $m_card = $_POST['m_card'];
+    $ref_order_id = $_POST['m_card'];
     $grandTotal = $_POST['grandTotal'];
     $AddBy = $_SESSION['username'];
     $sumPrice = $_POST['grandTotal'];
-    $set = dis($discount, $vat7, $vat3, $grandTotal);
+    $sub_vat = dis($discount, $vat7, $vat3, $grandTotal);
 
     $c_status_code = 1;
+    
 
-    $sqlMcard = $conndb->query("SELECT m_card FROM member WHERE m_card = '$m_card'");
-    $sqlMcard->execute();
+    $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
+    VALUES ( '$ref_order_id','$num_bill','$price','$pay','$vat7','$vat3','$sub_vat','$grandTotal',current_timestamp(),'$AddBy')";
+    $stmt = $conndb->prepare($SQL);
 
-    if ($sqlMcard->rowCount() > 0) {
-        echo $sqlMcard->rowCount();
-        $_SESSION['carderror'] = true;
-        header('location:../cart.php');
-        exit;
-    }
+    if ($stmt->execute() == true) {
 
-    $sql1 = "INSERT INTO `orders`(`ref_order_id`, `num_bill` , `fname`, `discount`, `price`, `vat7`, `vat3`, `pay`, `sta_date`, 
-        `exp_date`, `comment`, `total` , `date` , `hostname` , `emp`) 
-        VALUES ('$m_card','$num_bill', '$fname','$discount','$sumPrice','$vat7','$vat3','$pay','$sta_date','$exp_date',
-        '$comment','$set',current_timestamp() , '$converBill' , '$AddBy')";
-
-    $stmt1 = $conndb->prepare($sql1);
-
-    if ($stmt1->execute()) {
-
-        $order_id = $conndb->lastInsertId("SELECT * FROM `orders`");
+        $order_id = $conndb->lastInsertId("SELECT * FROM `shop_orders`");
 
         foreach ($_SESSION['cart'] as $productId => $productQty) {
 
@@ -69,10 +71,10 @@ if (isset($_POST['saveOrder'])) {
             $price = $_POST['product'][$productId]['price'];
             $total = $price * $productQty;
 
-            $sql2 = "INSERT INTO `order_details`(`order_id`, `product_id`, `product_name`, `price`, `quantity`, `total`) 
+            $SQL = "INSERT INTO `shop_order_details`(`order_id`, `product_id`, `product_name`, `price`, `quantity`, `total`) 
                 VALUES ('$order_id','$productId','$product_name','$price','$productQty','$total')";
-            $stmt2 = $conndb->prepare($sql2);
-            $stmt2->execute();
+            $STMT = $conndb->prepare($SQL);
+            $STMT->execute();
 
             insertVoiceItem($conndb, $order_id, $productId, $product_name, $price, $productQty, $total);
         }
@@ -289,14 +291,6 @@ function dis($discount, $vat7, $vat3, $grandTotal)
         $grandTotal = $grandTotal  +  $vat7  + $vat3;
         return $grandTotal;
     }
-}
-
-function viewData()
-{
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
 }
 
 function checkBill($conndb, int $num_bill)

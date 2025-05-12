@@ -12,7 +12,7 @@ require_once("./shop/function_shop_cart.php");
 // <!-- หมายเลข บิล-->
 $rowBill['num_bill'] = 0;
 $billSql = $conndb->query("SELECT `num_bill` 
-    FROM `orders` 
+    FROM `shop_orders` 
     WHERE date(date) =  CURDATE()
     ORDER BY `id` 
     DESC LIMIT 1 ");
@@ -96,8 +96,10 @@ include './layout/header.php';
                         <div class="col-6">
                             <?php if (isset($_SESSION['cart'])) : ?>
                                 <div class="card mt-2 p-2">
-                                    <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">CLEAR CART</a>
-                                    <form action="./cart/cart_process.php" method="post">
+                                    <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">ยกเลิกสินค้าทั้งหมด</a>
+
+                                    <form action="./shop/shop_process.php" method="post">
+
                                         <table class="table table-sm" id="table">
                                             <thead>
                                                 <tr>
@@ -167,55 +169,31 @@ include './layout/header.php';
                                         <!-- หมายเลขบิลก่อนหน้านี้ -->
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบิลก่อนหน้านี้</label>
+                                                <label class="input-group-text">หมายเลขบิลก่อนหน้านี้ |</label>
                                             </div>
-                                            <input type="text" disabled class="form-control"
-                                                value="<?= $rowBill['num_bill'] ?>">
+                                            <input type="text" readonly class="form-control" value="<?= $rowBill['num_bill'] ?>">
                                         </div>
 
                                         <!-- หมายเลขบิล -->
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบิล | Tax Number</label>
+                                                <label class="input-group-text">หมายเลขบิล | Tax Number |</label>
                                             </div>
-                                            <input type="text" disabled class="form-control" value="<?= $num_bill ?>">
-                                            <input type="text" name="num_bill" hidden class="form-control" value="<?= $num_bill ?>">
+                                            <input type="text" name="num_bill" class="form-control" value="<?= $num_bill ?>" readonly>
                                         </div>
 
                                         <!-- หมายเลข -->
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบัตร | Qrcode</label>
+                                                <label class="input-group-text">หมายเลขบัตร | Qrcode |</label>
                                             </div>
-                                            <input type="text" disabled class="form-control" value="<?= 2 * $code ?>">
-                                            <input type="text" name="m_card" hidden class="form-control"
-                                                value="<?= 2 * $code ?>">
-                                        </div>
-
-                                        <!-- ส่วนลด -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">ส่วนลด</label>
-                                            </div>
-                                            <select class="custom-select" name="discount">
-                                                <option selected>0</option>
-                                                <option value="5">5%</option>
-                                                <option value="10">10%</option>
-                                                <option value="15">15%</option>
-                                                <option value="20">20%</option>
-                                                <option value="25">25%</option>
-                                                <option value="30">30%</option>
-                                                <option value="35">35%</option>
-                                                <option value="40">40%</option>
-                                                <option value="45">45%</option>
-                                                <option value="50">50%</option>
-                                            </select>
+                                            <input type="text" name="m_card" readonly class="form-control" value="<?= 5 * $code ?>">
                                         </div>
 
                                         <!-- ประเภทการจ่าย -->
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
-                                                <label class="input-group-text">ประเภทการจ่าย</label>
+                                                <label class="input-group-text">ประเภทการจ่าย |</label>
                                             </div>
                                             <?php
                                             $sqlPayment = $conndb->query("SELECT * FROM `payment` ORDER BY `pay_id` ASC");
@@ -231,51 +209,11 @@ include './layout/header.php';
                                             </select>
                                         </div>
 
-                                        <!-- เริ่ม / หมด -->
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <div class="input-group mb-1">
-                                                    <div class="input-group-prepend">
-                                                        <label class="input-group-text">เริ่ม</label>
-                                                    </div>
-                                                    <input type="date" name="sta_date" class="form-control"
-                                                        value="<?= date('Y-m-d') ?>">
-                                                </div>
-                                            </div>
 
-                                            <div class="col-sm-6">
-                                                <div class="input-group mb-1">
-                                                    <div class="input-group-prepend">
-                                                        <label class="input-group-text">หมด</label>
-                                                    </div>
-                                                    <input type="date" name="exp_date" class="form-control" value="<?= date('Y-m-d', strtotime('+1 days')) ?>">
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <!-- Customer name -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">Customer name</label>
-                                            </div>
-                                            <input type="text" name="fname" class="form-control" value="Customer" required>
-                                        </div>
-                                        <!-- comment -->
-                                        <div class="form-group">
-                                            <textarea class="form-control" name="comment" rows="3"
-                                                placeholder="Enter Comment"></textarea>
-                                        </div>
-                                        <!-- Detail -->
-                                        <div class="form-group">
-                                            <textarea class="form-control" hidden name="detail" rows="3"></textarea>
-                                        </div>
+                                        <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
+                                        <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
 
-                                        <input type="text" hidden name="hostname" value="<?= $hostname ?>">
-
-                                        <input type="text" name="price" hidden class="form-control"
-                                            value="<?= $rows['price'] ?>">
-                                        <input type="text" name="grandTotal" hidden class="form-control"
-                                            value="<?= $grantotal ?>">
-                                        <input type="submit" name="saveOrder" class="btn btn-success form-control">
+                                        <input type="submit" name="saveOrder" value="ขายสินค้า" class="btn btn-success form-control">
                                     </form>
                                 </div>
                             <?php else : ?>
