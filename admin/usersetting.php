@@ -35,9 +35,23 @@ if (isset($_POST['addUser'])) {
 
 if (isset($_POST['updateUset'])) {
 
+    // echo "<pre>";
+    // print_r($_POST);
+    // echo "</pre>";
+    // exit;
+
     $id = $_POST['id'];
     $username = $_POST['username'];
-    $password = md5($_POST['password']);
+    
+    if (empty($_POST['password_new'])) {
+        $password = $_POST['password_old'];
+    } else {
+        $password = $_POST['password_new'];
+    }
+
+    $password = password_hash($password, PASSWORD_DEFAULT);
+
+
     $role = $_POST['role'];
     $site = $_POST['site'];
     $status = $_POST['status'];
@@ -223,7 +237,8 @@ include './layout/header.php';
                                                                             <div class="input-group-prepend">
                                                                                 <span class="input-group-text">Password</span>
                                                                             </div>
-                                                                            <input type="text" class="form-control" name="password" placeholder="Enter new password to update">
+                                                                            <input type="text" class="form-control" name="password_new" placeholder="Enter new password to update">
+                                                                            <input type="text" class="form-control" name="password_old" value="<?= $item['password'] ?>" hidden >
                                                                         </div>
 
                                                                         <div class="input-group mb-2">
