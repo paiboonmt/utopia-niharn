@@ -5,19 +5,15 @@ include("../middleware.php");
 if (isset($_POST['saveOrder'])) {
     require_once("../../includes/connection.php");
 
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
+        echo "<pre>";
+        print_r($_POST);
+        echo "</pre>";
+    // exit;
 
-    $detail = $_POST['detail'];
-    $hostname = $_POST['hostname'];
     $num_bill = $_POST['num_bill'];
     $conNum_bill = intval($num_bill);
-    $converBill = $hostname . '-' . $conNum_bill; // แปลงค่าไปบันทึกในตาราง Orders
     $code = $_POST['code'];
     $price = $_POST['price'];
-    $discount = $_POST['discount'];
     $grandTotal = $_POST['grandTotal'];
 
     $payment = $_POST['pay'];;
@@ -38,10 +34,7 @@ if (isset($_POST['saveOrder'])) {
     $grandTotal = $_POST['grandTotal'];
     $AddBy = $_SESSION['username'];
     $sumPrice = $_POST['grandTotal'];
-    $sub_vat = dis($discount, $vat7, $vat3, $grandTotal);
 
-    $c_status_code = 1;
-    
 
     $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
     VALUES ( '$ref_order_id','$num_bill','$price','$pay','$vat7','$vat3','$sub_vat','$grandTotal',current_timestamp(),'$AddBy')";
@@ -61,8 +54,6 @@ if (isset($_POST['saveOrder'])) {
                 VALUES ('$order_id','$productId','$product_name','$price','$productQty','$total')";
             $STMT = $conndb->prepare($SQL);
             $STMT->execute();
-
-            insertVoiceItem($conndb, $order_id, $productId, $product_name, $price, $productQty, $total);
         }
 
         $_SESSION['order_id'] = $order_id;
@@ -70,28 +61,31 @@ if (isset($_POST['saveOrder'])) {
 
     $package = $order_id;
     $sumPrice = $_POST['grandTotal'];
-    insertData(
-        $conndb,
-        $package,
-        $m_card,
-        $sta_date,
-        $exp_date,
-        $sumPrice,
-        $discount,
-        $pay,
-        $fname,
-        $comment,
-        $AddBy,
-        $code,
-        $vat7,
-        $vat3,
-        $total,
-        $grandTotal,
-        $num_bill,
-        $detail
-    );
+
     insertGroup_type($conndb, $m_card);
+
+    $_SESSION['package'] = $package;
+    $_SESSION['m_card'] = $m_card;
+    $_SESSION['sta_date'] = $sta_date;
+    $_SESSION['exp_date'] = $exp_date;
+    $_SESSION['fname'] = $fname;
+    $_SESSION['comment'] = $comment;
+    $_SESSION['price'] = $price;
+    $_SESSION['discountOraginal'] = $_POST['discount'];
+    $_SESSION['discount'] = $discount;
+    $_SESSION['pay'] = $pay;
+    $_SESSION['AddBy'] = $AddBy;
+    $_SESSION['code'] = $code;
+    $_SESSION['vat7'] = $vat7;
+    $_SESSION['vat3'] = $vat3;
+    $_SESSION['grandTotal'] = $grandTotal;
+    $_SESSION['num_bill'] = $num_bill;
+    $_SESSION['detail'] = $detail;
+
+    $_SESSION['cartSuccess'] = true;
+    header("location: print/print.php");
     $conndb = null;
+
 }
 
 function insertVoiceItem($conndb, $order_id, $productId, $product_name, $price, $productQty, $total)
@@ -100,148 +94,6 @@ function insertVoiceItem($conndb, $order_id, $productId, $product_name, $price, 
         VALUES ('$order_id','$productId', '$product_name', '$price', '$productQty', '$total' , current_timestamp() )";
     $stmt = $conndb->prepare($sql);
     $stmt->execute();
-}
-
-function insertData(
-    $conndb,
-    $package,
-    $m_card,
-    $sta_date,
-    $exp_date,
-    $sumPrice,
-    $discount,
-    $pay,
-    $fname,
-    $comment,
-    $AddBy,
-    $code,
-    $vat7,
-    $vat3,
-    $total,
-    $grandTotal,
-    $num_bill,
-    $detail
-) {
-    $detail = $detail;
-    $num_bill = $num_bill;
-    $vat7 = $vat7;
-    $vat3 = $vat3;
-    $code = $code;
-    $group = 'customer';
-    $m_card = $m_card;
-    $p_visa = '';
-    $email = '';
-    $phone = '';
-    $sex = '';
-    $fname = $fname;
-    $price = $sumPrice;
-    $pay = $pay;
-    $fightname = '';
-    $nationalty = '';
-    $birthday = '';
-    $age = '';
-    $discount = $discount;
-    $total = $total;
-    $package = $package;
-    $dropin = 0;
-    $new_package = '';
-    $height = '';
-    $weigh = '';
-    $accom = '';
-    $payment = '';
-    $invoice = '';
-    $vaccine = '';
-    $comment = $comment;
-    $emergency = '';
-    $sta_date = $sta_date;
-    $exp_date = $exp_date;
-    $expired = '';
-    $tenure = '';
-    $type_training = '';
-    $type_fighter = '';
-    $sponsored = '';
-    $commission = '';
-    $mealplan_month = '';
-    $affiliate = '';
-    $facebook = '';
-    $instagram = '';
-    $status = 1;
-    $image = '55556666664444.png';
-    $AddBy = $AddBy;
-    $status_code = 1;
-    $grandTotal = $grandTotal;
-
-    if ($discount != 0) {
-        $discount = ($grandTotal * $discount) / 100;
-        if ($vat7 != 0) {
-            $vat7 = (($grandTotal - $discount) * $vat7) / 100;
-            if ($vat3 != 0) {
-                $vat3 = (($grandTotal - $discount + $vat7) * $vat3) / 100;
-            }
-        } else {
-            if ($vat3 != 0) {
-                $vat3 = (($grandTotal - $discount + $vat7) * $vat3) / 100;
-            }
-        }
-
-        $grandTotal = $grandTotal - $discount +  $vat7  + $vat3;
-    } else {
-        if ($vat7 != 0) {
-            $vat7 = ($grandTotal * $vat7) / 100;
-            if ($vat3 != 0) {
-                $vat3 = (($grandTotal  + $vat7) * $vat3) / 100;
-            }
-        } else {
-            if ($vat3 != 0) {
-                $vat3 = (($grandTotal  + $vat7) * $vat3) / 100;
-            }
-        }
-
-        $grandTotal = $grandTotal  +  $vat7  + $vat3;
-    }
-
-    try {
-        $sql = "INSERT INTO `member`(`group`, `m_card`, `p_visa`, `email`, `phone`, `sex`, `fname`, 
-            `price`, `pay`, `fightname`, `nationalty`, `birthday`, `age`, `discount`, `vat7`, `vat3`, `total`, 
-            `package`, `dropin`, `new_package`, `height`, `weigh`, `accom`, `payment`, `invoice`, `vaccine`, `comment`, 
-            `emergency`, `sta_date`, `exp_date`, `expired`, `tenure`, `type_training`, `type_fighter`, `sponsored`, `commission`, 
-            `mealplan_month`, `affiliate`, `facebook`, `instagram`, `status`, `image`, `AddBy`, `code`, `status_code` , `date`) 
-            VALUES ('$group','$m_card','$p_visa','$email','$phone','$sex','$fname','$price','$pay','$fightname', 
-            '$nationalty', '$birthday', '$age', '$discount', '$vat7', '$vat3', '$grandTotal', '$package', '$dropin', 
-            '$new_package', '$height', '$weigh', '$accom','$payment','$invoice','$vaccine', '$comment', '$emergency', 
-            '$sta_date', '$exp_date', '$expired', '$tenure', '$type_training', '$type_fighter', '$sponsored', '$commission', 
-            '$mealplan_month','$affiliate','$facebook', '$instagram', '$status', '$image', '$AddBy', '$code' , '$status_code' , 
-            current_timestamp())";
-        $stmt = $conndb->prepare($sql);
-
-        if ($stmt->execute()) {
-            $_SESSION['package'] = $package;
-            $_SESSION['m_card'] = $m_card;
-            $_SESSION['sta_date'] = $sta_date;
-            $_SESSION['exp_date'] = $exp_date;
-            $_SESSION['fname'] = $fname;
-            $_SESSION['comment'] = $comment;
-            $_SESSION['price'] = $price;
-            $_SESSION['discountOraginal'] = $_POST['discount'];
-            $_SESSION['discount'] = $discount;
-            $_SESSION['pay'] = $pay;
-            $_SESSION['AddBy'] = $AddBy;
-            $_SESSION['code'] = $code;
-            $_SESSION['vat7'] = $vat7;
-            $_SESSION['vat3'] = $vat3;
-            $_SESSION['grandTotal'] = $grandTotal;
-            $_SESSION['num_bill'] = $num_bill;
-            $_SESSION['detail'] = $detail;
-
-            $_SESSION['cartSuccess'] = true;
-            header("location: print/print.php");
-            $conndb = null;
-        }
-    } catch (PDOException $e) {
-
-        echo 'Process error' . $e->getMessage();
-        $conndb = null;
-    }
 }
 
 function dis($discount, $vat7, $vat3, $grandTotal)

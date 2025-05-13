@@ -200,7 +200,7 @@ include './layout/header.php';
                                             $sqlPayment->execute();
                                             ?>
                                             <select class="custom-select" name="pay" id="paymentMethodSelect" required>
-                                                <option value="" disabled selected>... Choose ...</option>
+                                                <!-- <option value="" disabled selected>... Choose ...</option> -->
                                                 <?php foreach ($sqlPayment as $rowPayment) : ?>
                                                     <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>">
                                                         <?= $rowPayment['pay_name'] ?>
