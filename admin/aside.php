@@ -50,7 +50,7 @@ function countNew($conndb)
                     <a href="index.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            หน้าแรก
+                            สรุปยอดขาย Ticket
                         </p>
                     </a>
                 </li>
@@ -100,8 +100,8 @@ function countNew($conndb)
                     $active = '';
                 }
                 ?>
-                <li class="nav-item">
 
+                <li class="nav-item">
                     <a href="cart.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
@@ -122,69 +122,10 @@ function countNew($conndb)
                     <a href="product.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
-                            บริการ รายการสอน
+                            บริการ
                         </p>
                     </a>
                 </li>
-
-                <?php if ($_SESSION['role'] == 'admin') : ?>
-                    <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
-                    <?php
-                    if ($page == 'shop') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-
-                    <li class="nav-item">
-                        <a href="shop.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-shopping-cart"></i>
-                            <p>
-                                ขายสินค้า
-                            </p>
-                        </a>
-                    </li>
-
-
-                    <?php
-                    if ($page == 'store') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-
-                    <li class="nav-item">
-                        <a href="shop_store.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-store"></i>
-                            <p>
-                                คลังสินค้า
-                            </p>
-                        </a>
-                    </li>
-                <?php endif ?>
-
-
-
-                <?php
-                if ($page == 'payment') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
-                <?php if ($_SESSION['role'] == 'admin') : ?>
-                    <li class="nav-item">
-                        <a href="payment.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
-                            <p>
-                                การชำระเงิน
-                            </p>
-                        </a>
-                    </li>
-                <?php endif ?>
 
                 <?php
                 if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
@@ -206,6 +147,97 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
+
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
+                    <?php
+                    if ($page == 'shop_total') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <li class="nav-item ">
+                        <a href="shop_total.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>
+                                สรุปยอดขาย สินค้า
+                            </p>
+                        </a>
+                    </li>
+
+
+                    <?php
+                    if ($page == 'shop') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+
+                    <li class="nav-item">
+                        <a href="shop.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-shopping-cart"></i>
+                            <p>
+                                ขายสินค้า
+                            </p>
+                        </a>
+                    </li>
+
+                    <?php
+                    if ($page == 'store') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+
+                    <li class="nav-item">
+                        <a href="shop_store.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-store"></i>
+                            <p>
+                                คลังสินค้า
+                            </p>
+                        </a>
+                    </li>
+
+                    <?php
+                    if ($page == 'recordshop') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <li class="nav-item ">
+                        <a href="recordshop.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fas fa-ticket-alt"></i>
+                            <p>
+                                ประวัติการขายสินค้า
+                            </p>
+                        </a>
+                    </li>
+
+                <?php endif ?>
+
+                <?php
+                if ($page == 'payment') {
+                    $active = 'active';
+                } else {
+                    $active = '';
+                }
+                ?>
+
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <li class="nav-item">
+                        <a href="payment.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
+                            <p>
+                                การชำระเงิน
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+
 
                 <?php
                 if ($page == 'search') {

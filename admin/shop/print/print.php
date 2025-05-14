@@ -38,9 +38,9 @@
 
                 $lastId =  $_SESSION['order_id'];
 
-                $stmts = $conndb->query("SELECT p.product_name , o.quantity ,p.price , p.id
-                    FROM `products` AS p
-                    LEFT JOIN order_details AS o ON  p.id = o.product_id 
+                $stmts = $conndb->query("SELECT p.name , o.quantity ,p.price , p.id
+                    FROM `store` AS p
+                    LEFT JOIN shop_order_details AS o ON  p.id = o.product_id 
                     WHERE id IN ($Ids)
                     AND order_id = $lastId
                     ");

@@ -5,9 +5,9 @@ include("../middleware.php");
 if (isset($_POST['saveOrder'])) {
     require_once("../../includes/connection.php");
 
-        echo "<pre>";
-        print_r($_POST);
-        echo "</pre>";
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
     // exit;
 
     $num_bill = $_POST['num_bill'];
@@ -54,6 +54,9 @@ if (isset($_POST['saveOrder'])) {
                 VALUES ('$order_id','$productId','$product_name','$price','$productQty','$total')";
             $STMT = $conndb->prepare($SQL);
             $STMT->execute();
+
+            updateStore($conndb, $productId, $productQty);
+
         }
 
         $_SESSION['order_id'] = $order_id;
@@ -61,8 +64,6 @@ if (isset($_POST['saveOrder'])) {
 
     $package = $order_id;
     $sumPrice = $_POST['grandTotal'];
-
-    insertGroup_type($conndb, $m_card);
 
     $_SESSION['package'] = $package;
     $_SESSION['m_card'] = $m_card;
@@ -85,7 +86,6 @@ if (isset($_POST['saveOrder'])) {
     $_SESSION['cartSuccess'] = true;
     header("location: print/print.php");
     $conndb = null;
-
 }
 
 function insertVoiceItem($conndb, $order_id, $productId, $product_name, $price, $productQty, $total)
@@ -157,6 +157,16 @@ function insertGroup_type($conndb, $number)
     $stmt->execute();
     $conndb = null;
     return true;
+}
+
+function updateStore($conndb, $productId, $productQty)
+{
+    $sql = "UPDATE `store` SET `quantity` = `quantity` - :productQty WHERE id = :productId";
+    $stmt = $conndb->prepare($sql);
+    $stmt->bindParam(':productId', $productId);
+    $stmt->bindParam(':productQty', $productQty);
+    $stmt->execute();
+    $conndb = null;
 }
 
 $conndb = null;
