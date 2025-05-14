@@ -148,8 +148,10 @@ function countNew($conndb)
                     </a>
                 </li>
 
-                <?php if ($_SESSION['role'] == 'admin') : ?>
+                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
                     <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
+
+                    
                     <?php
                     if ($page == 'shop_total') {
                         $active = 'active';
