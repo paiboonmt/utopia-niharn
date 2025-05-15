@@ -16,17 +16,12 @@
     <div class="col" id="col"><span><?= date('d-m-Y | H:i:s') ?></span></div>
 </div>
 
-<div class="row">
-    <div class="col"><span>QR CODE :</span></div>
-    <div class="col" id="col"><span><?= $_SESSION['m_card'] ?></span></div>
-</div>
-
 <hr>
 <?php foreach ($stmts as $rows) : ?>
 
     <div class="row">
-        <div class="col col-12"><span><?= $rows['name'] ?></span></div>
-        <div class="col"><span>Qty :<?= $rows['quantity'] ?></span> </div>
+        <div class="col col-12"><span><?= $rows['name'] ?> | price : <?= number_format($rows['price']) ?></span></div>
+        <div class="col"><span> Qty :<?= $rows['quantity'] ?></span> </div>
         <div class="col" id="col"><span><?= number_format($rows['price'] * $rows['quantity'], 2) ?></span> </div>
     </div>
 
@@ -41,9 +36,17 @@
     <div class="col" id="col"><span><?= number_format($grantotal, 2) ?></span></div>
 </div>
 
+
+<?php if ($_SESSION['vat3'] != 0) { ?>
+    <div class="row">
+        <div class="col"><span>Charge Card 3%:</span></div>
+        <div class="col" id="col"><span><?= number_format($_SESSION['sub_vat'], 2) ?></span> </div>
+    </div>
+<?php } ?>
+
 <div class="row">
     <div class="col"><span>Total Amount : </span></div>
-    <div class="col" id="col"><span><?= number_format($_SESSION['grandTotal'], 2) ?></span></div>
+    <div class="col" id="col"><span><?= number_format($_SESSION['sumTotal'], 2) ?></span></div>
 </div>
 
 
@@ -59,3 +62,4 @@
     <div class="col"><span>Cshier : <?= $_SESSION['AddBy']  ?></span></div>
 </div>
 <hr>
+

@@ -24,20 +24,45 @@ if (isset($_POST['saveOrder'])) {
 
     if ($vat == 3) {
         $vat3 = $dataSet[1];
+        $sub_vat = ($grandTotal * 3) / 100;
+        $sumTotal = $grandTotal + $sub_vat;
     } elseif ($vat == 7) {
         $vat7 = $dataSet[1];
+        $sub_vat = ($grandTotal * 7) / 100;
+        $sumTotal = $grandTotal + $sub_vat;
+    } else {
+        $vat3 = 0;
+        $vat7 = 0;
+        $sub_vat = 0;
+        $sumTotal = $grandTotal;
     }
 
     $pay = $dataSet[0];
 
     $ref_order_id = $_POST['m_card'];
-    $grandTotal = $_POST['grandTotal'];
     $AddBy = $_SESSION['username'];
-    $sumPrice = $_POST['grandTotal'];
+
+
+
+    echo "<pre>";
+    print_r($grandTotal);
+    echo "</pre>";
+    echo '<hr>';
+
+    echo "<pre>";
+    print_r($sub_vat);
+    echo "</pre>";
+    echo '<hr>';
+
+    echo "<pre>";
+    print_r($sumTotal);
+    echo "</pre>";
+    echo '<hr>';
+    // exit;
 
 
     $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
-    VALUES ( '$ref_order_id','$num_bill','$price','$pay','$vat7','$vat3','$sub_vat','$grandTotal',current_timestamp(),'$AddBy')";
+    VALUES ( '$ref_order_id','$num_bill','$price','$pay','$vat7','$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
     $stmt = $conndb->prepare($SQL);
 
     if ($stmt->execute() == true) {
@@ -56,7 +81,6 @@ if (isset($_POST['saveOrder'])) {
             $STMT->execute();
 
             updateStore($conndb, $productId, $productQty);
-
         }
 
         $_SESSION['order_id'] = $order_id;
@@ -79,7 +103,9 @@ if (isset($_POST['saveOrder'])) {
     $_SESSION['code'] = $code;
     $_SESSION['vat7'] = $vat7;
     $_SESSION['vat3'] = $vat3;
+    $_SESSION['sub_vat'] = $sub_vat;
     $_SESSION['grandTotal'] = $grandTotal;
+    $_SESSION['sumTotal'] = $sumTotal;
     $_SESSION['num_bill'] = $num_bill;
     $_SESSION['detail'] = $detail;
 

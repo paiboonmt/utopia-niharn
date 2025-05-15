@@ -44,7 +44,7 @@ include './layout/header.php';
                                         $sql = "SELECT *
                                                 FROM `shop_orders` , `shop_order_details`
                                                 WHERE `shop_orders`.`id` = `shop_order_details`.`order_id`
-                                                AND shop_orders.date LIKE '%$date%'";
+                                                AND shop_orders.date LIKE '%$date%' GROUP BY `shop_orders`.`id` DESC";
                                         $stmt = $conndb->query($sql);
                                         $stmt->execute();
                                         $count = 1;

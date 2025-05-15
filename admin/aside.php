@@ -1,5 +1,5 @@
 <?php
-// require_once '../includes/connection.php';
+
 $UserID = $_SESSION['UserID'];
 $pro = $conndb->query("SELECT * FROM `tb_user` WHERE id = $UserID");
 $pro->execute();
@@ -39,32 +39,34 @@ function countNew($conndb)
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <?php
-                if ($page == 'index') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
+                <!-- สรุปยอดขาย Training -->
                 <li class="nav-item ">
+                    <?php
+                    if ($page == 'index') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="index.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
-                            สรุปยอดขาย Ticket
+                            สรุปยอดขาย Training
                         </p>
                     </a>
                 </li>
+                <!-- สรุปยอดขาย Training -->
 
-                <?php
-                if ($page == 'usersetting') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-                <?php
-                if ($_SESSION['role'] == 'admin') : ?>
+                <!-- จัดการสมาชิก -->
+                <?php if ($_SESSION['role'] == 'admin') : ?>
                     <li class="nav-item ">
+                        <?php
+                        if ($page == 'usersetting') {
+                            $active = 'active';
+                        } else {
+                            $active = '';
+                        }
+                        ?>
                         <a href="usersetting.php" class="nav-link <?= $active ?>">
                             <i class="nav-icon fas fa-user-cog"></i>
                             <p>
@@ -73,15 +75,17 @@ function countNew($conndb)
                         </a>
                     </li>
                 <?php endif ?>
+                <!-- จัดการสมาชิก -->
 
-                <?php
-                if ($page == 'checkin') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
+                <!-- เช็คอิน -->
                 <li class="nav-item">
+                    <?php
+                    if ($page == 'checkin') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="checkin.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon  fas fa-door-open"></i>
                         <p>
@@ -89,19 +93,18 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
-
+                <!-- เช็คอิน -->
                 <li class="nav-header" style="font-size: 20px;">ขาย | คลาสเรียนมวย</li>
 
-
-                <?php
-                if ($page == 'cart') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
+                <!-- ขาย Ticket -->
                 <li class="nav-item">
+                    <?php
+                    if ($page == 'cart') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="cart.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-shopping-cart"></i>
                         <p>
@@ -109,16 +112,17 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
+                <!-- ขาย Ticket -->
 
-                <?php
-                if ($page == 'product') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
+                <!-- บริการ -->
                 <li class="nav-item">
+                    <?php
+                    if ($page == 'product') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="product.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fab fa-product-hunt"></i>
                         <p>
@@ -126,15 +130,17 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
+                <!-- บริการ -->
 
-                <?php
-                if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
+                <!-- ประวัติการขาย -->
                 <li class="nav-item ">
+                    <?php
+                    if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="recordticket.php" class="nav-link <?= $active ?>">
                         <i class="nav-icon fas fa-ticket-alt"></i>
                         <p>
@@ -147,11 +153,69 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
+                <!-- ประวัติการขาย -->
+
+                <!-- ค้นหาสมาชิก -->
+                <li class="nav-item ">
+                    <?php
+                    if ($page == 'search') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="search.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fas fa-search"></i>
+                        <p>
+                            ค้นหาสมาชิก
+                        </p>
+                    </a>
+                </li>
+                <!-- ค้นหาสมาชิก -->
+
+                <!-- รายชื่อสมาชิก -->
+                <li class="nav-item">
+                    <?php
+                    if ($page == 'newmember') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="newmember.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fas fa-user-clock"></i>
+                        <p>
+                            รายชื่อสมาชิก
+                            <?php if (countNew($conndb) == 0) { ?>
+                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
+                            <?php } else { ?>
+                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
+                            <?php } ?>
+                        </p>
+                    </a>
+                </li>
+                <!-- รายชื่อสมาชิก -->
+
+                <!-- สัญชาติ -->
+                <li class="nav-item">
+                    <?php
+                    if ($page == 'nationality') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="nationnality.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fas fa-language"></i>
+                        <p>
+                            สัญชาติ
+                        </p>
+                    </a>
+                </li>
+                <!-- สัญชาติ -->
 
                 <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
                     <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
-
-                    
                     <?php
                     if ($page == 'shop_total') {
                         $active = 'active';
@@ -221,87 +285,34 @@ function countNew($conndb)
 
                 <?php endif ?>
 
-                <?php
-                if ($page == 'payment') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
-                <?php if ($_SESSION['role'] == 'admin') : ?>
-                    <li class="nav-item">
-                        <a href="payment.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
-                            <p>
-                                การชำระเงิน
-                            </p>
-                        </a>
-                    </li>
-                <?php endif ?>
-
-
-                <?php
-                if ($page == 'search') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-                <li class="nav-item ">
-                    <a href="search.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-search"></i>
-                        <p>
-                            ค้นหาสมาชิก
-                        </p>
-                    </a>
-                </li>
-
-                <?php
-                if ($page == 'newmember') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
+                <!-- การชำระเงิน -->
                 <li class="nav-item">
-                    <a href="newmember.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-user-clock"></i>
+                    <?php
+                    if ($page == 'payment') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="payment.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fab fa-cc-amazon-pay"></i>
                         <p>
-                            รายชื่อสมาชิก
-                            <?php if (countNew($conndb) == 0) { ?>
-                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
-                            <?php } else { ?>
-                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
-                            <?php } ?>
+                            ประเภท การชำระเงิน
                         </p>
                     </a>
                 </li>
+                <!-- การชำระเงิน -->
 
-                <?php
-                if ($page == 'nationality') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
-                <li class="nav-item">
-                    <a href="nationnality.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-language"></i>
-                        <p>
-                            สัญชาติ
-                        </p>
-                    </a>
-                </li>
-
+                <!-- รายงาน -->
                 <li class="nav-item">
                     <a href="./report/reportTicket.php" class="nav-link">
                         <i class="nav-icon fas fa-print"></i>
                         <p>รายงาน</p>
                     </a>
                 </li>
+                <!-- รายงาน -->
 
+                <!-- ออกจากระบบ -->
                 <li class="nav-item">
                     <a href="#" onclick="logout()" class="nav-link">
                         <i class="nav-icon fas fa-sign-out-alt"></i>
@@ -310,6 +321,7 @@ function countNew($conndb)
                         </p>
                     </a>
                 </li>
+                <!-- ออกจากระบบ -->
 
             </ul>
         </nav>

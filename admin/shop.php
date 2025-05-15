@@ -209,7 +209,6 @@ include './layout/header.php';
                                             </select>
                                         </div>
 
-
                                         <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
                                         <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
 

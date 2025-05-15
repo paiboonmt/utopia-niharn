@@ -1,7 +1,7 @@
 <?php
 include("middleware.php");
 $date = date('Y-m-d');
-$title = 'DASHBOARD | ' . $date;
+$title = 'สรุปรายงานการขาย training lessons ประจำวัน :     ' . $date;
 $page = 'index';
 
 include("../includes/connection.php");
