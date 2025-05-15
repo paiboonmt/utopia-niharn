@@ -56,7 +56,9 @@ include './layout/header.php';
                                                 <td class="text-left">
                                                     <?php
                                                     $idd = $row['id'];
-                                                    $checkRow = "SELECT product_name , quantity , price as ppp  FROM `shop_order_details` WHERE order_id = '$idd'";
+                                                    $checkRow = "SELECT product_name , quantity , price as ppp  
+                                                    FROM `shop_order_details` 
+                                                    WHERE order_id = '$idd'";
                                                     $stmtCheckRow = $conndb->prepare($checkRow);
                                                     $stmtCheckRow->execute();
                                                     $rowCount = $stmtCheckRow->rowCount();

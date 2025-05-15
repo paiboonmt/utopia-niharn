@@ -24,6 +24,18 @@ function countNew($conndb)
     $data = $stmt->rowCount();
     return $data;
 }
+
+function countShop($conndb)
+{
+    $data = null;
+    $stmt = $conndb->query("SELECT * FROM `shop_orders` WHERE `pay` != 'Canceled' AND  date(date)=curdate()");
+    $stmt->execute();
+    $data = $stmt->rowCount();
+    return $data;
+}
+
+
+
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
     <a href="index.php" class="brand-link">
