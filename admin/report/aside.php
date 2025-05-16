@@ -83,6 +83,23 @@
                 </li>
 
                 <?php
+                    if ($page == 'reportShop') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                ?>
+
+                <li class="nav-item">
+                    <a href="reportShop.php" class="nav-link <?= $active ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>
+                            ยอดขายสินค้า
+                        </p>
+                    </a>
+                </li>
+
+                <?php
                     if ($page == 'reportDay') {
                         $active = 'active';
                     } else {

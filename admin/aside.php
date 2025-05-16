@@ -8,7 +8,7 @@ $rows = $pro->fetchAll();
 function countTicket($conndb)
 {
     $data = null;
-    $stmt = $conndb->query("SELECT * FROM `orders` WHERE `pay` != 'Canceled' AND  date(date)=curdate()");
+    $stmt = $conndb->query("SELECT `id` FROM `orders` WHERE `pay` != 'Canceled' AND  date(date)=curdate()");
     $stmt->execute();
     $data = $stmt->rowCount();
     return $data;
@@ -28,13 +28,11 @@ function countNew($conndb)
 function countShop($conndb)
 {
     $data = null;
-    $stmt = $conndb->query("SELECT * FROM `shop_orders` WHERE `pay` != 'Canceled' AND  date(date)=curdate()");
+    $stmt = $conndb->query("SELECT `id` FROM `shop_orders` WHERE  date(date)=curdate()");
     $stmt->execute();
     $data = $stmt->rowCount();
     return $data;
 }
-
-
 
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
@@ -291,6 +289,11 @@ function countShop($conndb)
                             <i class="nav-icon fas fa-ticket-alt"></i>
                             <p>
                                 ประวัติการขายสินค้า
+                                <?php if (countShop($conndb) == 0) { ?>
+                                    <span class="right badge badge-info"><?= countShop($conndb); ?></span>
+                                <?php } else { ?>
+                                    <span class="right badge badge-info"><?= countShop($conndb); ?></span>
+                                <?php } ?>
                             </p>
                         </a>
                     </li>

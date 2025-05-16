@@ -148,7 +148,7 @@ $date = date('Y-m-d');
                                                                 </button>
                                                             <?php } ?>
 
-                                                            <a href="recordticketEdit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i></a>
+                                                            <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i></a>
 
                                                             <a href="print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm" target="__blank"><i class="fas fa-print"></i></a>
                                                         </td>

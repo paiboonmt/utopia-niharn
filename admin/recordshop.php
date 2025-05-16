@@ -41,7 +41,7 @@ include './layout/header.php';
                                         <?php
                                         $sumTotal = 0;
                                         $date = date('Y-m-d');
-                                        $sql = "SELECT *
+                                        $sql = "SELECT * ,`shop_orders`.total as sumtotal
                                                 FROM `shop_orders` , `shop_order_details`
                                                 WHERE `shop_orders`.`id` = `shop_order_details`.`order_id`
                                                 AND shop_orders.date LIKE '%$date%' GROUP BY `shop_orders`.`id` DESC";
@@ -69,8 +69,8 @@ include './layout/header.php';
 
                                                 <td style="width: 150px;"><?= $row['pay'] ?></td>
                                                 <td><?= $row['vat7'] ?></td>
-                                                <td><?= $row['vat3'] ?></td>
-                                                <td style="width: 170px;"><?= number_format($row['total'], 2) ?></td>
+                                                <td><?= number_format($row['sub_vat'],2) ?></td>
+                                                <td style="width: 170px;"><?= number_format($row['sumtotal'], 2) ?></td>
                                                 <td><?= date('H:i', strtotime($row['date'])) ?></td>
                                                 <td><?= $row['emp'] ?></td>
 
@@ -78,16 +78,14 @@ include './layout/header.php';
                                                     <?php if ($_SESSION['role'] == 'admin') { ?>
                                                         <a href="?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
                                                     <?php } ?>
-                                                    <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
-                                                    <a href="?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
+                                                    <a href="./shop_editbill.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
+                                                    <a href="./shop/print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
                                                 </td>
 
                                             </tr>
 
-                                            <?php $sumTotal = $sumTotal + $row['total'] ?>
+                                            <?php $sumTotal += $row['sumtotal'] ?>
                                         <?php endforeach ?>
-
-
 
                                     </tbody>
                                 </table>
