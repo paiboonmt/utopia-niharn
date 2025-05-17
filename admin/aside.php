@@ -318,6 +318,24 @@ function countShop($conndb)
                 </li>
                 <!-- การชำระเงิน -->
 
+                <!-- ส่วนลด -->
+                <li class="nav-item">
+                    <?php
+                    if ($page == 'discount') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="discount.php" class="nav-link <?= $active ?>">
+                        <i class="nav-icon fab fa-cc-amazon-pay"></i>
+                        <p>
+                            ส่วนลด
+                        </p>
+                    </a>
+                </li>
+                <!-- ส่วนลด -->
+
                 <!-- รายงาน -->
                 <li class="nav-item">
                     <a href="./report/reportTicket.php" class="nav-link">

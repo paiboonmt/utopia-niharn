@@ -8,14 +8,14 @@ if (isset($_POST['saveOrder'])) {
     echo "<pre>";
     print_r($_POST);
     echo "</pre>";
-    // exit;
+    exit;
 
     $num_bill = $_POST['num_bill'];
     $conNum_bill = intval($num_bill);
     $code = $_POST['code'];
     $price = $_POST['price'];
     $grandTotal = $_POST['grandTotal'];
-
+    $discount = $_POST['discount'];
     $payment = $_POST['pay'];;
 
     $dataSet = explode(',', $payment);

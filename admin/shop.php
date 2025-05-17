@@ -96,6 +96,7 @@ include './layout/header.php';
                         <div class="col-6">
                             <?php if (isset($_SESSION['cart'])) : ?>
                                 <div class="card mt-2 p-2">
+                                    <h4 class="text-center">รายการสินค้าในตะกร้า</h4>
                                     <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">ยกเลิกสินค้าทั้งหมด</a>
 
                                     <form action="./shop/shop_process.php" method="post">
@@ -190,6 +191,26 @@ include './layout/header.php';
                                             <input type="text" name="m_card" readonly class="form-control" value="<?= 5 * $code ?>">
                                         </div>
 
+                                        <!-- ส่วนลด -->
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text">ส่วนลด |</label>
+                                            </div>
+                                            <?php 
+                                                include './discount/function-discount.php' ;
+                                                $discounts = getDiscounts($conndb);
+                                            ?>
+                                            <select name="discount" class="form-control">
+                                                <option value="0" selected>0 %</option>
+                                                <?php foreach ($discounts as $rowDiscount) : ?>
+                                                    <option value="<?= $rowDiscount['amount'] ?>"><?= $rowDiscount['amount'] ?> %</option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">%</span>
+                                            </div>
+                                        </div>
+
                                         <!-- ประเภทการจ่าย -->
                                         <div class="input-group mb-1">
                                             <div class="input-group-prepend">
@@ -208,7 +229,18 @@ include './layout/header.php';
                                                 <?php endforeach; ?>
                                             </select>
                                         </div>
-
+                                        
+                                        <!-- จำนวนยอดรวม -->
+                                        <div class="input-group mb-1">
+                                            <div class="input-group-prepend">
+                                                <label class="input-group-text">จำนวนยอดรวม</label>
+                                            </div>
+                                            <input type="number" class="form-control" name="grandTotal" value="<?= number_format($grantotal, 2) ?>" readonly>
+                                            <div class="input-group-append">
+                                                <span class="input-group-text">บาท</span>
+                                            </div>
+                                        </div>
+                                    
                                         <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
                                         <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
 
@@ -256,6 +288,35 @@ include './layout/header.php';
                 "pageLength": 13,
             });
         });
+
+        // ส่วนลดแบบ dynamic
+        $(document).ready(function() {
+            function updateGrandTotal() {
+                var discount = parseFloat($('select[name="discount"]').val()) || 0;
+                var grantotal = <?= $grantotal ?>;
+                var discounted = grantotal - (grantotal * discount / 100);
+                // ตรวจสอบ payment value
+                var payValue = 0;
+                var paySelected = $('#paymentMethodSelect').val();
+                if (paySelected) {
+                    var payParts = paySelected.split(',');
+                    if (payParts.length > 1) {
+                        payValue = parseFloat(payParts[1]) || 0;
+                    }
+                }
+                // สมมติว่า value คือเปอร์เซ็นต์ (ถ้าเป็นจำนวนเงินให้ปรับสูตร)
+                var finalTotal = discounted;
+                if (payValue > 0) {
+                    finalTotal = discounted - (discounted * payValue / 100);
+                }
+                // อัปเดตช่องจำนวนยอดรวม
+                $('input[name="grandTotal"]').val(finalTotal.toFixed(2));
+            }
+            $('select[name="discount"]').on('change', updateGrandTotal);
+            $('#paymentMethodSelect').on('change', updateGrandTotal);
+        });
+
+
     </script>
 
 </body>
