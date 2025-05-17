@@ -3,9 +3,6 @@ $title = 'SALE TICKET | APPLICATION';
 include './middleware.php';
 $page = 'recordshop';
 require_once '../includes/connection.php';
-
-
-
 include './layout/header.php';
 ?>
 
