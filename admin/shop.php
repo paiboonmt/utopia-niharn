@@ -53,272 +53,273 @@ unset($_SESSION['Last_order_details']);
 include './layout/header.php';
 ?>
 
-    <div class="wrapper">
-        <?php include 'aside.php' ?>
-        <div class="content-wrapper">
-            <div class="content">
-                <div class="container-fluid">
-                    <div class="row">
-                        <!-- รายการสินค้า -->
-                        <div class="col-6">
-                            <div class="card mt-2 p-2">
-                                <table class="table table-sm " id="table">
-                                    <thead>
+<div class="wrapper">
+    <?php include 'aside.php' ?>
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="container-fluid">
+                <div class="row">
+                    <!-- รายการสินค้า -->
+                    <div class="col-6">
+                        <div class="card mt-2 p-2">
+                            <table class="table table-sm " id="table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>ชื่อสินค้า บริการ</th>
+                                        <th>ราคา</th>
+                                        <th class="text-center">จำนวนสินค้าคงเหลือ</th>
+                                        <th class="text-center">เลือก</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $i = 1;
+                                    $products = getProduct($conndb);
+                                    foreach ($products as $row) : ?>
                                         <tr>
-                                            <th>#</th>
-                                            <th>ชื่อสินค้า บริการ</th>
-                                            <th>ราคา</th>
-                                            <th class="text-center">จำนวนสินค้าคงเหลือ</th>
-                                            <th class="text-center">เลือก</th>
+                                            <td><?= $i++; ?></td>
+                                            <td><?= $row['name'] ?></td>
+                                            <td><?= number_format($row['price'], 2) ?></td>
+                                            <th class="text-center"><?= $row['quantity'] ?> ชิ้น</th>
+                                            <td class="text-center">
+                                                <a href="shop/cart_add.php?id=<?= $row['id'] ?>&numBill=<?= $num_bill ?>" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
+                                            </td>
+
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $i = 1;
-                                        $products = getProduct($conndb);
-                                        foreach ($products as $row) : ?>
-                                            <tr>
-                                                <td><?= $i++; ?></td>
-                                                <td><?= $row['name'] ?></td>
-                                                <td><?= number_format($row['price'], 2) ?></td>
-                                                <th class="text-center"><?= $row['quantity'] ?> ชิ้น</th>
-                                                <td class="text-center">
-                                                    <a href="shop/cart_add.php?id=<?= $row['id'] ?>&numBill=<?= $num_bill ?>" class="btn btn-success"><i class="fas fa-cart-plus"></i></a>
-                                                </td>
-                                              
-                                            </tr>
-                                        <?php endforeach; ?>
-                                    </tbody>
-                                </table>
-                            </div>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
                         </div>
+                    </div>
 
-                        <div class="col-6">
-                            <?php if (isset($_SESSION['cart'])) : ?>
-                                <div class="card mt-2 p-2">
-                                    <h4 class="text-center">รายการสินค้าในตะกร้า</h4>
-                                    <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">ยกเลิกสินค้าทั้งหมด</a>
+                    <div class="col-6">
+                        <?php if (isset($_SESSION['cart'])) : ?>
+                            <div class="card mt-2 p-2">
+                                <h4 class="text-center">รายการสินค้าในตะกร้า</h4>
+                                <a onclick="return confirm('Are your sure delete it ?')" href="./shop/cart_remove.php" class="btn btn-danger">ยกเลิกสินค้าทั้งหมด</a>
 
-                                    <form action="./shop/shop_process.php" method="post">
+                                <form action="./shop/shop_process.php" method="post">
 
-                                        <table class="table table-sm" id="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>#</th>
-                                                    <th>สินค้า</th>
-                                                    <th>ราคา</th>
-                                                    <th class="text-center">จำนวน</th>
-                                                    <th class="text-center">+ / -</th>
-                                                    <th class="text-right">รวม</th>
-                                                    <th class="text-center">จัดการ</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                $productIds = [];
-                                                $grantotal = 0;
-                                                foreach (($_SESSION['cart'] ?? []) as $cartId => $cartQty) {
-                                                    $productIds[] = $cartId;
-                                                }
-                                                $Ids = 0;
-                                                if (count($productIds) > 0) {
-                                                    $Ids = implode(', ', $productIds);
-                                                }
-                                                $i = 1;
-                                                $stmts = $conndb->query("SELECT * FROM `store` WHERE id IN ($Ids)");
-                                                $stmts->execute();
-                                                foreach ($stmts as $rows) : ?>
-                                                    <tr>
-                                                        <td><?= $i++; ?></td>
-                                                        <td><?= $rows['name'] ?></td>
-                                                        <input type="hidden" name="product[<?= $rows['id'] ?>][id]" value="<?= $rows['id'] ?>">
-                                                        <input type="hidden" name="product[<?= $rows['id'] ?>][price]" value="<?= $rows['price'] ?>">
-                                                        <input type="hidden" name="product[<?= $rows['id'] ?>][name]" value="<?= $rows['name'] ?>">
-                                                        <td>
-                                                            <?= number_format($rows['price'], 2) ?>
-                                                        </td>
-                                                        <td style="width: 20px;">
-                                                            <input type="text" class="btn btn-sm" value="<?= $_SESSION['cart'][$rows['id']]  ?>" readonly>
-                                                            <input type="hidden" name="quantity[<?= $rows['id'] ?>][quantity]" value="<?= $_SESSION['cart'][$rows['id']]  ?>">
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=updatecart" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a>
-                                                            <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=delete" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
-                                                        </td>
-
-                                                        <td class="text-right">
-                                                            <?= number_format($_SESSION['cart'][$rows['id']] * $rows['price'], 2) ?>
-                                                        </td>
-                                                        <td class="text-center">
-                                                            <a href="cart/cart_delete.php?id=<?= $rows['id'] ?>" class="btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
-                                                        </td>
-                                                    </tr>
-                                                    <?php $grantotal += $_SESSION['cart'][$rows['id']] * $rows['price'] ?>
-                                                <?php endforeach; ?>
-                                            </tbody>
-                                            <tfoot>
-                                                <tr>
-                                                    <th colspan="5" class="text-left">ยอดรวม : </th>
-                                                    <th class="text-right"><?= number_format($grantotal, 2) ?></th>
-                                                    <th class="text-center">บาท</th>
-                                                </tr>
-                                            </tfoot>
-                                        </table>
-
-                                        <input type="hidden" name="code" value="<?= $code ?>">
-
-                                        <!-- หมายเลขบิลก่อนหน้านี้ -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบิลก่อนหน้านี้ |</label>
-                                            </div>
-                                            <input type="text" readonly class="form-control" value="<?= $rowBill['num_bill'] ?>">
-                                        </div>
-
-                                        <!-- หมายเลขบิล -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบิล | Tax Number |</label>
-                                            </div>
-                                            <input type="text" name="num_bill" class="form-control" value="<?= $num_bill ?>" readonly>
-                                        </div>
-
-                                        <!-- หมายเลข -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">หมายเลขบัตร | Qrcode |</label>
-                                            </div>
-                                            <input type="text" name="m_card" readonly class="form-control" value="<?= 5 * $code ?>">
-                                        </div>
-
-                                        <!-- ส่วนลด -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">ส่วนลด |</label>
-                                            </div>
-                                            <?php 
-                                                include './discount/function-discount.php' ;
-                                                $discounts = getDiscounts($conndb);
-                                            ?>
-                                            <select name="discount" class="form-control">
-                                                <option value="0" selected>0 %</option>
-                                                <?php foreach ($discounts as $rowDiscount) : ?>
-                                                    <option value="<?= $rowDiscount['amount'] ?>"><?= $rowDiscount['amount'] ?> %</option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">%</span>
-                                            </div>
-                                        </div>
-
-                                        <!-- ประเภทการจ่าย -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">ประเภทการจ่าย |</label>
-                                            </div>
-                                            <?php
-                                            $sqlPayment = $conndb->query("SELECT * FROM `payment` ORDER BY `pay_id` ASC");
-                                            $sqlPayment->execute();
-                                            ?>
-                                            <select class="custom-select" name="pay" id="paymentMethodSelect" required>
-                                                <!-- <option value="" disabled selected>... Choose ...</option> -->
-                                                <?php foreach ($sqlPayment as $rowPayment) : ?>
-                                                    <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>">
-                                                        <?= $rowPayment['pay_name'] ?>
-                                                    </option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                        
-                                        <!-- จำนวนยอดรวม -->
-                                        <div class="input-group mb-1">
-                                            <div class="input-group-prepend">
-                                                <label class="input-group-text">จำนวนยอดรวม</label>
-                                            </div>
-                                            <input type="number" class="form-control" name="grandTotal" value="<?= number_format($grantotal, 2) ?>" readonly>
-                                            <div class="input-group-append">
-                                                <span class="input-group-text">บาท</span>
-                                            </div>
-                                        </div>
-                                    
-                                        <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
-                                        <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
-
-                                        <input type="submit" name="saveOrder" value="ขายสินค้า" class="btn btn-success form-control">
-                                    </form>
-                                </div>
-                            <?php else : ?>
-                                <div class="card mt-2 p-2">
                                     <table class="table table-sm" id="table">
                                         <thead>
                                             <tr>
                                                 <th>#</th>
                                                 <th>สินค้า</th>
                                                 <th>ราคา</th>
-                                                <th>แก้ราคาสินค้า</th>
-                                                <th>จำนวน</th>
-                                                <th>จัดการ</th>
+                                                <th class="text-center">จำนวน</th>
+                                                <th class="text-center">+ / -</th>
+                                                <th class="text-right">รวม</th>
+                                                <th class="text-center">จัดการ</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
+                                            <?php
+                                            $productIds = [];
+                                            $grantotal = 0;
+                                            foreach (($_SESSION['cart'] ?? []) as $cartId => $cartQty) {
+                                                $productIds[] = $cartId;
+                                            }
+                                            $Ids = 0;
+                                            if (count($productIds) > 0) {
+                                                $Ids = implode(', ', $productIds);
+                                            }
+                                            $i = 1;
+                                            $stmts = $conndb->query("SELECT * FROM `store` WHERE id IN ($Ids)");
+                                            $stmts->execute();
+                                            foreach ($stmts as $rows) : ?>
+                                                <tr>
+                                                    <td><?= $i++; ?></td>
+                                                    <td><?= $rows['name'] ?></td>
+                                                    <input type="hidden" name="product[<?= $rows['id'] ?>][id]" value="<?= $rows['id'] ?>">
+                                                    <input type="hidden" name="product[<?= $rows['id'] ?>][price]" value="<?= $rows['price'] ?>">
+                                                    <input type="hidden" name="product[<?= $rows['id'] ?>][name]" value="<?= $rows['name'] ?>">
+                                                    <td>
+                                                        <?= number_format($rows['price'], 2) ?>
+                                                    </td>
+                                                    <td style="width: 20px;">
+                                                        <input type="text" class="btn btn-sm" value="<?= $_SESSION['cart'][$rows['id']]  ?>" readonly>
+                                                        <input type="hidden" name="quantity[<?= $rows['id'] ?>][quantity]" value="<?= $_SESSION['cart'][$rows['id']]  ?>">
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=updatecart" class="btn btn-sm btn-primary"><i class="fas fa-plus"></i></a>
+                                                        <a href="./shop/cart_update.php?id=<?= $rows['id'] ?>&action=delete" class="btn btn-sm btn-danger"><i class="fas fa-minus"></i></a>
+                                                    </td>
+
+                                                    <td class="text-right">
+                                                        <?= number_format($_SESSION['cart'][$rows['id']] * $rows['price'], 2) ?>
+                                                    </td>
+                                                    <td class="text-center">
+                                                        <a href="cart/cart_delete.php?id=<?= $rows['id'] ?>" class="btn-sm btn-danger"><i class="fas fa-trash-alt"></i></a>
+                                                    </td>
+                                                </tr>
+                                                <?php $grantotal += $_SESSION['cart'][$rows['id']] * $rows['price'] ?>
+                                            <?php endforeach; ?>
                                         </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="5" class="text-left">ยอดรวม : </th>
+                                                <th class="text-right"><?= number_format($grantotal, 2) ?></th>
+                                                <th class="text-center">บาท</th>
+                                            </tr>
+                                        </tfoot>
                                     </table>
-                                </div>
-                            <?php endif; ?>
-                        </div>
+
+                                    <input type="hidden" name="code" value="<?= $code ?>">
+
+                                    <!-- หมายเลขบิลก่อนหน้านี้ -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">หมายเลขบิลก่อนหน้านี้ |</label>
+                                        </div>
+                                        <input type="text" readonly class="form-control" value="<?= $rowBill['num_bill'] ?>">
+                                    </div>
+
+                                    <!-- หมายเลขบิล -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">หมายเลขบิล | Tax Number |</label>
+                                        </div>
+                                        <input type="text" name="num_bill" class="form-control" value="<?= $num_bill ?>" readonly>
+                                    </div>
+
+                                    <!-- หมายเลข -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">หมายเลขบัตร | Qrcode |</label>
+                                        </div>
+                                        <input type="text" name="m_card" readonly class="form-control" value="<?= 5 * $code ?>">
+                                    </div>
+
+                                    <!-- ส่วนลด -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">ส่วนลด |</label>
+                                        </div>
+                                        <?php
+                                        include './discount/function-discount.php';
+                                        $discounts = getDiscounts($conndb);
+                                        ?>
+                                        <select name="discount" class="form-control">
+                                            <option value="0" selected>0 %</option>
+                                            <?php foreach ($discounts as $rowDiscount) : ?>
+                                                <option value="<?= $rowDiscount['amount'] ?>"><?= $rowDiscount['amount'] ?> %</option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- ประเภทการจ่าย -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">ประเภทการจ่าย |</label>
+                                        </div>
+                                        <?php
+                                        $sqlPayment = $conndb->query("SELECT * FROM `payment` ORDER BY `pay_id` ASC");
+                                        $sqlPayment->execute();
+                                        ?>
+                                        <select class="custom-select" name="pay" id="paymentMethodSelect" required>
+                                            <!-- <option value="" disabled selected>... Choose ...</option> -->
+                                            <?php foreach ($sqlPayment as $rowPayment) : ?>
+                                                <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>">
+                                                    <?= $rowPayment['pay_name'] ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <!-- จำนวนยอดรวม -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">จำนวนยอดรวม</label>
+                                        </div>
+                                        <input type="number" class="form-control" name="grandTotal" value="<?= number_format($grantotal, 2) ?>" readonly>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">บาท</span>
+                                        </div>
+                                    </div>
+
+                                    <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
+                                    <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
+
+                                    <input type="submit" name="saveOrder" value="ขายสินค้า" class="btn btn-success form-control">
+                                </form>
+                            </div>
+                        <?php else : ?>
+                            <div class="card mt-2 p-2">
+                                <table class="table table-sm" id="table">
+                                    <thead>
+                                        <tr>
+                                            <th>#</th>
+                                            <th>สินค้า</th>
+                                            <th>ราคา</th>
+                                            <th>แก้ราคาสินค้า</th>
+                                            <th>จำนวน</th>
+                                            <th>จัดการ</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <?php include './layout/footer.php' ?>
+<?php include './layout/footer.php' ?>
 
-    <script>
-        $(function() {
-            $("#table").DataTable({
-                "pageLength": 13,
-            });
-        });
-
-        // ส่วนลดแบบ dynamic
-        $(document).ready(function() {
-            function updateGrandTotal() {
-                var discount = parseFloat($('select[name="discount"]').val()) || 0;
-                var grantotal = <?= $grantotal ?>;
-                var discounted = grantotal - (grantotal * discount / 100);
-                // ตรวจสอบ payment value
-                var payValue = 0;
-                var paySelected = $('#paymentMethodSelect').val();
-                if (paySelected) {
-                    var payParts = paySelected.split(',');
-                    if (payParts.length > 1) {
-                        payValue = parseFloat(payParts[1]) || 0;
-                    }
+<script>
+    // ส่วนลดแบบ dynamic
+    $(document).ready(function() {
+        function updateGrandTotal() {
+            var discount = parseFloat($('select[name="discount"]').val()) || 0;
+            var grantotal = <?= $grantotal ?>;
+            var discounted = grantotal - (grantotal * discount / 100);
+            // ตรวจสอบ payment value
+            var payValue = 0;
+            var paySelected = $('#paymentMethodSelect').val();
+            if (paySelected) {
+                var payParts = paySelected.split(',');
+                if (payParts.length > 1) {
+                    payValue = parseFloat(payParts[1]) || 0;
                 }
-                // สมมติว่า value คือเปอร์เซ็นต์ (ถ้าเป็นจำนวนเงินให้ปรับสูตร)
-                var finalTotal = discounted;
-                if (payValue > 0) {
-                    finalTotal = discounted - (discounted * payValue / 100);
-                }
-                // อัปเดตช่องจำนวนยอดรวม
-                $('input[name="grandTotal"]').val(finalTotal.toFixed(2));
             }
-            $('select[name="discount"]').on('change', updateGrandTotal);
-            $('#paymentMethodSelect').on('change', updateGrandTotal);
+            // สมมติว่า value คือเปอร์เซ็นต์ (ถ้าเป็นจำนวนเงินให้ปรับสูตร)
+            var finalTotal = discounted;
+            if (payValue > 0) {
+                finalTotal = discounted - (discounted * payValue / 100);
+            }
+            // อัปเดตช่องจำนวนยอดรวม
+            $('input[name="grandTotal"]').val(finalTotal.toFixed(2));
+        }
+        $('select[name="discount"]').on('change', updateGrandTotal);
+        $('#paymentMethodSelect').on('change', updateGrandTotal);
+    });
+</script>
+
+<script>
+    $(function() {
+        $("#table").DataTable({
+            "pageLength": 13,
         });
-
-
-    </script>
+    });
+</script>
 
 </body>
+
 </html>
 <?php $conndb = null; ?>

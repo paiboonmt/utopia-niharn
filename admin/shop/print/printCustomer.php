@@ -36,6 +36,10 @@
     <div class="col" id="col"><span><?= number_format($grantotal, 2) ?></span></div>
 </div>
 
+<div class="row">
+    <div class="col"><span>Discount :</span></div>
+    <div class="col" id="col"><span><?= number_format($_SESSION['discountOraginal'], 2) ?></span> </div>
+</div>
 
 <?php if ($_SESSION['vat3'] != 0) { ?>
     <div class="row">

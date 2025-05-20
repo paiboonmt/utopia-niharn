@@ -5,11 +5,6 @@ include("../middleware.php");
 if (isset($_POST['saveOrder'])) {
     require_once("../../includes/connection.php");
 
-    echo "<pre>";
-    print_r($_POST);
-    echo "</pre>";
-    exit;
-
     $num_bill = $_POST['num_bill'];
     $conNum_bill = intval($num_bill);
     $code = $_POST['code'];
@@ -43,26 +38,8 @@ if (isset($_POST['saveOrder'])) {
     $AddBy = $_SESSION['username'];
 
 
-
-    echo "<pre>";
-    print_r($grandTotal);
-    echo "</pre>";
-    echo '<hr>';
-
-    echo "<pre>";
-    print_r($sub_vat);
-    echo "</pre>";
-    echo '<hr>';
-
-    echo "<pre>";
-    print_r($sumTotal);
-    echo "</pre>";
-    echo '<hr>';
-    // exit;
-
-
-    $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
-    VALUES ( '$ref_order_id','$num_bill','$price','$pay','$vat7','$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
+    $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `discount`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
+    VALUES ( '$ref_order_id','$num_bill','$price','$discount','$pay','$vat7','$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
     $stmt = $conndb->prepare($SQL);
 
     if ($stmt->execute() == true) {
