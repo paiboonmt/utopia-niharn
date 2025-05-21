@@ -106,9 +106,12 @@ if (isset($_GET['id']) && $_GET['action'] == 'deleteMember') {
 
 // ลบไฟล์
 if (isset($_GET['id']) && $_GET['action'] == 'delete') {
-    print_r($_GET);
+    // print_r($_GET);
+    // exit;
     $member_id = $_GET['member_id'];
     $id = $_GET['id'];
+    $m_card = $_GET['m_card'];
+
     $sql = "SELECT * FROM tb_files WHERE id = :id";
     $stmt = $conndb->prepare($sql);
     $stmt->bindParam(':id', $id);
@@ -125,16 +128,19 @@ if (isset($_GET['id']) && $_GET['action'] == 'delete') {
     $stmt->execute();
     $conndb = null;
     $_SESSION['status'] = "File deleted successfully";
-    header("Location: ../editmember.php?id=" . $member_id);
+    header("Location: ../editmember.php?id=" . $m_card);
 }
 
 // อัพเดทข้อมูลสมาชิก
 if (isset($_POST['updateProfile'])) {
 
-    // echo "<pre>";
-    // print_r($_POST);
-    // echo "</pre>";
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
     // exit;
+
+    // [package] => 10 Session
+    // [product_value] => 0
 
     $id = $_POST['id'];
     $m_card = $_POST['m_card'];
@@ -165,10 +171,11 @@ if (isset($_POST['updateProfile'])) {
     $current_product_name = $result['product_name']; // Get the current package name
     $current_product_value = $result['product_value']; // Get the current package value
     $current_product_type = $result['product_type']; // Get the current package type
-    $stmt->closeCursor(); // Close the cursor to free up the connection to the server for other queries
+    $stmt->closeCursor(); // ปิด cursor หลังจาก fetch ข้อมูลเสร็จ เพื่อป้องกันปัญหา execute ซ้ำ
 
 
     $package = $_POST['package'];
+    $product_value = $_POST['product_value'];
 
     // package|package_name|package_type
 
@@ -183,11 +190,14 @@ if (isset($_POST['updateProfile'])) {
     echo "current_product_type : " . $current_product_type . "<br>";
     echo "</pre>";
     
+    // exit;
 
     if ($current_product_name === $package) {
+
         // แพ็คเกจเหมือนเดิม ไม่จำเป็นต้องเพิ่มใน product_history
         // echo "Package is the same, no need to insert into product_history<br>";
         // Update customer data
+
         updateCustomer(
             $conndb,
             $id,
@@ -201,7 +211,7 @@ if (isset($_POST['updateProfile'])) {
             $nationality,
             $birthday,
             $current_product_name, 
-            $current_product_value, 
+            $product_value, 
             $current_product_type,
             $payment,
             $emergency,
@@ -214,6 +224,7 @@ if (isset($_POST['updateProfile'])) {
         );
 
     } else {
+
         // แพ็คเกจแตกต่างกัน เพิ่มข้อมูลใน product_history
         // echo "Package is different, inserting into product_history<br>";   
 
@@ -262,6 +273,13 @@ if (isset($_POST['uploadFiles'])) {
     $user = $_SESSION['username'];
     $m_card = $_POST['m_card']; // รับค่าจากฟอร์ม
 
+    echo "<pre>";
+    print_r($_POST);
+    echo "</pre>";
+
+
+    // exit;
+
     foreach ($_FILES['documents']['name'] as $key => $name) {
         $tmp = explode('.', $_FILES['documents']['name'][$key]);
         $newName = round(microtime(true)) . '.' . end($tmp);
@@ -270,7 +288,7 @@ if (isset($_POST['uploadFiles'])) {
         if (move_uploaded_file($_FILES['documents']['tmp_name'][$key], $partForder . $newName)) {
             // Insert file data into the database
             insertDataFiles($conndb, $m_card, $newName, $user);
-            header("Location: ../editmember.php?id=$id");
+            header("Location: ../editmember.php?id=$m_card");
             $conndb = null;
         } else {
             $_SESSION['status'] = "Insert Failed: Image upload error";

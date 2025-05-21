@@ -22,7 +22,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@5.0/dist/fancybox/fancybox.css" />
     <style>
         .preview img {
-            max-width: 350px;
+            max-width: 100%;
             margin: 10px;
         }
     </style>
@@ -40,57 +40,17 @@
 
                             <!-- Profile Image -->
                             <div class="card card-primary card-outline">
-                                <div class="card-body box-profile">
+                                <div class="card-body">
                                     <div class="text-center">
-                                        <img class="profile-user-img img-fluid img-circle" src="<?= '../memberimg/img/' . $data['image'] ?>">
+                                        <img class="img-fluid" src="<?= '../memberimg/img/' . $data['image'] ?>">
                                     </div>
-                                    <h3 class="profile-username text-center"><?= $data['fname'] ?></h3>
-                                    <a href="#" class="btn btn-primary btn-block"><b>ประวัติลูกค้า</b></a>
+                                  
                                 </div>
 
                             </div>
                             <!-- /.card -->
 
                             <!-- About Me Box -->
-                            <div class="card card-primary">
-                                <div class="card-header">
-                                    <h3 class="card-title">About</h3>
-                                </div>
-                                <!-- /.card-header -->
-                                <div class="card-body">
-                                    <strong><i class="fas fa-book mr-1"></i> หมายเลขบัตรสมาชิก</strong>
-
-                                    <p class="text-muted">
-                                        <?= $data['m_card'] ?>
-                                    </p>
-
-                                    <hr>
-
-                                    <strong><i class="fas fa-map-marker-alt mr-1"></i> Location | Nationality</strong>
-
-                                    <p class="text-muted">
-                                        <?= $data['nationality'] ?>
-                                    </p>
-
-                                    <hr>
-
-                                    <strong><i class="fas fa-pencil-alt mr-1"></i> หมายเลข invoice</strong>
-
-                                    <p class="text-muted">
-                                        Invoice number | <?= $data['invoice'] ?>
-                                    </p>
-
-                                    <hr>
-
-                                    <strong><i class="far fa-file-alt mr-1"></i> Notes</strong>
-
-                                    <p class="text-muted">
-                                        <?= $data['comment'] ?>
-                                    </p>
-                                </div>
-                                <!-- /.card-body -->
-                            </div>
-                            <!-- /.card -->
                         </div>
                         
                         <!-- /.col -->
@@ -288,7 +248,7 @@
                                                             <td><?= $row['image_name'] ?></td>
                                                             <td><?= $row['user'] ?></td>
                                                             <td>
-                                                                <a href="./customer/sql.php?id=<?= $row['id'] ?>&&action=delete&&member_id=<?= $data['id'] ?>"
+                                                                <a href="./customer/sql.php?id=<?= $row['id'] ?>&action=delete&&member_id=<?= $data['id'] ?>&m_card=<?= $m_card ?>"
                                                                     class="btn btn-danger"
                                                                     onclick="return confirm('แน่ใจแล้วหรือที่จะลบ');">
                                                                     <i class="fas fa-trash"></i>

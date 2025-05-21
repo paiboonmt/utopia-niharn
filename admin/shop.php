@@ -157,6 +157,7 @@ include './layout/header.php';
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
+                                            <input type="number" name="OriginalGrantotal" value="<?= $grantotal ?>" hidden>
                                             <tr>
                                                 <th colspan="5" class="text-left">ยอดรวม : </th>
                                                 <th class="text-right"><?= number_format($grantotal, 2) ?></th>
@@ -229,6 +230,7 @@ include './layout/header.php';
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+
 
                                     <!-- จำนวนยอดรวม -->
                                     <div class="input-group mb-1">

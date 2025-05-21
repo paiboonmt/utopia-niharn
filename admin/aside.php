@@ -196,11 +196,6 @@ function countShop($conndb)
                         <i class="nav-icon fas fa-user-clock"></i>
                         <p>
                             รายชื่อสมาชิก
-                            <?php if (countNew($conndb) == 0) { ?>
-                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
-                            <?php } else { ?>
-                                <span class="right badge badge-info"><?= countNew($conndb); ?></span>
-                            <?php } ?>
                         </p>
                     </a>
                 </li>

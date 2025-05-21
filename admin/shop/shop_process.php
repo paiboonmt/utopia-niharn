@@ -9,13 +9,32 @@ if (isset($_POST['saveOrder'])) {
     $conNum_bill = intval($num_bill);
     $code = $_POST['code'];
     $price = $_POST['price'];
+    $OriginalGrantotal = $_POST['OriginalGrantotal'];
     $grandTotal = $_POST['grandTotal'];
     $discount = $_POST['discount'];
     $payment = $_POST['pay'];;
 
     $dataSet = explode(',', $payment);
-
     $vat = $dataSet[1];
+
+    echo $OriginalGrantotal;
+    echo '<br>';
+    echo $discount;
+    echo '<br>'; 
+
+    // เช็ค discount
+    if ($discount != 0) {
+        $sub_discount = ($OriginalGrantotal * $discount) / 100;
+    }
+    echo $sub_discount;
+    echo '<br>';
+
+    // เอาจำนวนเงินที่จ่ายมาหักลบกับยอดรวม
+    $grandTotal = $OriginalGrantotal - $sub_discount;
+    echo $grandTotal;
+    echo '<br>';
+
+    exit;
 
     if ($vat == 3) {
         $vat3 = $dataSet[1];
@@ -34,12 +53,24 @@ if (isset($_POST['saveOrder'])) {
 
     $pay = $dataSet[0];
 
+
+
+    echo '<pre>';
+    print_r($_POST);
+    echo '</pre>';
+    echo '<br>';
+    echo $grandTotal;
+    echo '<br>';
+    echo $sub_discount;
+
+    exit;
+
     $ref_order_id = $_POST['m_card'];
     $AddBy = $_SESSION['username'];
 
 
-    $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `discount`, `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
-    VALUES ( '$ref_order_id','$num_bill','$price','$discount','$pay','$vat7','$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
+    $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `discount`, `sub_discount` , `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
+    VALUES ( '$ref_order_id' , '$num_bill' , '$price' , '$discount', '$sub_discount' , '$pay' , '$vat7' ,'$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
     $stmt = $conndb->prepare($SQL);
 
     if ($stmt->execute() == true) {
@@ -75,6 +106,7 @@ if (isset($_POST['saveOrder'])) {
     $_SESSION['price'] = $price;
     $_SESSION['discountOraginal'] = $_POST['discount'];
     $_SESSION['discount'] = $discount;
+    $_SESSION['sub_discount'] = $sub_discount;
     $_SESSION['pay'] = $pay;
     $_SESSION['AddBy'] = $AddBy;
     $_SESSION['code'] = $code;

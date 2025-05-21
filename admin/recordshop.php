@@ -25,9 +25,10 @@ include './layout/header.php';
                                     <thead>
                                         <tr>
                                             <th>ลำดับ.</th>
-                                            <th>หมายเลขบัตร</th>
+                                            <th hidden>หมายเลขบัตร</th>
                                             <th>หมายเลขบิล</th>
                                             <th>รายการ</th>
+                                            <th>ส่วนลด</th>
                                             <th>ประเภทการจ่าย</th>
                                             <th>ภาษี 7%</th>
                                             <th>ภาษี 3%</th>
@@ -51,7 +52,7 @@ include './layout/header.php';
                                         foreach ($stmt as $row) : ?>
                                             <tr style="font-size: 14px;">
                                                 <td><?= $count++ ?></td>
-                                                <td><?= $row['ref_order_id'] ?></td>
+                                                <td hidden><?= $row['ref_order_id'] ?></td>
                                                 <td><?= $row['num_bill'] ?></td>
                                                 <td class="text-left">
                                                     <?php
@@ -66,10 +67,10 @@ include './layout/header.php';
                                                         <?php echo $A['product_name'] . ' : ' . ' ' . ' | ' . ' x ' . ' | ' . $A['quantity'] . '<br>'; ?>
                                                     <?php endforeach; ?>
                                                 </td>
-
+                                                <td><?= $row['sub_discount'] ?></td>
                                                 <td style="width: 150px;"><?= $row['pay'] ?></td>
                                                 <td><?= $row['vat7'] ?></td>
-                                                <td><?= number_format($row['sub_vat'],2) ?></td>
+                                                <td><?= number_format($row['sub_vat'], 2) ?></td>
                                                 <td style="width: 170px;"><?= number_format($row['sumtotal'], 2) ?></td>
                                                 <td><?= date('H:i', strtotime($row['date'])) ?></td>
                                                 <td><?= $row['emp'] ?></td>

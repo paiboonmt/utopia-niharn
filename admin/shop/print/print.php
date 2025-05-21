@@ -54,6 +54,12 @@
     <script src="../../../dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
-
+<?php unset($_SESSION['cart']) ?>
+<script>
+    window.print();
+    setTimeout(function() {
+        window.location.href = '../../shop.php';
+    }, 1000);
+</script>
 </html>
 <?php $conndb = null; ?>
