@@ -17,24 +17,29 @@ if (isset($_POST['saveOrder'])) {
     $dataSet = explode(',', $payment);
     $vat = $dataSet[1];
 
-    echo $OriginalGrantotal;
+    echo 'ราคารวม :'. $OriginalGrantotal;
     echo '<br>';
-    echo $discount;
+    echo 'ส่วนลด :'. $discount .'%';
     echo '<br>'; 
 
     // เช็ค discount
     if ($discount != 0) {
         $sub_discount = ($OriginalGrantotal * $discount) / 100;
     }
-    echo $sub_discount;
+    echo 'จำนวนส่วนลด :' . $sub_discount;
     echo '<br>';
 
     // เอาจำนวนเงินที่จ่ายมาหักลบกับยอดรวม
     $grandTotal = $OriginalGrantotal - $sub_discount;
-    echo $grandTotal;
+    echo 'จำนวนคงเหลือหลังหักส่วนลด :' . $grandTotal;
     echo '<br>';
 
-    exit;
+
+    // เช็ค vat
+
+    echo $payment;
+    echo '<br>';
+
 
     if ($vat == 3) {
         $vat3 = $dataSet[1];
@@ -51,20 +56,13 @@ if (isset($_POST['saveOrder'])) {
         $sumTotal = $grandTotal;
     }
 
+    echo 'จำนวน vat :' . $sub_vat;
+    echo '<br>';
+
+    // exit;
+
+
     $pay = $dataSet[0];
-
-
-
-    echo '<pre>';
-    print_r($_POST);
-    echo '</pre>';
-    echo '<br>';
-    echo $grandTotal;
-    echo '<br>';
-    echo $sub_discount;
-
-    exit;
-
     $ref_order_id = $_POST['m_card'];
     $AddBy = $_SESSION['username'];
 
