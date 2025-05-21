@@ -37,16 +37,24 @@
 </div>
 
 <!-- Discount -->
-<div class="row">
-    <div class="col"><span>Discount : <?= $_SESSION['discount'] ?> %</span></div>
-    <div class="col" id="col"><span><?= number_format($_SESSION['sub_discount'],2) ?> </span></div>
-</div>
+<?php if ($_SESSION['sub_discount'] != 0) : ?>
+    <div class="row">
+        <div class="col"><span>Discount : <?= $_SESSION['discount'] ?> %</span></div>
+        <div class="col" id="col"><span><?= number_format($_SESSION['sub_discount'], 2) ?> </span></div>
+    </div>
+    <div class="row">
+        <div class="col"><span>Discounted price : </span></div>
+        <div class="col" id="col"><span><?= number_format($_SESSION['grandTotal'], 2) ?> </span></div>
+    </div>
+<?php endif; ?>
+
+<hr>
 
 <div class="row">
-    <div class="col"><span>Discounted price : </span></div>
-    <div class="col" id="col"><span><?= number_format($_SESSION['grandTotal'],2) ?> </span></div>
+    <div class="col"><span>Payment :</span></div>
+    <div class="col" id="col"><span><?= $_SESSION['pay'] ?></span> </div>
 </div>
-<hr>
+
 
 <!-- // VAT 3% -->
 <?php if ($_SESSION['vat3'] != 0) { ?>
@@ -62,11 +70,6 @@
 </div>
 
 
-<div class="row">
-    <div class="col"><span>Payment :</span></div>
-    <div class="col" id="col"><span><?= $_SESSION['pay'] ?></span> </div>
-</div>
-
 <hr>
 
 <!-- Cshier -->
@@ -74,4 +77,3 @@
     <div class="col"><span>Cshier : <?= $_SESSION['AddBy']  ?></span></div>
 </div>
 <hr>
-

@@ -22,14 +22,6 @@ date_default_timezone_set('Asia/Bangkok');
                 <?php
                 require_once("../../../includes/connection.php");
                 $id = $_GET['id'];
-                // $sql = $conndb->prepare("SELECT o.ref_order_id , os.product_name , o.price , 
-                // o.discount , o.vat7 , o.vat3 , o.fname , o.sta_date , o.exp_date , 
-                // o.comment , o.num_bill , o.pay , o.date 
-                // FROM `shop_orders` as o
-                // INNER JOIN `shop_order_details` as  os ON o.id = os.order_id
-                // INNER JOIN `member` as m ON m.package = o.id
-                // INNER JOIN `products`as p ON os.product_id = p.id
-                // WHERE o.id  = '$id'; ");
                 $sql = $conndb->prepare("SELECT * ,`shop_orders`.total as sumtotal
                 FROM `shop_orders`
                 INNER JOIN `shop_order_details` ON `shop_orders`.`id` = `shop_order_details`.`order_id`
@@ -70,7 +62,8 @@ date_default_timezone_set('Asia/Bangkok');
 <script>
     window.print();
     setTimeout(function() {
-        window.location.href = '../../recordshop.php';
+        window.close();
+        // window.location.href = '../../recordshop.php';
     }, 1000);
 </script>
 </html>

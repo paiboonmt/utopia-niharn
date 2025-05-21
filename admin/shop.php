@@ -201,7 +201,7 @@ include './layout/header.php';
                                         include './discount/function-discount.php';
                                         $discounts = getDiscounts($conndb);
                                         ?>
-                                        <select name="discount" class="form-control">
+                                        <select class="form-control"  name="discount" id="discountMethodSelect">
                                             <option value="0" selected>0 %</option>
                                             <?php foreach ($discounts as $rowDiscount) : ?>
                                                 <option value="<?= $rowDiscount['amount'] ?>"><?= $rowDiscount['amount'] ?> %</option>
@@ -209,6 +209,17 @@ include './layout/header.php';
                                         </select>
                                         <div class="input-group-append">
                                             <span class="input-group-text">%</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- จำนวนส่วนลด -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">จำนวนส่วนลด</label>
+                                        </div>
+                                        <input type="number" class="form-control" name="sub_discount" readonly>
+                                        <div class="input-group-append">
+                                            <span class="input-group-text">บาท</span>
                                         </div>
                                     </div>
 
@@ -222,7 +233,7 @@ include './layout/header.php';
                                         $sqlPayment->execute();
                                         ?>
                                         <select class="custom-select" name="pay" id="paymentMethodSelect" required>
-                                            <!-- <option value="" disabled selected>... Choose ...</option> -->
+                                            <option value="" disabled selected>... Choose ...</option>
                                             <?php foreach ($sqlPayment as $rowPayment) : ?>
                                                 <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>">
                                                     <?= $rowPayment['pay_name'] ?>
@@ -231,20 +242,19 @@ include './layout/header.php';
                                         </select>
                                     </div>
 
-
-                                    <!-- จำนวนยอดรวม -->
-                                    <div class="input-group mb-1">
+                                    <!-- ยอดรวม -->
+                                    <!-- <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">จำนวนยอดรวม</label>
                                         </div>
-                                        <input type="number" class="form-control" name="grandTotal" value="<?= number_format($grantotal, 2) ?>" readonly>
+                                        <input type="number" class="form-control" name="grandTotal" value="" readonly>
                                         <div class="input-group-append">
                                             <span class="input-group-text">บาท</span>
                                         </div>
-                                    </div>
+                                    </div> -->
 
                                     <input type="text" name="price" hidden class="form-control" value="<?= $rows['price'] ?>">
-                                    <input type="text" name="grandTotal" hidden class="form-control" value="<?= $grantotal ?>">
+                                    <input type="text" name="grandTotal" hidden class="form-control">
 
                                     <input type="submit" name="saveOrder" value="ขายสินค้า" class="btn btn-success form-control">
                                 </form>
@@ -285,9 +295,9 @@ include './layout/header.php';
 <?php include './layout/footer.php' ?>
 
 <script>
-    // ส่วนลดแบบ dynamic
+    // ส่วนลดและประเภทการจ่าย dynamic
     $(document).ready(function() {
-        function updateGrandTotal() {
+        function updateSubDiscount() {
             var discount = parseFloat($('select[name="discount"]').val()) || 0;
             var grantotal = <?= $grantotal ?>;
             var discounted = grantotal - (grantotal * discount / 100);
@@ -305,11 +315,47 @@ include './layout/header.php';
             if (payValue > 0) {
                 finalTotal = discounted - (discounted * payValue / 100);
             }
-            // อัปเดตช่องจำนวนยอดรวม
-            $('input[name="grandTotal"]').val(finalTotal.toFixed(2));
+            // อัปเดตช่องจำนวนส่วนลด
+            $('input[name="sub_discount"]').val(finalTotal.toFixed(2));
         }
-        $('select[name="discount"]').on('change', updateGrandTotal);
-        $('#paymentMethodSelect').on('change', updateGrandTotal);
+        $('select[name="discount"]').on('change', updateSubDiscount);
+        $('#paymentMethodSelect').on('change', updateSubDiscount);
+        // เรียกครั้งแรกเมื่อโหลดหน้า
+        updateSubDiscount();
+    });
+</script>
+
+<script>
+    // อัปเดตทั้งจำนวนส่วนลด (sub_discount) และยอดรวม (grandTotal) พร้อมกัน (grandTotal = หลัง $rowPayment['value'])
+    $(document).ready(function() {
+        function updateTotals() {
+            var grantotal = <?= $grantotal ?>;
+            var discount = parseFloat($('select[name="discount"]').val()) || 0;
+            var discounted = grantotal - (grantotal * discount / 100);
+            // sub_discount คือยอดหลังหักส่วนลด
+            $('input[name="sub_discount"]').val(discounted.toFixed(2));
+            // หัก $rowPayment['value'] ต่อจาก discounted
+            var payValue = 0;
+            var paySelected = $('#paymentMethodSelect').val();
+            if (paySelected) {
+                var payParts = paySelected.split(',');
+                if (payParts.length > 1) {
+                    payValue = parseFloat(payParts[1]) || 0;
+                }
+            }
+            var afterPayment = discounted;
+            if (payValue > 0) {
+                // ถ้า $rowPayment['value'] เป็นเปอร์เซ็นต์
+                afterPayment = discounted - (discounted * payValue / 100);
+                // ถ้า $rowPayment['value'] เป็นจำนวนเงิน ให้ใช้:
+                // afterPayment = discounted - payValue;
+            }
+            // grandTotal คือยอดหลัง $rowPayment['value']
+            $('input[name="grandTotal"]').val(afterPayment.toFixed(2));
+        }
+        $('select[name="discount"]').on('change', updateTotals);
+        $('#paymentMethodSelect').on('change', updateTotals);
+        updateTotals();
     });
 </script>
 

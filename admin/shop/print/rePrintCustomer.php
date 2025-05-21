@@ -26,7 +26,7 @@
 <?php
 $total = 0;
 $id = $_GET['id'];
-$sql1 = "SELECT * 
+$sql1 = "SELECT * , `shop_orders`.total as sumtotal
 FROM `shop_orders`
 INNER JOIN `shop_order_details` ON shop_orders.id = shop_order_details.order_id
 WHERE id = ? ";
@@ -62,6 +62,24 @@ foreach ($check as $rowq) : ?>
     <div class="col" id="col"><span><?= number_format($total, 2) ?></span></div>
 </div>
 
+<!-- Discount -->
+<?php if ($row[0]['sub_discount'] != 0) : ?>
+    <div class="row">
+        <div class="col"><span>Discount : <?= $row[0]['discount'] ?> %</span></div>
+        <div class="col" id="col"><span><?= number_format($row[0]['sub_discount'], 2) ?> </span></div>
+    </div>
+    <div class="row">
+        <div class="col"><span>Discounted price : </span></div>
+        <div class="col" id="col"><span><?= number_format($row[0]['sumtotal'], 2) ?> </span></div>
+    </div>
+<?php endif; ?>
+
+<hr>
+
+<div class="row">
+    <div class="col"><span>Payment :</span></div>
+    <div class="col" id="col"><span><?= $row[0]['pay'] ?></span> </div>
+</div>
 
 <?php if ( $row[0]['vat3'] != 0) { ?>
     <div class="row">
@@ -75,11 +93,6 @@ foreach ($check as $rowq) : ?>
     <div class="col" id="col"><span><?= number_format($row[0]['sumtotal'], 2) ?></span></div>
 </div>
 
-
-<div class="row">
-    <div class="col"><span>Payment :</span></div>
-    <div class="col" id="col"><span><?= $row[0]['pay'] ?></span> </div>
-</div>
 
 <hr>
 
