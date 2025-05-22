@@ -4,6 +4,15 @@ include './middleware.php';
 $page = 'recordshop';
 require_once '../includes/connection.php';
 include './layout/header.php';
+
+if (isset($_POST['update_bill'])) {
+    include './shop/shop_edite_bill.php';
+
+    getData();
+    exit;
+  
+
+}
 ?>
 
 <div class="wrapper">
@@ -109,6 +118,13 @@ include './layout/header.php';
                                         <input type="text" name="m_card" readonly class="form-control" value="<?= $rows['ref_order_id'] ?>">
                                     </div>
 
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">Discoount</label>
+                                        </div>
+                                        <input type="text" name="discount" class="form-control" value="<?= $rows['discount'] ?> % | <?= number_format($rows['sub_discount'],2) ?>">
+                                    </div>
+
                                     <!-- ประเภทการจ่าย -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
@@ -142,7 +158,7 @@ include './layout/header.php';
                                         <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($rows['sub_vat'] + $grantotal, 2) ?>">
                                     </div>
 
-                                    <input type="submit" name="saveOrder" value="อัปเดตข้อมูล" onclick="alert('ยังไม่เสร็จครับ')" class="btn btn-success btn-block">
+                                    <input type="submit" name="update_bill" value="อัปเดตข้อมูล" onclick="alert('ยังไม่เสร็จครับ')" class="btn btn-success btn-block">
                                     <input type="button" onclick="window.location.href='recordshop.php'" value="ย้อนกลับ" class="btn btn-danger btn-block">
                             </div>
                         </div>
