@@ -15,6 +15,7 @@ include './layout/header.php';
 
                     <div class="col-6">
                         <div class="card mt-2 p-2">
+                            
                             <div class="card-header bg-info">
                                 <span style="float: left;">
                                     <h3>แก้ไขรายการขายสินค้า</h3>
@@ -22,6 +23,7 @@ include './layout/header.php';
                             </div>
 
                             <div class="card-body">
+
                                 <form action="" method="post">
 
                                     <table class="table table-sm">
@@ -91,7 +93,6 @@ include './layout/header.php';
                                         </tfoot>
                                     </table>
 
-
                                     <!-- หมายเลขบิล -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
@@ -138,7 +139,7 @@ include './layout/header.php';
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">ยอดรวม</label>
                                         </div>
-                                        <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($rows['sub_vat'] + $grantotal,2) ?>">
+                                        <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($rows['sub_vat'] + $grantotal, 2) ?>">
                                     </div>
 
                                     <input type="submit" name="saveOrder" value="อัปเดตข้อมูล" onclick="alert('ยังไม่เสร็จครับ')" class="btn btn-success btn-block">
