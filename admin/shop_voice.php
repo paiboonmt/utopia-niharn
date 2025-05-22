@@ -1,41 +1,24 @@
 <?php
-$title = 'SALE TICKET | APPLICATION';
+$title = 'ยกเลิกบิลขายสินค้า | ร้านค้า';
 include './middleware.php';
 $page = 'recordshop';
 require_once '../includes/connection.php';
 include './layout/header.php';
 
-if (isset($_POST['update_bill'])) {
-    include './shop/funtion.php';
+if (isset($_POST['voice_bill'])) {
 
+    // เรียกใช้ฟังก์ชัน getData
+    include './shop/funtion.php'; // เรียกใช้ฟังก์ชัน
     getData();
-    exit;
-    $num_bill = $_POST['num_bill'];
-    $m_card = $_POST['m_card'];
-    $discount = $_POST['discount'];
-    $payment = $_POST['payment'];
-    $grantotal = $_POST['grantotal'];
+    // exit;
+
     $id = $_POST['id'];
-    $order_id = $_POST['order_id'];
-    $pay = explode(',', $payment);
-    $pay_name = $pay[0];
-    $pay_value = $pay[1];
-
-    if ($discount == '') {
-        $discount = 0;
-    }
-    if ($pay_value == '') {
-        $pay_value = 0;
-    }
-
-    // เรียกใช้งาน ฟังก์ชัน
-
-
-
-    
-  
-
+    if (cancelBill($conndb, $id)) {
+        header("Location: recordshop.php");
+        exit;
+    } 
 }
+
 ?>
 
 <div class="wrapper">
@@ -48,9 +31,11 @@ if (isset($_POST['update_bill'])) {
                     <div class="col-8 mx-auto">
                         <div class="card mt-2 p-2">
                             
-                            <div class="card-header bg-info">
+                            <div class="card-header bg-warning">
                                 <span style="float: left;">
-                                    <h3>แก้ไขรายการขายสินค้า</h3>
+                                    <h3>
+                                        <i class="fas fa-shopping-cart"></i> ยกเลิกบิลขายสินค้า
+                                    </h3>
                                 </span>
                             </div>
 
@@ -143,13 +128,8 @@ if (isset($_POST['update_bill'])) {
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">Discoount</label>
                                         </div>                                         
-                                         <select name="discount" class="form-control">
-                                            <option value="<?= $rows['discount']?>" selected><?= $rows['discount']?>%</option>
-                                            <?php include './discount/function-discount.php';  ?>
-                                            <?php foreach (getDiscounts($conndb) as $discount) : ?>
-                                                <option value="<?= $discount['amount'] ?>"><?= $discount['name'] ?>%</option>
-                                            <?php endforeach; ?>
-                                         </select>
+                                         <input type="text" name="discount" class="form-control" value="<?= $rows['discount'] ?>" readonly>
+                                         
                                     </div>
 
                                     <!-- ประเภทการจ่าย -->
@@ -157,17 +137,7 @@ if (isset($_POST['update_bill'])) {
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">ประเภทการจ่าย |</label>
                                         </div>
-                                        <?php
-                                        $sqlPayment = $conndb->query("SELECT * FROM `payment` ORDER BY `pay_id` ASC");
-                                        $sqlPayment->execute();
-                                        ?>
-                                        <select class="custom-select" name="payment" required>
-                                            <option value="<?= $rows['pay'] ?>" selected><?= $rows['pay'] ?></option>
-                                            <?php foreach ($sqlPayment as $rowPayment) : ?>
-                                                <option value="<?= $rowPayment['pay_name'] . ',' . $rowPayment['value'] ?>"><?= $rowPayment['pay_name'] ?>
-                                                </option>
-                                            <?php endforeach; ?>
-                                        </select>
+                                       <input type="text" name="pay" readonly class="form-control" value="<?= $rows['pay'] ?>">
                                     </div>
 
                                     <!-- ยอดรวม -->
@@ -177,10 +147,25 @@ if (isset($_POST['update_bill'])) {
                                         </div>
                                         <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($grantotal, 2) ?>">
                                     </div>
+
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">หมายเหตุ</label>
+                                        </div>
+                                        <input type="text" name="comment" class="form-control" required >
+                                    </div>
+
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">ผู้ขาย</label>
+                                        </div>
+                                        <input type="text" name="emp" readonly class="form-control" value="<?= $rows['emp'] ?>">
+                                    </div>
+
                                     <input type="hidden" name="id" value="<?= $rows['id'] ?>">
                                     <input type="hidden" name="order_id" value="<?= $rows['order_id'] ?>">
-                                    <input type="submit" name="update_bill" value="อัปเดตข้อมูล" onclick="return confirm('คุณต้องการอัปเดทข้อมูลใช่หรือไม่')" class="btn btn-success btn-block">
-                                    <input type="button" onclick="window.location.href='recordshop.php'" value="ย้อนกลับ" class="btn btn-danger btn-block">
+                                    <input type="submit" name="voice_bill" value="ยกเลิกบิล" onclick="return confirm('คุณต้องการอัปเดทข้อมูลใช่หรือไม่')" class="btn btn-danger btn-block">
+
                             </div>
                         </div>
                     </div>

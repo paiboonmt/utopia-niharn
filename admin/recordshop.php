@@ -50,6 +50,7 @@ include './layout/header.php';
                                         $stmt->execute();
                                         $count = 1;
                                         foreach ($stmt as $row) : ?>
+                                            <?php if ($row['status'] == 1) :?>
                                             <tr style="font-size: 14px;">
                                                 <td><?= $count++ ?></td>
                                                 <td hidden><?= $row['ref_order_id'] ?></td>
@@ -77,30 +78,52 @@ include './layout/header.php';
 
                                                 <td class="text-center">
                                                     <?php if ($_SESSION['role'] == 'admin') { ?>
-                                                        <a href="?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
+                                                        <a href="./shop_voice.php?id=<?= $row['id'] ?>&action=voice" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
                                                     <?php } ?>
-                                                    <a href="./shop_editbill.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
+                                                    <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
+                                                    <!-- <a href="./shop_editbill.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a> -->
                                                     <a href="./shop/print/rePrintBil.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
                                                 </td>
-
                                             </tr>
-
+                                            
                                             <?php $sumTotal += $row['sumtotal'] ?>
+
+                                            <?php else : ?>
+                                                <tr style="font-size: 14px; background-color: #f8d7da;">
+                                                    <td><?= $count++ ?></td>
+                                                    <td hidden><?= $row['ref_order_id'] ?></td>
+                                                    <td><?= $row['num_bill'] ?></td>
+                                                    <td class="text-left">
+                                                       Canceled
+                                                    </td>
+                                                    <td>0</td>
+                                                    <td style="width: 150px;">0</td>
+                                                    <td><?= '0' ?></td>
+                                                    <td><?= '0' ?></td>
+                                                    <td style="width: 170px;"><?= number_format('0',2) ?></td>
+                                                    <td><?= date('H:i', strtotime($row['date'])) ?></td>
+                                                    <td><?= $row['emp'] ?></td>
+
+                                                    <td colspan="2" class="text-center">
+                                                        <a href="?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
+                                                    </td>
+                                                </tr>
+
+                                            <?php endif ?>
                                         <?php endforeach ?>
 
                                     </tbody>
                                 </table>
                             </div>
-
                         </div>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-12">
                         <div class="card p-2">
                             <div class="card-header">
                                 สรุปยอดรวม
+                                <?php include './shop/funtion.php' ; ?>
                             </div>
                             <div class="card-body">
                                 <table>
@@ -112,7 +135,7 @@ include './layout/header.php';
                                     <tr>
                                         <td>จำนวนบิล</td>
                                         <td>:</td>
-                                        <td><?= $count - 1 ?></td>
+                                        <td><?= countBill($conndb) ?></td>
                                     </tr>
                                     <tr>
                                         <td>วันที่</td>
@@ -130,7 +153,6 @@ include './layout/header.php';
 </div>
 
 <?php include './layout/footer.php'; ?>
-
 
 <?php if (isset($_SESSION['canotFind'])) : ?>
     <script>
