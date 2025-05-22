@@ -50,6 +50,8 @@
 
 <hr>
 
+
+
 <div class="row">
     <div class="col"><span>Payment :</span></div>
     <div class="col" id="col"><span><?= $_SESSION['pay'] ?></span> </div>
