@@ -212,17 +212,6 @@ include './layout/header.php';
                                         </div>
                                     </div>
 
-                                    <!-- จำนวนส่วนลด -->
-                                    <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text">จำนวนส่วนลด</label>
-                                        </div>
-                                        <input type="number" class="form-control" name="sub_discount" readonly>
-                                        <div class="input-group-append">
-                                            <span class="input-group-text">บาท</span>
-                                        </div>
-                                    </div>
-
                                     <!-- ประเภทการจ่าย -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
@@ -293,71 +282,6 @@ include './layout/header.php';
 </div>
 
 <?php include './layout/footer.php' ?>
-
-<script>
-    // ส่วนลดและประเภทการจ่าย dynamic
-    $(document).ready(function() {
-        function updateSubDiscount() {
-            var discount = parseFloat($('select[name="discount"]').val()) || 0;
-            var grantotal = <?= $grantotal ?>;
-            var discounted = grantotal - (grantotal * discount / 100);
-            // ตรวจสอบ payment value
-            var payValue = 0;
-            var paySelected = $('#paymentMethodSelect').val();
-            if (paySelected) {
-                var payParts = paySelected.split(',');
-                if (payParts.length > 1) {
-                    payValue = parseFloat(payParts[1]) || 0;
-                }
-            }
-            // สมมติว่า value คือเปอร์เซ็นต์ (ถ้าเป็นจำนวนเงินให้ปรับสูตร)
-            var finalTotal = discounted;
-            if (payValue > 0) {
-                finalTotal = discounted - (discounted * payValue / 100);
-            }
-            // อัปเดตช่องจำนวนส่วนลด
-            $('input[name="sub_discount"]').val(finalTotal.toFixed(2));
-        }
-        $('select[name="discount"]').on('change', updateSubDiscount);
-        $('#paymentMethodSelect').on('change', updateSubDiscount);
-        // เรียกครั้งแรกเมื่อโหลดหน้า
-        updateSubDiscount();
-    });
-</script>
-
-<script>
-    // อัปเดตทั้งจำนวนส่วนลด (sub_discount) และยอดรวม (grandTotal) พร้อมกัน (grandTotal = หลัง $rowPayment['value'])
-    $(document).ready(function() {
-        function updateTotals() {
-            var grantotal = <?= $grantotal ?>;
-            var discount = parseFloat($('select[name="discount"]').val()) || 0;
-            var discounted = grantotal - (grantotal * discount / 100);
-            // sub_discount คือยอดหลังหักส่วนลด
-            $('input[name="sub_discount"]').val(discounted.toFixed(2));
-            // หัก $rowPayment['value'] ต่อจาก discounted
-            var payValue = 0;
-            var paySelected = $('#paymentMethodSelect').val();
-            if (paySelected) {
-                var payParts = paySelected.split(',');
-                if (payParts.length > 1) {
-                    payValue = parseFloat(payParts[1]) || 0;
-                }
-            }
-            var afterPayment = discounted;
-            if (payValue > 0) {
-                // ถ้า $rowPayment['value'] เป็นเปอร์เซ็นต์
-                afterPayment = discounted - (discounted * payValue / 100);
-                // ถ้า $rowPayment['value'] เป็นจำนวนเงิน ให้ใช้:
-                // afterPayment = discounted - payValue;
-            }
-            // grandTotal คือยอดหลัง $rowPayment['value']
-            $('input[name="grandTotal"]').val(afterPayment.toFixed(2));
-        }
-        $('select[name="discount"]').on('change', updateTotals);
-        $('#paymentMethodSelect').on('change', updateTotals);
-        updateTotals();
-    });
-</script>
 
 <script>
     $(function() {
