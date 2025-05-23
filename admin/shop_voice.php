@@ -6,17 +6,31 @@ require_once '../includes/connection.php';
 include './layout/header.php';
 
 if (isset($_POST['voice_bill'])) {
-
-    // เรียกใช้ฟังก์ชัน getData
     include './shop/funtion.php'; // เรียกใช้ฟังก์ชัน
-    getData();
-    // exit;
-
     $id = $_POST['id'];
     if (cancelBill($conndb, $id)) {
-        header("Location: recordshop.php");
+        if (isset($_POST['num_bill'])) {
+            $num_bill = $_POST['num_bill'];
+            $price = $_POST['price'];
+            $discount = $_POST['discount'];
+            $sub_discount = $_POST['sub_discount'];
+            $payment = $_POST['payment'];
+            $vat7 = $_POST['vat7'];
+            $vat3 = $_POST['vat3'];
+            $sub_vat = $_POST['sub_vat'];
+            $total = $_POST['grantotal'];
+            $user = $_POST['emp'];
+            $comment = $_POST['comment'];
+
+            if (voice_bill($conndb, $num_bill, $price, $discount, $sub_discount, $payment, $vat7, $vat3, $sub_vat, $total, $user, $comment)) {
+                header("Location: recordshop.php");
+                $conndb = null;
+                exit;
+            }
+        }
+        $conndb = null;
         exit;
-    } 
+    }
 }
 
 ?>
@@ -30,7 +44,7 @@ if (isset($_POST['voice_bill'])) {
 
                     <div class="col-8 mx-auto">
                         <div class="card mt-2 p-2">
-                            
+
                             <div class="card-header bg-warning">
                                 <span style="float: left;">
                                     <h3>
@@ -53,18 +67,16 @@ if (isset($_POST['voice_bill'])) {
                                                 <th></th>
                                                 <th></th>
                                                 <th class="text-right">รวม</th>
-                                                <!-- <th class="text-right">จัดการ</th> -->
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <?php
 
-                                            $grantotal = 0;
-
-                                            $total = 0;
+                                         
+                                            $price = 0;
                                             $id = $_GET['id'];
-                                            $sql1 = "SELECT * 
-                                                FROM `shop_orders`
+                                            $sql1 = "SELECT * , shop_orders.total as grantotal
+                                                FROM `shop_orders` 
                                                 INNER JOIN `shop_order_details` ON shop_orders.id = shop_order_details.order_id
                                                 WHERE id = ? ";
 
@@ -95,13 +107,13 @@ if (isset($_POST['voice_bill'])) {
                                                         <?= number_format($rows['quantity'] * $rows['price'], 2) ?>
                                                     </td>
                                                 </tr>
-                                                <?php $grantotal += $rows['quantity'] * $rows['price'] ?>
+                                                <?php $price += $rows['quantity'] * $rows['price'] ?>
                                             <?php endforeach; ?>
                                         </tbody>
                                         <tfoot>
                                             <tr>
                                                 <th colspan="5" class="text-left">ยอดรวม : </th>
-                                                <th class="text-right"><?= number_format($grantotal, 2) ?></th>
+                                                <th class="text-right"><?= number_format($price, 2) ?></th>
                                                 <th class="text-center">บาท</th>
                                             </tr>
                                         </tfoot>
@@ -115,21 +127,22 @@ if (isset($_POST['voice_bill'])) {
                                         <input type="text" name="num_bill" class="form-control" value="<?= $rows['num_bill']  ?>" readonly>
                                     </div>
 
-                                    <!-- หมายเลข -->
-                                    <div class="input-group mb-1">
-                                        <div class="input-group-prepend">
-                                            <label class="input-group-text">หมายเลขบัตร | Qrcode |</label>
-                                        </div>
-                                        <input type="text" name="m_card" readonly class="form-control" value="<?= $rows['ref_order_id'] ?>">
-                                    </div>
+                                    <input type="hidden" name="price" class="form-control mb-1" value="<?= $price ?>" readonly>
 
                                     <!-- ส่วนลด -->
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">Discoount</label>
-                                        </div>                                         
-                                         <input type="text" name="discount" class="form-control" value="<?= $rows['discount'] ?>" readonly>
-                                         
+                                        </div>
+                                        <input type="text" name="discount" class="form-control" value="<?= $rows['discount'] ?>"  readonly>
+                                    </div>
+
+                                    <!-- ส่วนลด -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">Discoount price</label>
+                                        </div>
+                                        <input type="text" name="sub_discount" class="form-control" value="<?= $rows['sub_discount'] ?>" readonly>
                                     </div>
 
                                     <!-- ประเภทการจ่าย -->
@@ -137,7 +150,20 @@ if (isset($_POST['voice_bill'])) {
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">ประเภทการจ่าย |</label>
                                         </div>
-                                       <input type="text" name="pay" readonly class="form-control" value="<?= $rows['pay'] ?>">
+                                        <input type="text" name="payment" readonly class="form-control" value="<?= $rows['pay'] ?>">
+                                    </div>
+
+
+                                    <input type="hidden" name="vat7" class="form-control mb-1" value="<?= $rows['vat7'] ?>" readonly>
+                                    <input type="hidden" name="vat3" class="form-control mb-1" value="<?= $rows['vat3'] ?>" readonly>
+
+
+                                    <!-- ประเภทการจ่าย -->
+                                    <div class="input-group mb-1">
+                                        <div class="input-group-prepend">
+                                            <label class="input-group-text">จำนวนภาษี |</label>
+                                        </div>
+                                        <input type="text" name="sub_vat" readonly class="form-control" value="<?= $rows['sub_vat'] ?>">
                                     </div>
 
                                     <!-- ยอดรวม -->
@@ -145,14 +171,14 @@ if (isset($_POST['voice_bill'])) {
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">ยอดรวม</label>
                                         </div>
-                                        <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($grantotal, 2) ?>">
+                                        <input type="text" name="grantotal" readonly class="form-control" value="<?= number_format($rows['grantotal'], 2) ?>">
                                     </div>
 
                                     <div class="input-group mb-1">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text">หมายเหตุ</label>
                                         </div>
-                                        <input type="text" name="comment" class="form-control" required >
+                                        <input type="text" name="comment" class="form-control" required>
                                     </div>
 
                                     <div class="input-group mb-1">
@@ -165,7 +191,7 @@ if (isset($_POST['voice_bill'])) {
                                     <input type="hidden" name="id" value="<?= $rows['id'] ?>">
                                     <input type="hidden" name="order_id" value="<?= $rows['order_id'] ?>">
                                     <input type="submit" name="voice_bill" value="ยกเลิกบิล" onclick="return confirm('คุณต้องการอัปเดทข้อมูลใช่หรือไม่')" class="btn btn-danger btn-block">
-
+                                </form>
                             </div>
                         </div>
                     </div>

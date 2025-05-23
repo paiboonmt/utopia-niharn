@@ -68,7 +68,7 @@ if (isset($_POST['saveOrder'])) {
 
 
     $SQL = "INSERT INTO `shop_orders`(`ref_order_id`, `num_bill`, `price`, `discount`, `sub_discount` , `pay`, `vat7`, `vat3`, `sub_vat`, `total`, `date`, `emp`) 
-    VALUES ( '$ref_order_id' , '$num_bill' , '$price' , '$discount', '$sub_discount' , '$pay' , '$vat7' ,'$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
+    VALUES ( '$ref_order_id' , '$num_bill' , '$OriginalGrantotal' , '$discount', '$sub_discount' , '$pay' , '$vat7' ,'$vat3','$sub_vat','$sumTotal',current_timestamp(),'$AddBy')";
     $stmt = $conndb->prepare($SQL);
 
     if ($stmt->execute() == true) {

@@ -44,9 +44,11 @@ $date = date('Y-m-d');
                                     <thead>
                                         <tr>
                                             <th>ลำดับ.</th>
-                                            <th>หมายเลขบัตร</th>
+                                            <th hidden>หมายเลขบัตร</th>
                                             <th>หมายเลขบิล</th>
                                             <th>รายการ</th>
+                                            <th>ราคารวม</th>
+                                            <th>ส่วนลด</th>
                                             <th>ประเภทการจ่าย</th>
                                             <th>ภาษี 7%</th>
                                             <th>ภาษี 3%</th>
@@ -57,10 +59,12 @@ $date = date('Y-m-d');
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <?php if (isset($_POST['search'])) {
+                                        <?php if (isset($_POST['search'])) { ?>
+                                            <?php
                                             $sumTotal = 0;
-                                            $date = date('Y-m-d');
-                                            $sql = "SELECT * ,`shop_orders`.total as sumtotal
+                                            $date = $_POST['date'];
+                                           
+                                            $sql = "SELECT * ,`shop_orders`.total as sumtotal , shop_orders.price as sprice
                                                 FROM `shop_orders` , `shop_order_details`
                                                 WHERE `shop_orders`.`id` = `shop_order_details`.`order_id`
                                                 AND shop_orders.date LIKE '%$date%' GROUP BY `shop_orders`.`id` DESC";
@@ -68,42 +72,66 @@ $date = date('Y-m-d');
                                             $stmt->execute();
                                             $count = 1;
                                             foreach ($stmt as $row) : ?>
-                                                <tr style="font-size: 14px;">
-                                                    <td><?= $count++ ?></td>
-                                                    <td><?= $row['ref_order_id'] ?></td>
-                                                    <td><?= $row['num_bill'] ?></td>
-                                                    <td class="text-left">
-                                                        <?php
-                                                        $idd = $row['id'];
-                                                        $checkRow = "SELECT product_name , quantity , price as ppp  
-                                                    FROM `shop_order_details` 
-                                                    WHERE order_id = '$idd'";
-                                                        $stmtCheckRow = $conndb->prepare($checkRow);
-                                                        $stmtCheckRow->execute();
-                                                        $rowCount = $stmtCheckRow->rowCount();
-                                                        foreach ($stmtCheckRow as $A) : ?>
-                                                            <?php echo $A['product_name'] . ' : ' . ' ' . ' | ' . ' x ' . ' | ' . $A['quantity'] . '<br>'; ?>
-                                                        <?php endforeach; ?>
-                                                    </td>
+                                                <?php if ($row['status'] == 1) : ?>
+                                                    <tr style="font-size: 14px;">
+                                                        <td><?= $count++ ?></td>
+                                                        <td hidden><?= $row['ref_order_id'] ?></td>
+                                                        <td><?= $row['num_bill'] ?></td>
+                                                        <td class="text-left">
+                                                            <?php
+                                                            $idd = $row['id'];
+                                                            $checkRow = "SELECT product_name , quantity , price as ppp  
+                                                        FROM `shop_order_details` 
+                                                        WHERE order_id = '$idd'";
+                                                            $stmtCheckRow = $conndb->prepare($checkRow);
+                                                            $stmtCheckRow->execute();
+                                                            $rowCount = $stmtCheckRow->rowCount();
+                                                            foreach ($stmtCheckRow as $A) : ?>
+                                                                <?php echo $A['product_name'] . ' : ' . ' ' . ' | ' . ' x ' . ' | ' . $A['quantity'] . '<br>'; ?>
+                                                            <?php endforeach; ?>
+                                                        </td>
+                                                        <td><?= number_format($row['sprice'], 2) ?></td>
+                                                        <td><?= $row['discount'] . ' %' . ' | ' . $row['sub_discount'] ?></td>
+                                                        <td style="width: 150px;"><?= $row['pay'] ?></td>
+                                                        <td><?= $row['vat7'] ?></td>
+                                                        <td><?= $row['vat3'] . ' %' . ' | ' . number_format($row['sub_vat'], 2) ?></td>
+                                                        <td style="width: 170px;"><?= number_format($row['sumtotal'], 2) ?></td>
+                                                        <td><?= date('H:i', strtotime($row['date'])) ?></td>
+                                                        <td><?= $row['emp'] ?></td>
 
-                                                    <td style="width: 150px;"><?= $row['pay'] ?></td>
-                                                    <td><?= $row['vat7'] ?></td>
-                                                    <td><?= number_format($row['sub_vat'], 2) ?></td>
-                                                    <td style="width: 170px;"><?= number_format($row['sumtotal'], 2) ?></td>
-                                                    <td><?= date('H:i', strtotime($row['date'])) ?></td>
-                                                    <td><?= $row['emp'] ?></td>
+                                                        <td class="text-center">
+                                                            <?php if ($_SESSION['role'] == 'admin') { ?>
+                                                                <a href="./shop_voice.php?id=<?= $row['id'] ?>&action=voice" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
+                                                            <?php } ?>
+                                                            <!-- <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a> -->
+                                                            <!-- <a href="./shop_editbill.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a> -->
+                                                            <a href="./shop/print/rePrintBil.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
+                                                        </td>
+                                                    </tr>
 
-                                                    <td class="text-center">
-                                                        <?php if ($_SESSION['role'] == 'admin') { ?>
-                                                            <a href="?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
-                                                        <?php } ?>
-                                                        <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
-                                                        <a href="shop/rePrintBil.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
-                                                    </td>
+                                                    <?php $sumTotal += $row['sumtotal'] ?>
 
-                                                </tr>
-
-                                                <?php $sumTotal += $row['sumtotal'] ?>
+                                                <?php else : ?>
+                                                    <tr style="font-size: 14px; background-color: #f8d7da;">
+                                                        <td><?= $count++ ?></td>
+                                                        <td hidden><?= $row['ref_order_id'] ?></td>
+                                                        <td><?= $row['num_bill'] ?></td>
+                                                        <td class="text-left">
+                                                            Canceled
+                                                        </td>
+                                                        <td>0</td>
+                                                        <td>0</td>
+                                                        <td style="width: 150px;">0</td>
+                                                        <td><?= '0' ?></td>
+                                                        <td><?= '0' ?></td>
+                                                        <td style="width: 170px;"><?= number_format('0', 2) ?></td>
+                                                        <td><?= date('H:i', strtotime($row['date'])) ?></td>
+                                                        <td><?= $row['emp'] ?></td>
+                                                        <td colspan="2" class="text-center">
+                                                            <a href="./shop/print/shop_voice_print.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
+                                                        </td>
+                                                    </tr>
+                                                <?php endif ?>
                                             <?php endforeach ?>
                                         <?php } ?>
                                     </tbody>

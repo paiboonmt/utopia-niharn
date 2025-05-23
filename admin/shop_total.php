@@ -25,7 +25,6 @@ include("layout/header.php");
                 <div class="container-fluid">
 
                     <div class="row">
-
                         <!-- หัวบิล -->
                         <div class="col mt-3">
                             <table class="table">
@@ -35,7 +34,7 @@ include("layout/header.php");
                                     <th class="text-left">บริษัท ภูเก็ต สปอร์ต ยูโทเปีย จำกัด</th>
                                     <th> <?= 'ชื่อผู้ใช้งาน :' . ' ' . $_SESSION['username']  ?></th>
                                     <th></th>
-                                    <th>Rattachai muay thai gym ( Rawai ) รายงานขายสินค้า </th>
+                                    <th>Rattachai Rawai Muay Thai gym รายงานขายสินค้า </th>
                                     <th> <?= 'วันที่ :' . ' ' . date('d-m-Y') ?></th>
                                 </thead>
 
@@ -51,7 +50,7 @@ include("layout/header.php");
                                     <?php
                                     $sqlCash = $conndb->query("SELECT  `pay`, COUNT(pay) as count , SUM(total) AS total
                                         FROM `shop_orders` 
-                                        WHERE date(`date`) LIKE '%$date%'
+                                        WHERE date(`date`) LIKE '%$date%' AND status = 1
                                         GROUP BY `pay`
                                         ORDER BY count DESC ");
                                     $sqlCash->execute();
@@ -87,7 +86,7 @@ include("layout/header.php");
                                     <?php
                                     $sql_pay = "SELECT id , pay , num_bill , total 
                                         FROM `shop_orders` 
-                                        WHERE `date` LIKE '%$date%' AND pay != 'Cash'
+                                        WHERE `date` LIKE '%$date%' AND pay != 'Cash' AND status = 1
                                         GROUP BY id";
                                     $stmt_pay = $conndb->query($sql_pay);
                                     $stmt_pay->execute();
@@ -133,7 +132,7 @@ include("layout/header.php");
                                         SUM(shop_order_details.quantity ) AS quantity , shop_order_details.price AS price
                                         FROM `shop_orders` 
                                         INNER JOIN `shop_order_details` ON shop_order_details.order_id = shop_orders.id
-                                        WHERE date(shop_orders.date) LIKE '%$date%'
+                                        WHERE date(shop_orders.date) LIKE '%$date%' AND status = 1
                                         GROUP BY shop_order_details.product_id
                                         ORDER BY quantity DESC;";
                                     $stmtProduct = $conndb->query($sqlProduct);
@@ -156,6 +155,32 @@ include("layout/header.php");
                                         <th></th>
                                         <th colspan="3" class="text-right"><?= number_format($sumTotal, 2) ?></th>
                                     </tr>
+                                </tbody>
+
+                                <!-- รายการบิลที่มีส่วนลด -->
+                                <thead>
+                                    <th>รายการบิลที่มีส่วนลด หมายเลขบิล</th>
+                                    <th></th>
+                                    <th class="text-right">ราคาสินค้าก่อนส่วนลด</th>
+                                    <th class="text-right">จำนวนส่วนลด</th>
+                                    <th class="text-right">ยอดสุทธิ</th>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    $sqlDiscount = "SELECT id , num_bill , price , total , discount ,sub_discount
+                                        FROM `shop_orders` 
+                                        WHERE date(`date`) LIKE '%$date%' AND discount != 0 AND status = 1";
+                                    $stmtDiscount = $conndb->query($sqlDiscount);
+                                    $stmtDiscount->execute();
+                                    foreach ($stmtDiscount as $rowDiscount) : ?>
+                                        <tr>
+                                            <td><?= $rowDiscount['num_bill'] ?></td>
+                                            <td></td>
+                                            <td class="text-right"><?= number_format($rowDiscount['price'], 2) ?></td>
+                                            <td class="text-right"><?= $rowDiscount['discount'] . ' % ' . ' | ' . number_format($rowDiscount['sub_discount'], 2) ?></td>
+                                            <td class="text-right"><?= number_format($rowDiscount['total'], 2) ?></td>
+                                        </tr>
+                                    <?php endforeach ?>
                                 </tbody>
 
                             </table>
