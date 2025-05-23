@@ -1,7 +1,7 @@
 <?php
 $title = 'REPORT | APPLICATION';
 include '../middleware.php';
-$page = 'reportShop';
+$page = 'reportShopMonth';
 $date = date('Y-m-d');
 ?>
 <!DOCTYPE html>
@@ -24,7 +24,7 @@ $date = date('Y-m-d');
                                             <div class="input-group-prepend">
                                                 <span class="input-group-text">Choose</span>
                                             </div>
-                                            <input type="date" name="date" class="form-control" required value="<?= $date ?>">
+                                            <input type="month" name="date" class="form-control" required value="<?= $month ?>">
                                         </div>
                                     </div>
                                     <div class="col-2">
@@ -34,7 +34,7 @@ $date = date('Y-m-d');
                             </form>
                         </div>
                         <?php if (isset($_POST['search'])) { ?>
-                            <h3>กำลังค้นหาข้อมูลวันที่ : <?= date('d-m-Y', strtotime($_POST['date'])) ?></h3>
+                            <h3><?= date('M-Y', strtotime($_POST['date'])) ?></h3>
                         <?php } ?>
                     </div>
                     <div class="row">
@@ -62,12 +62,12 @@ $date = date('Y-m-d');
                                         <?php if (isset($_POST['search'])) { ?>
                                             <?php
                                             $sumTotal = 0;
-                                            $date = $_POST['date'];
-
+                                            $month = $_POST['date'];
                                             $sql = "SELECT * ,`shop_orders`.total as sumtotal , shop_orders.price as sprice
                                                 FROM `shop_orders` , `shop_order_details`
                                                 WHERE `shop_orders`.`id` = `shop_order_details`.`order_id`
-                                                AND shop_orders.date LIKE '%$date%' GROUP BY `shop_orders`.`id` DESC";
+                                                AND DATE_FORMAT(shop_orders.date, '%Y-%m') = '$month'
+                                                GROUP BY `shop_orders`.`id` DESC";
                                             $stmt = $conndb->query($sql);
                                             $stmt->execute();
                                             $count = 1;
@@ -96,13 +96,13 @@ $date = date('Y-m-d');
                                                         <td><?= $row['vat7'] ?></td>
                                                         <td><?= $row['vat3'] . ' %' . ' | ' . number_format($row['sub_vat'], 2) ?></td>
                                                         <td style="width: 170px;"><?= number_format($row['sumtotal'], 2) ?></td>
-                                                        <td><?= date('H:i', strtotime($row['date'])) ?></td>
+                                                        <td><?= date('d-m-Y H:i:s', strtotime($row['date'])) ?></td>
                                                         <td><?= $row['emp'] ?></td>
 
                                                         <td class="text-center">
-                                                            <?php if ($_SESSION['role'] == 'admin') { ?>
+                                                            <!-- <?php if ($_SESSION['role'] == 'admin') { ?>
                                                                 <a href="./shop_voice.php?id=<?= $row['id'] ?>&action=voice" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
-                                                            <?php } ?>
+                                                            <?php } ?> -->
                                                             <!-- <a href="?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a> -->
                                                             <!-- <a href="./shop_editbill.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a> -->
                                                             <a href="../shop/print/rePrintBil.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
@@ -140,10 +140,10 @@ $date = date('Y-m-d');
                         </div>
                     </div>
                     <div class="row">
-                        <?php if (isset($_POST['search'])): ?>
+                        <?php if (isset($sumTotal)) : ?>
                             <div class="col-4 mx-auto">
                                 <div class="alert alert-success text-center" role="alert">
-                                    <strong>ยอดรวมทั้งหมด: <?= number_format($sumTotal, 2) ?> บาท</strong>
+                                    <h4>ยอดรวมทั้งหมด: <?= number_format($sumTotal, 2) ?> บาท</h4>
                                 </div>
                             </div>
                         <?php endif; ?>

@@ -118,7 +118,23 @@ function countNew($conndb)
                     <a href="reportShop.php" class="nav-link <?= $active ?>">
                         <i class="fas fa-shopping-cart nav-icon"></i>
                         <p>
-                            ยอดขายสินค้า
+                            ยอดขายสินค้า รายวัน
+                        </p>
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <?php
+                    if ($page == 'reportShopMonth') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
+                    <a href="reportShopMonth.php" class="nav-link <?= $active ?>">
+                        <i class="fas fa-shopping-cart nav-icon"></i>
+                        <p>
+                            ยอดขายสินค้า รายเดือน
                         </p>
                     </a>
                 </li>

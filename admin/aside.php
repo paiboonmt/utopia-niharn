@@ -103,192 +103,228 @@ function countShop($conndb)
                         </p>
                     </a>
                 </li>
-                <!-- เช็คอิน -->
-                <li class="nav-header" style="font-size: 20px;">ขาย | คลาสเรียนมวย</li>
 
-                <!-- ขาย Ticket -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'cart') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="cart.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-shopping-cart"></i>
+                <?php
+                if ($page == 'cart' || $page == 'cart.php' || $page == 'product' || $page == 'recordticket' || $page == 'cancel_ticket') {
+                    $active_cart = 'active';
+                    $open_cart = 'menu-open';
+                } else {
+                    $active_cart = '';
+                    $open_cart = '';
+                }
+                ?>
+                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                    <a href="#" class="nav-link <?= $active_cart ?>">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
-                            ขาย Ticket
+                            ขาย | คลาสเรียนมวย
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
-                </li>
-                <!-- ขาย Ticket -->
+                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
 
-                <!-- บริการ -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'product') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="product.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fab fa-product-hunt"></i>
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'cart') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="cart.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <p>ขาย Ticket</p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'product') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="product.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fab fa-product-hunt"></i>
+                                <p>
+                                    บริการ
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <?php
+                            if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="recordticket.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-ticket-alt"></i>
+                                <p>
+                                    ประวัติการขาย
+                                    <?php if (countTicket($conndb) == 0) { ?>
+                                        <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
+                                    <?php } else { ?>
+                                        <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
+                                    <?php } ?>
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+
+                <?php
+                if ($page == 'search' || $page == 'newmember' || $page == 'nationality') {
+                    $active_cart = 'active';
+                    $open_cart = 'menu-open';
+                } else {
+                    $active_cart = '';
+                    $open_cart = '';
+                }
+                ?>
+                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                    <a href="#" class="nav-link <?= $active_cart ?>">
+                        <i class="nav-icon fas fa-users-cog"></i>
                         <p>
-                            บริการ
+                            สมาชิก ประวัติลูกค้า
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
+                        <li class="nav-item ">
+                            <?php
+                            if ($page == 'search') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="search.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-search"></i>
+                                <p>
+                                    ค้นหาสมาชิก
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'newmember') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="newmember.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-user-clock"></i>
+                                <p>
+                                    รายชื่อสมาชิก
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'nationality') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="nationnality.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-language"></i>
+                                <p>
+                                    สัญชาติ
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- บริการ -->
 
-                <!-- ประวัติการขาย -->
-                <li class="nav-item ">
-                    <?php
-                    if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="recordticket.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-ticket-alt"></i>
+
+                <?php
+                if ($page == 'shop_total' || $page == 'shop' || $page == 'store' || $page == 'recordshop') {
+                    $active_cart = 'active';
+                    $open_cart = 'menu-open';
+                } else {
+                    $active_cart = '';
+                    $open_cart = '';
+                }
+                ?>
+                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                    <a href="#" class="nav-link <?= $active_cart ?>">
+                        <i class="nav-icon fas fa-table"></i>
                         <p>
-                            ประวัติการขาย
-                            <?php if (countTicket($conndb) == 0) { ?>
-                                <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
-                            <?php } else { ?>
-                                <span class="right badge badge-danger"><?= countTicket($conndb); ?></span>
-                            <?php } ?>
+                            ขาย | สินค้า | เครื่องดื่ม
+                            <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
+                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
+                        <li class="nav-item ">
+                            <?php
+                            if ($page == 'shop_total') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="shop_total.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
+                                <p>
+                                    สรุปยอดขาย สินค้า
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'shop') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="shop.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-shopping-cart"></i>
+                                <p>
+                                    ขายสินค้า
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'store') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="shop_store.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-store"></i>
+                                <p>
+                                    คลังสินค้า
+                                </p>
+                            </a>
+                        </li>
+                        <li class="nav-item ">
+                            <?php
+                            if ($page == 'recordshop') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="recordshop.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-ticket-alt"></i>
+                                <p>
+                                    ประวัติการขายสินค้า
+                                </p>
+                            </a>
+                        </li>
+                    </ul>
                 </li>
-                <!-- ประวัติการขาย -->
-
-                <!-- ค้นหาสมาชิก -->
-                <li class="nav-item ">
-                    <?php
-                    if ($page == 'search') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="search.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-search"></i>
-                        <p>
-                            ค้นหาสมาชิก
-                        </p>
-                    </a>
-                </li>
-                <!-- ค้นหาสมาชิก -->
-
-                <!-- รายชื่อสมาชิก -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'newmember') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="newmember.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-user-clock"></i>
-                        <p>
-                            รายชื่อสมาชิก
-                        </p>
-                    </a>
-                </li>
-                <!-- รายชื่อสมาชิก -->
-
-                <!-- สัญชาติ -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'nationality') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="nationnality.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-language"></i>
-                        <p>
-                            สัญชาติ
-                        </p>
-                    </a>
-                </li>
-                <!-- สัญชาติ -->
-
-                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
-                    <li class="nav-header" style="font-size: 20px;">ขาย | สินค้า | เครื่องดื่ม</li>
-                    <?php
-                    if ($page == 'shop_total') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <li class="nav-item ">
-                        <a href="shop_total.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
-                            <p>
-                                สรุปยอดขาย สินค้า
-                            </p>
-                        </a>
-                    </li>
 
 
-                    <?php
-                    if ($page == 'shop') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-
-                    <li class="nav-item">
-                        <a href="shop.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-shopping-cart"></i>
-                            <p>
-                                ขายสินค้า
-                            </p>
-                        </a>
-                    </li>
-
-                    <?php
-                    if ($page == 'store') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-
-                    <li class="nav-item">
-                        <a href="shop_store.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-store"></i>
-                            <p>
-                                คลังสินค้า
-                            </p>
-                        </a>
-                    </li>
-
-                    <?php
-                    if ($page == 'recordshop') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <li class="nav-item ">
-                        <a href="recordshop.php" class="nav-link <?= $active ?>">
-                            <i class="nav-icon fas fa-ticket-alt"></i>
-                            <p>
-                                ประวัติการขายสินค้า
-                            </p>
-                        </a>
-                    </li>
-
-                <?php endif ?>
 
                 <!-- การชำระเงิน -->
                 <li class="nav-item">
