@@ -51,7 +51,7 @@ function countNew($conndb)
                 </li>
 
                 <?php
-                if ($page == 'searchreport' || $page == 'reportTicket') {
+                if ( $page == 'reportTicket' || $page == 'searchreport' || $page == 'PaymentReport') {
                     $active_cart = 'active';
                     $open_cart = 'menu-open';
                 } else {
@@ -63,7 +63,7 @@ function countNew($conndb)
                     <a href="#" class="nav-link <?= $active_cart ?>">
                         <i class="nav-icon fas fa-table"></i>
                         <p>
-                            Training Report
+                            Training Sale Report
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
@@ -97,6 +97,22 @@ function countNew($conndb)
                                 <i class="far fa-star nav-icon"></i>
                                 <p>
                                     สรุปการขายแบบรายการ
+                                </p>
+                            </a>
+                        </li>
+                        <!-- รายงานแยกประเภทการชำระ -->
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'PaymentReport') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="PaymentReport.php" class="nav-link <?= $active ?>">
+                                <i class="far fa-star nav-icon"></i>
+                                <p>
+                                    ประเภทการชำระ
                                 </p>
                             </a>
                         </li>
