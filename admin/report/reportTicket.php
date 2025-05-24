@@ -112,10 +112,8 @@ $date = date('Y-m-d');
                                                         <td><?= $row['AddBy'] ?></td>
                                                         <td class="text-center">
                                                             <a onclick="return confirm('คุณต้องการลบบิลจริงหรือ ?')" href="./recordticketSql.php?id=<?= $row['id'] ?>&act=delete" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
-                                                        </td>
-                                                        <td class="text-center disabled"><i class="far fa-edit"></i></td>
-                                                        <td colspan="3" class="text-center">
                                                             <a href="voidPrint.php?ref_order_id=<?= $row['ref_order_id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
+
                                                         </td>
                                                     </tr>
                                                 <?php } else { ?>

@@ -49,26 +49,10 @@ function countShop($conndb)
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
 
-                <!-- สรุปยอดขาย Training -->
-                <li class="nav-item ">
-                    <?php
-                    if ($page == 'index') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="index.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fas fa-tachometer-alt"></i>
-                        <p>
-                            สรุปยอดขาย Training
-                        </p>
-                    </a>
-                </li>
-                <!-- สรุปยอดขาย Training -->
-
                 <!-- จัดการสมาชิก -->
                 <?php if ($_SESSION['role'] == 'admin') : ?>
+
+
                     <li class="nav-item ">
                         <?php
                         if ($page == 'usersetting') {
@@ -84,28 +68,32 @@ function countShop($conndb)
                             </p>
                         </a>
                     </li>
-                <?php endif ?>
-                <!-- จัดการสมาชิก -->
 
-                <!-- เช็คอิน -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'checkin') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="checkin.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon  fas fa-door-open"></i>
-                        <p>
-                            เช็คอิน
-                        </p>
-                    </a>
-                </li>
+                <?php endif ?>
+
+
+
+                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user' ) : ?>
+                    <li class="nav-item">
+                        <?php
+                        if ($page == 'checkin') {
+                            $active = 'active';
+                        } else {
+                            $active = '';
+                        }
+                        ?>
+                        <a href="checkin.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon  fas fa-door-open"></i>
+                            <p>
+                                เช็คอิน
+                            </p>
+                        </a>
+                    </li>
+                <?php endif ?>
+
 
                 <?php
-                if ($page == 'cart' || $page == 'cart.php' || $page == 'product' || $page == 'recordticket' || $page == 'cancel_ticket') {
+                if ($page == 'cart' || $page == 'cart.php' || $page == 'product' || $page == 'recordticket' || $page == 'cancel_ticket' || $page == 'index') {
                     $active_cart = 'active';
                     $open_cart = 'menu-open';
                 } else {
@@ -122,36 +110,54 @@ function countShop($conndb)
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
-
-                        <li class="nav-item">
+                        <li class="nav-item ">
                             <?php
-                            if ($page == 'cart') {
+                            if ($page == 'index') {
                                 $active = 'active';
                             } else {
                                 $active = '';
                             }
                             ?>
-                            <a href="cart.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>ขาย Ticket</p>
-                            </a>
-                        </li>
-
-                        <li class="nav-item">
-                            <?php
-                            if ($page == 'product') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="product.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fab fa-product-hunt"></i>
+                            <a href="index.php" class="nav-link <?= $active ?>">
+                                <i class="nav-icon fas fa-tachometer-alt"></i>
                                 <p>
-                                    บริการ
+                                    สรุปยอดขาย Training
                                 </p>
                             </a>
                         </li>
+
+                        <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'cart') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="cart.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>ขาย Ticket</p>
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'product') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="product.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fab fa-product-hunt"></i>
+                                    <p>
+                                        บริการ
+                                    </p>
+                                </a>
+                            </li>
+                        <?php endif ?>
+
                         <li class="nav-item ">
                             <?php
                             if ($page == 'recordticket' ||  $page == 'cancel_ticket') {
@@ -172,76 +178,77 @@ function countShop($conndb)
                                 </p>
                             </a>
                         </li>
+
                     </ul>
                 </li>
 
-
-                <?php
-                if ($page == 'search' || $page == 'newmember' || $page == 'nationality') {
-                    $active_cart = 'active';
-                    $open_cart = 'menu-open';
-                } else {
-                    $active_cart = '';
-                    $open_cart = '';
-                }
-                ?>
-                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
-                    <a href="#" class="nav-link <?= $active_cart ?>">
-                        <i class="nav-icon fas fa-users-cog"></i>
-                        <p>
-                            สมาชิก ประวัติลูกค้า
-                            <i class="fas fa-angle-left right"></i>
-                        </p>
-                    </a>
-                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
-                        <li class="nav-item ">
-                            <?php
-                            if ($page == 'search') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="search.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-search"></i>
-                                <p>
-                                    ค้นหาสมาชิก
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <?php
-                            if ($page == 'newmember') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="newmember.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-user-clock"></i>
-                                <p>
-                                    รายชื่อสมาชิก
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <?php
-                            if ($page == 'nationality') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="nationnality.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-language"></i>
-                                <p>
-                                    สัญชาติ
-                                </p>
-                            </a>
-                        </li>
-                    </ul>
-                </li>
-
+                <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
+                    <?php
+                    if ($page == 'search' || $page == 'newmember' || $page == 'nationality') {
+                        $active_cart = 'active';
+                        $open_cart = 'menu-open';
+                    } else {
+                        $active_cart = '';
+                        $open_cart = '';
+                    }
+                    ?>
+                    <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                        <a href="#" class="nav-link <?= $active_cart ?>">
+                            <i class="nav-icon fas fa-users-cog"></i>
+                            <p>
+                                สมาชิก ประวัติลูกค้า
+                                <i class="fas fa-angle-left right"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
+                            <li class="nav-item ">
+                                <?php
+                                if ($page == 'search') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="search.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-search"></i>
+                                    <p>
+                                        ค้นหาสมาชิก
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'newmember') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="newmember.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-user-clock"></i>
+                                    <p>
+                                        รายชื่อสมาชิก
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'nationality') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="nationnality.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-language"></i>
+                                    <p>
+                                        สัญชาติ
+                                    </p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                <?php endif ?>
 
                 <?php
                 if ($page == 'shop_total' || $page == 'shop' || $page == 'store' || $page == 'recordshop') {
@@ -261,6 +268,7 @@ function countShop($conndb)
                         </p>
                     </a>
                     <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
+
                         <li class="nav-item ">
                             <?php
                             if ($page == 'shop_total') {
@@ -276,36 +284,40 @@ function countShop($conndb)
                                 </p>
                             </a>
                         </li>
-                        <li class="nav-item">
-                            <?php
-                            if ($page == 'shop') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="shop.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-shopping-cart"></i>
-                                <p>
-                                    ขายสินค้า
-                                </p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <?php
-                            if ($page == 'store') {
-                                $active = 'active';
-                            } else {
-                                $active = '';
-                            }
-                            ?>
-                            <a href="shop_store.php" class="nav-link <?= $active ?>">
-                                <i class="nav-icon fas fa-store"></i>
-                                <p>
-                                    คลังสินค้า
-                                </p>
-                            </a>
-                        </li>
+
+                        <?php if ($_SESSION['role'] == 'admin' || $_SESSION['role'] == 'user') : ?>
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'shop') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="shop.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-shopping-cart"></i>
+                                    <p>
+                                        ขายสินค้า
+                                    </p>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <?php
+                                if ($page == 'store') {
+                                    $active = 'active';
+                                } else {
+                                    $active = '';
+                                }
+                                ?>
+                                <a href="shop_store.php" class="nav-link <?= $active ?>">
+                                    <i class="nav-icon fas fa-store"></i>
+                                    <p>
+                                        คลังสินค้า
+                                    </p>
+                                </a>
+                            </li>
+                        <?php endif ?>
+
                         <li class="nav-item ">
                             <?php
                             if ($page == 'recordshop') {
@@ -324,43 +336,43 @@ function countShop($conndb)
                     </ul>
                 </li>
 
+                <?php if ($_SESSION['role'] == 'admin') : ?>
+                    <!-- การชำระเงิน -->
+                    <li class="nav-item">
+                        <?php
+                        if ($page == 'payment') {
+                            $active = 'active';
+                        } else {
+                            $active = '';
+                        }
+                        ?>
+                        <a href="payment.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
+                            <p>
+                                ประเภท การชำระเงิน
+                            </p>
+                        </a>
+                    </li>
+                    <!-- การชำระเงิน -->
 
-
-                <!-- การชำระเงิน -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'payment') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="payment.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fab fa-cc-amazon-pay"></i>
-                        <p>
-                            ประเภท การชำระเงิน
-                        </p>
-                    </a>
-                </li>
-                <!-- การชำระเงิน -->
-
-                <!-- ส่วนลด -->
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'discount') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="discount.php" class="nav-link <?= $active ?>">
-                        <i class="nav-icon fab fa-cc-amazon-pay"></i>
-                        <p>
-                            ส่วนลด
-                        </p>
-                    </a>
-                </li>
-                <!-- ส่วนลด -->
+                    <!-- ส่วนลด -->
+                    <li class="nav-item">
+                        <?php
+                        if ($page == 'discount') {
+                            $active = 'active';
+                        } else {
+                            $active = '';
+                        }
+                        ?>
+                        <a href="discount.php" class="nav-link <?= $active ?>">
+                            <i class="nav-icon fab fa-cc-amazon-pay"></i>
+                            <p>
+                                ส่วนลด
+                            </p>
+                        </a>
+                    </li>
+                    <!-- ส่วนลด -->
+                <?php endif ?>
 
                 <!-- รายงาน -->
                 <li class="nav-item">

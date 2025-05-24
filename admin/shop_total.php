@@ -48,9 +48,9 @@ include("layout/header.php");
                                 </thead>
                                 <tbody>
                                     <?php
-                                    $sqlCash = $conndb->query("SELECT  `pay`, COUNT(pay) as count , SUM(total) AS total
-                                        FROM `shop_orders` 
-                                        WHERE date(`date`) LIKE '%$date%' AND status = 1
+                                    $sqlCash = $conndb->query("SELECT `pay`, COUNT(pay) as count, SUM(total) AS total
+                                        FROM `shop_orders`
+                                        WHERE DATE(`date`) = '$date' AND status = 1
                                         GROUP BY `pay`
                                         ORDER BY count DESC ");
                                     $sqlCash->execute();
