@@ -1,7 +1,7 @@
 <?php
-$title = 'Payment Report | รายงานการชำระเงิน'; ;
+$title = 'Tax-Inclusive-Payment | แยกประเภทการชำระแบบมีภาษี';;
 include '../middleware.php';
-$page = 'PaymentReport';
+$page = 'Tax-Inclusive-Payment';
 $date = date('Y-m-d');
 ?>
 <!DOCTYPE html>
@@ -22,7 +22,7 @@ $date = date('Y-m-d');
                                 <form action="" method="post">
                                     <div class="card">
                                         <div class="card-header bg-dark text-white">
-                                            <h3 class="card-title">Payment Report</h3>
+                                            <h3 class="card-title">แยกประเภทการชำระแบบมีภาษี</h3>
                                         </div>
 
                                         <div class="card-body">
@@ -53,49 +53,53 @@ $date = date('Y-m-d');
                         echo 'Selected Date: ' . date('d/m/Y', strtotime($date)) . '<br>';
                         echo '</pre>';
                         ?>
+
                         <div class="row">
                             <div class="col">
                                 <div class="card p-2">
                                     <table id="example1" class="table table-sm">
                                         <thead>
-                                            <th> แยกประเภทวิธีการชำระ </th>
+                                            <th>แยกประเภทการชำระแบบมีภาษี</th>
                                             <th></th>
-                                            <th></th>
-                                            <th class="text-right"> จำนวนครั้ง </th>
-                                            <th class="text-right">ยอดขายรวม</th>
+                                            <th class="text-right">หมายเลขบิล</th>
+                                            <th class="text-right">ยอด</th>
+                                            <th class="text-right">จำนวนภาษี</th>
                                         </thead>
                                         <tbody>
                                             <?php
-                                            $sqlCash = $conndb->query("SELECT  `pay`, COUNT(pay) as count , SUM(total) AS total
-                                        FROM `orders` 
-                                        WHERE date(`date`) LIKE '%$date%'
-                                        GROUP BY `pay`
-                                        ORDER BY count DESC ");
-                                            $sqlCash->execute();
-                                            $totalAmount = 0;
-                                            foreach ($sqlCash as $rowCash) : ?>
+                                            $sql_pay = "SELECT id , pay , num_bill , total 
+                                            FROM `orders` 
+                                            WHERE `date` LIKE '%$date%' AND pay != 'Cash'
+                                            GROUP BY id";
+                                            $stmt_pay = $conndb->query($sql_pay);
+                                            $stmt_pay->execute();
+                                            $vat = 0;
+                                            $sumVat = 0;
+                                            $sumRowPay = 0;
+                                            foreach ($stmt_pay as $row_pay) : ?>
                                                 <tr>
-                                                    <td><?= $rowCash['pay'] ?></td>
+                                                    <td> <?= $row_pay['pay'] ?> </td>
                                                     <td></td>
-                                                    <td></td>
-                                                    <td class="text-right"><?= $rowCash['count'] ?></td>
-                                                    <td colspan="2" class="text-right"><?= number_format($rowCash['total'], 2) ?></td>
+                                                    <td class="text-right"> <?= $row_pay['num_bill'] ?> </td>
+                                                    <td class="text-right"> <?= number_format($row_pay['total'], 2) ?> </td>
+                                                    <?php $vat = ($row_pay['total'] * 3) / 103 ?>
+                                                    <td class="text-right"> <?= number_format($vat, 2) ?> </td>
                                                 </tr>
-                                                <?php $totalAmount =  $totalAmount += $rowCash['total'] ?>
-                                            <?php endforeach ?>
-                                            <tr class="text-danger">
-                                                <th>ยอดรวมทั้งหมด</th>
-                                                <th></th>
-                                                <th></th>
-                                                <th></th>
-                                                <th class="text-right "><?= number_format($totalAmount, 2) ?></th>
-                                            </tr>
+
+                                                <?php $sumRowPay = $sumRowPay += $row_pay['total'] ?>
+                                                <?php $sumVat = $sumVat += $vat  ?>
+
+                                            <?php endforeach; ?>
+
                                         </tbody>
+                                        <tr class="text-danger">
+                                            <td>ยอดรวมภาษี</td>
+                                            <th colspan="6" class="text-right"><?= number_format($sumVat, 2) ?></th>
+                                        </tr>
                                     </table>
                                 </div>
                             </div>
                         </div>
-
                     <?php }  ?>
                 </div>
             </div>
@@ -126,7 +130,7 @@ $date = date('Y-m-d');
                 "responsive": true,
                 "lengthChange": false,
                 "autoWidth": false,
-                "buttons": ["excel","print"],
+                "buttons": ["excel", "print"],
                 "stateSave": true
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
             $('#example2').DataTable({

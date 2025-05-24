@@ -51,7 +51,7 @@ function countNew($conndb)
                 </li>
 
                 <?php
-                if ( $page == 'reportTicket' || $page == 'searchreport' || $page == 'PaymentReport') {
+                if ( $page == 'reportTicket' || $page == 'searchreport' || $page == 'PaymentReport' || $page == 'Tax-Inclusive-Payment') {
                     $active_cart = 'active';
                     $open_cart = 'menu-open';
                 } else {
@@ -113,6 +113,22 @@ function countNew($conndb)
                                 <i class="far fa-star nav-icon"></i>
                                 <p>
                                     ประเภทการชำระ
+                                </p>
+                            </a>
+                        </li>
+                        <!-- แยกประเภทการชำระแบบมีภาษี -->
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'Tax-Inclusive-Payment') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="Tax-Inclusive-Payment.php" class="nav-link <?= $active ?>">
+                                <i class="far fa-star nav-icon"></i>
+                                <p>
+                                    ประเภทการชำระรวมภาษี
                                 </p>
                             </a>
                         </li>
