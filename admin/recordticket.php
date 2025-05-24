@@ -73,9 +73,8 @@ include './layout/header.php';
                                                     <td><?= date('H:i', strtotime($row['date'])) ?></td>
                                                     <td><?= $row['AddBy'] ?></td>
                                                     <td class="text-center">
-                                                        <a onclick="return confirm('คุณต้องการลบบิลจริงหรือ ?')" href="./recordticketSql.php?id=<?= $row['id'] ?>&act=delete" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash"></i></a>
-
-                                                        <a href="./voidPrint.php?ref_order_id=<?= $row['ref_order_id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
+                                                        <!-- <a onclick="return confirm('คุณต้องการลบบิลจริงหรือ ?')" href="./recordticketSql.php?id=<?= $row['id'] ?>&act=delete" class="btn btn-danger btn-sm disabled"><i class="fas fa-trash"></i></a> -->
+                                                        <a href="?ref_order_id=<?= $row['ref_order_id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
                                                     </td>
                                                 </tr>
                                             <?php else : ?>
@@ -106,10 +105,10 @@ include './layout/header.php';
 
                                                     <td>
                                                         <?php if ($_SESSION['role'] == 'admin') { ?>
-                                                            <a href="cancel_ticket.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i> | ยกเลิกบิล </a>
+                                                            <a href="cancel_ticket.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger"><i class="fas fa-ban"></i></a>
                                                         <?php } ?>
-                                                        <a href="recordticketEdit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i> | แก้ไขบิล </a>
-                                                        <a href="cart/print/rePrintBil.php?id=<?= $row['id'] ?>" class="btn btn-info btn-sm"><i class="fas fa-print"></i> | ปริ้นบิล </a>
+                                                        <a href="recordticketEdit.php?id=<?= $row['id'] ?>" class="btn btn-warning btn-sm"><i class="far fa-edit"></i></a>
+                                                        <a href="cart/print/rePrintBil.php?id=<?= $row['id'] ?>" target="_blank" class="btn btn-info btn-sm"><i class="fas fa-print"></i></a>
                                                     </td>
 
                                                 </tr>

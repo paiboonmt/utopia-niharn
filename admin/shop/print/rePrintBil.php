@@ -27,28 +27,27 @@ date_default_timezone_set('Asia/Bangkok');
                 INNER JOIN `shop_order_details` ON `shop_orders`.`id` = `shop_order_details`.`order_id`
                 WHERE `shop_orders`.`id` = '$id'");
                 $sql->execute();
-                $row = $sql->fetchAll();
+                $row = $sql->fetchAll(PDO::FETCH_ASSOC);
 
-                function discount($total, $discount)
-                {
-                    $discount = $total * $discount / 100;
-                    return $discount;
-                }
-                function vat7($total, $vat7)
-                {
-                    $vat7 = ($total * 7) / 100;
-                    return $vat7;
-                }
-                function vat3($total, $vat3)
-                {
-                    $vat3 = ($total * 3) / 100;
-                    return $vat3;
-                }
+                // function discount($total, $discount)
+                // {
+                //     $discount = $total * $discount / 100;
+                //     return $discount;
+                // }
+                // function vat7($total, $vat7)
+                // {
+                //     $vat7 = ($total * 7) / 100;
+                //     return $vat7;
+                // }
+                // function vat3($total, $vat3)
+                // {
+                //     $vat3 = ($total * 3) / 100;
+                //     return $vat3;
+                // }
 
-                $total = $row[0]['price'];
-                // $discount = discount($row[0]['price'], $row[0]['discount']);
-                $vat7 = vat7($row[0]['price'], $row[0]['vat7']);
-                $vat3 = vat3($row[0]['price'], $row[0]['vat3']);
+                // $total = $row[0]['price'];
+                // $vat7 = vat7($row[0]['price'], $row[0]['vat7']);
+                // $vat3 = vat3($row[0]['price'], $row[0]['vat3']);
 
 
                 include("rePrintCustomer.php");
@@ -63,7 +62,6 @@ date_default_timezone_set('Asia/Bangkok');
     window.print();
     setTimeout(function() {
         window.close();
-        // window.location.href = '../../recordshop.php';
     }, 1000);
 </script>
 </html>

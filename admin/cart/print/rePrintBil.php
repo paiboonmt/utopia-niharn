@@ -50,7 +50,7 @@
                     $vat3 = vat3($row[0]['price'],$row[0]['vat3']);
 
                     
-                    include("rePrintCustomer.php");
+                    // include("rePrintCustomer.php");
                     include("rePrintVender.php");
                     
                 ?> 
@@ -61,9 +61,9 @@
 </body>
 <script>
     window.print();
-    setTimeout(() => { 
-      window.location.href = '../../recordticket.php';
-    }, 2000);
+    setTimeout(function() {
+        window.close();
+    }, 1000);
 </script>
 </html>
 <?php $conndb = null; ?> 

@@ -26,12 +26,8 @@ function countNew($conndb)
 }
 ?>
 
-<style>
-    .nav-link {
-        font-size: 14px;
-    }
-</style>
-<aside class="main-sidebar sidebar-dark-primary elevation-4" style="text-transform: uppercase;">
+
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
     <a href="index.php" class="brand-link">
         <img src="../../dist/img/logo.png" class="brand-image img-circle elevation-3" style="opacity: .8">
         <span class="brand-text font-weight-light">รายงาน</span>
@@ -54,158 +50,195 @@ function countNew($conndb)
                     </a>
                 </li>
 
-
-                <li class="nav-header">รายงานการขาย Class Training</li>
-
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'searchreport') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="searchreport.php" class="nav-link <?= $active ?>">
-                        <i class="far fa-star nav-icon"></i>
-                        <p>
-                            สรุปการขายแบบรวม
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'reportTicket') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="reportTicket.php" class="nav-link <?= $active ?>">
-                        <i class="far fa-star nav-icon"></i>
-                        <p>
-                            สรุปการขายแบบรายการ
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-header">รายงานการขาย สินค้า อุปกรณ์</li>
-
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'shop_total') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="shop_total.php" class="nav-link <?= $active ?>">
-                        <i class="fas fa-store nav-icon"></i>
-                        <p>
-                            สรุปการขายแบบรวม ร้านค้า
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'reportShop') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="reportShop.php" class="nav-link <?= $active ?>">
-                        <i class="fas fa-shopping-cart nav-icon"></i>
-                        <p>
-                            ยอดขายสินค้า รายวัน
-                        </p>
-                    </a>
-                </li>
-
-                <li class="nav-item">
-                    <?php
-                    if ($page == 'reportShopMonth') {
-                        $active = 'active';
-                    } else {
-                        $active = '';
-                    }
-                    ?>
-                    <a href="reportShopMonth.php" class="nav-link <?= $active ?>">
-                        <i class="fas fa-shopping-cart nav-icon"></i>
-                        <p>
-                            ยอดขายสินค้า รายเดือน
-                        </p>
-                    </a>
-                </li>
-
                 <?php
-                if ($page == 'reportDay') {
-                    $active = 'active';
+                if ($page == 'searchreport' || $page == 'reportTicket') {
+                    $active_cart = 'active';
+                    $open_cart = 'menu-open';
                 } else {
-                    $active = '';
+                    $active_cart = '';
+                    $open_cart = '';
                 }
                 ?>
+                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                    <a href="#" class="nav-link <?= $active_cart ?>">
+                        <i class="nav-icon fas fa-table"></i>
+                        <p>
+                            Training Report
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
 
-                <li class="nav-item">
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'searchreport') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="searchreport.php" class="nav-link <?= $active ?>">
+                                <i class="far fa-star nav-icon"></i>
+                                <p>
+                                    สรุปการขายแบบรวม
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'reportTicket') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="reportTicket.php" class="nav-link <?= $active ?>">
+                                <i class="far fa-star nav-icon"></i>
+                                <p>
+                                    สรุปการขายแบบรายการ
+                                </p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+
+                <?php
+                if ($page == 'shop_total' || $page == 'reportShop' || $page == 'reportShopMonth') {
+                    $active_cart = 'active';
+                    $open_cart = 'menu-open';
+                } else {
+                    $active_cart = '';
+                    $open_cart = '';
+                }
+                ?>
+                <li class="nav-item <?= $active_cart ?> <?= $open_cart ?>">
+                    <a href="#" class="nav-link <?= $active_cart ?>">
+                        <i class="nav-icon fas fa-store"></i>
+                        <p>
+                            Shop Report
+                            <i class="fas fa-angle-left right"></i>
+                        </p>
+                    </a>
+                    <ul class="nav nav-treeview" style="display: <?= $open_cart ? 'block' : 'none' ?>;">
+
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'shop_total') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="shop_total.php" class="nav-link <?= $active ?>">
+                                <i class="fas fa-star-of-david nav-icon"></i>
+                                <p>
+                                    สรุปการขาย ร้านค้า
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'reportShop') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="reportShop.php" class="nav-link <?= $active ?>">
+                                <i class="fas fa-star-of-david nav-icon"></i>
+                                <p>
+                                    ยอดขายสินค้า รายวัน
+                                </p>
+                            </a>
+                        </li>
+
+                        <li class="nav-item">
+                            <?php
+                            if ($page == 'reportShopMonth') {
+                                $active = 'active';
+                            } else {
+                                $active = '';
+                            }
+                            ?>
+                            <a href="reportShopMonth.php" class="nav-link <?= $active ?>">
+                                <i class="fas fa-star-of-david nav-icon"></i>
+                                <p>
+                                    ยอดขายสินค้า รายเดือน
+                                </p>
+                            </a>
+                        </li>
+
+                    </ul>
+                </li>
+
+                <!-- <li class="nav-item">
+                    <?php
+                    if ($page == 'reportDay') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="reportDay.php" class="nav-link <?= $active ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
                             การเข้าใช้บริการ
                         </p>
                     </a>
-                </li>
+                </li> -->
 
-                <?php
-                if ($page == 'reportMonthly') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
-                <li class="nav-item">
+                <!-- <li class="nav-item">
+                    <?php
+                    if ($page == 'reportMonthly') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="reportMonthly.php" class="nav-link <?= $active ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
                             การขายรายเดือน
                         </p>
                     </a>
-                </li>
+                </li> -->
 
-                <?php
-                if ($page == 'reportBetway') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
-
-                <li class="nav-item ">
+                <!-- <li class="nav-item ">
+                    <?php
+                    if ($page == 'reportBetway') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
                     <a href="reportBetway.php" class="nav-link <?= $active ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
                             การขายระหว่างวันที่
                         </p>
                     </a>
-                </li>
+                </li> -->
 
-                <?php
-                if ($page == 'reportTotal') {
-                    $active = 'active';
-                } else {
-                    $active = '';
-                }
-                ?>
+                <!-- <li class="nav-item ">
+                    <?php
+                    if ($page == 'reportTotal') {
+                        $active = 'active';
+                    } else {
+                        $active = '';
+                    }
+                    ?>
 
-                <li class="nav-item ">
                     <a href="reportTotal.php" class="nav-link <?= $active ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>
                             จำนวนการเข้าใช้บริการ
                         </p>
                     </a>
-                </li>
+                </li> -->
 
                 <li class="nav-item">
                     <a href="#" onclick="logout()" class="nav-link">

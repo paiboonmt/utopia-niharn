@@ -330,6 +330,11 @@ function countShop($conndb)
                                 <i class="nav-icon fas fa-ticket-alt"></i>
                                 <p>
                                     ประวัติการขายสินค้า
+                                    <?php if (countShop($conndb) == 0) { ?>
+                                        <span class="right badge badge-danger"><?= countShop($conndb); ?></span>
+                                    <?php } else { ?>
+                                        <span class="right badge badge-danger"><?= countShop($conndb); ?></span>
+                                    <?php } ?>
                                 </p>
                             </a>
                         </li>

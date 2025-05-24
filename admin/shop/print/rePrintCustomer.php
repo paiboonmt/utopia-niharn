@@ -13,7 +13,7 @@
 
 <div class="row">
     <div class="col"><span>Tax inv. Date</span></div>
-    <div class="col" id="col"><span><?= date('d-m-Y | H:i:s') ?></span></div>
+    <div class="col" id="col"><span><?= $row[0]['date'] ?></span></div>
 </div>
 
 <div class="row">
@@ -101,3 +101,9 @@ foreach ($check as $rowq) : ?>
     <div class="col"><span>Cshier : <?= $row[0]['emp']  ?></span></div>
 </div>
 <hr>
+
+<?php if (!empty($row[0]['comment'])) : ?>
+    <div class="row">
+        <div class="col"><span>Remark : <?= $row[0]['comment']  ?></span></div>
+    </div>
+<?php endif; ?>

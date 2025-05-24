@@ -9,7 +9,7 @@
 
 <div class="row">
     <div class="col"><span>Tax inv. Date</span></div>
-    <div class="col" id="col"><span><?= date('d-m-Y | H:i:s' ) ?></span></div>
+    <div class="col" id="col"><span><?= $row[0]['date'] ?></span></div>
 </div>
 
 <div class="row">

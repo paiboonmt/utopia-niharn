@@ -69,10 +69,10 @@ if (isset($_GET['action']) && $_GET['action'] == 'delete') {
                                                     </td>
                                                     <td>
                                                         <a href="./shop_edit.php?id=<?= $product['id'] ?>" class="btn btn-warning btn-sm">
-                                                            <i class="fas fa-edit"></i> แก้ไข
+                                                            <i class="fas fa-edit"></i>
                                                         </a>
                                                         <a href="?action=delete&id=<?= $product['id'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('คุณต้องการลบสินค้านี้หรือไม่?');">
-                                                            <i class="fas fa-trash"></i> ลบ
+                                                            <i class="fas fa-trash"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
